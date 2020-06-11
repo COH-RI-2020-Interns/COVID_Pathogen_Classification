@@ -1,44 +1,57 @@
 """
 Author: Rishov S. Chatterjee
 
-This script is designed for scraping the various test datasets used by Randhawa et. al for classifying the taxonomy
+This Python script is designed for scraping the various test datasets used by Randhawa et. al for classifying the taxonomy
 of a viral genome sequence to be made available.
 
-Modules used:
-- re
+Modules Used:
 - requests
 - BeautifulSoup
-- os
+
+Modular Functions Used:
+- src/covid_sourceforge_function.py -> fasta_scraper()
 
 All the code in this script is the intellectual property of City of Hope National Medical Center.
 
 """
-import re
 import requests
 from bs4 import BeautifulSoup
-from os import getcwd, system
+from os import chdir
+chdir("src")
+from covid_sourceforge_function import fasta_scraper
+chdir("..")
 
-# Getting the COVID19 Data on Web Page from Source Forge
-web_page = requests.get("https://sourceforge.net/projects/mldsp-gui/files/COVID19Dataset/Test1/Riboviria/")
+# Get Randhawa's Main Web Page on Source Forge
+url = "https://sourceforge.net/projects/mldsp-gui/files/COVID19Dataset/"
+web_page = requests.get(url)
 
-# Parsing the HTML Content of the HTTP GET Request Using BeautifulSoup's HTML Parser
+# Get the HTML Elements of the Page
 soup = BeautifulSoup(web_page.content, 'html.parser')
 
-# Finding all the Table Headers with the special header: files_name_h
-fasta_files = soup.find_all('th', headers="files_name_h")
+# Get List of Test Names
+test_names = [soup.find_all('tr')[i]['title'] for i in range(2,9)]
+print(test_names)
 
-# Extracting all the fasta download links using a list comprehension
-links = [list(link.children)[0].attrs['href'] for link in fasta_files]
+test_name = input("Please type in a test name from the above choices: ")
 
-# Data Path
-fasta_path = getcwd() + "/data"
+# Get Virus Families in Test Page
+try:
+    virus_page = requests.get(f"{url}{test_name}")
+except TypeError:
+    print("Unable to retrieve web page. Unknown test name.")
 
-# Getting the Starting Index of Each / to Pinpoint File Name
-print([m.start() for m in re.finditer("/", links[0])])
+# Get HTML Elements of New Request
+virus_soup = BeautifulSoup(virus_page.content, 'html.parser')
 
-# Downloading All the Files to the data folder
-for link in links:
-    file_name = link[80:100]
-    get_req = requests.get(link, allow_redirects=True)
-    open(f"{fasta_path}/{file_name}", 'wb').write(get_req.content)
-    
+# Get List of Virus Families in the Requested Page
+folders = virus_soup.find_all('tr', {'class':'folder'})
+virus_names = [virus_soup.find_all('tr')[i]['title'] for i in range(2, len(folders)+1)]
+print(virus_names)
+
+virus_name = input("Please type in a viral family name from the above choices: ")
+
+# Run the Scraper
+try:
+    fasta_scraper(test_name, virus_name)
+except (TypeError, RuntimeError):
+    print("Not able to find files to download. Try typing in the virus name again.")

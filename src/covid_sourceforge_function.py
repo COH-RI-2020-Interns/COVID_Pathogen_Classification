@@ -59,4 +59,5 @@ def fasta_scraper(test_name: str, family_name: str):
             open(f"{fasta_path}/{test_name}/{family_name}/{file_name}", 'wb').write(get_req.content)
             print(f"{test_name}/{family_name} Fasta Sequence {i+1}: {file_name} successfully downloaded.")
             time.sleep(5)
+    print("All sequences have finished downloading.")
     return "Thanks for using the scraper!"
