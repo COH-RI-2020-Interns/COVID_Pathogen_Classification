@@ -6,19 +6,23 @@ from os import getcwd, listdir
 from Bio import SeqIO
 
 # Loading in the Data
-file_path = getcwd() + "/COVID_Pathogen_Classification/Shannon entropy data"
+file_path = getcwd() + "/COVID_Pathogen_Classification/Shannon entropy data/data/Test1/Riboviria"
 file_path
-file = listdir(file_path)[1]
-file
-ribo_example = list(SeqIO.parse(f"{file_path}/{file}", "fasta"))
 
-len(ribo_example[0].seq)
+for i in range(len(file_path)-1):
+    file = listdir(file_path)[i]
+    #print(file)
+
+    for f in range(len(file) - 1):
+        ribo_example = list(SeqIO.parse(f"{file_path}/{file}", "fasta"))
+        ribo_example
+        #ribo_example.count()
 
 seq = "".join([char for char in ribo_example[0].seq])
 
 def entropy(sequence):
     counts = Counter(sequence)
-    props = {key: counts[key] / sum(counts.values()) for key in counts}
+    props = {key: counts[key] / sum(counts.values()) for key in counts
     products = {key: props[key]*np.log(props[key]) for key in props}
     return -1 * sum(products.values())
 

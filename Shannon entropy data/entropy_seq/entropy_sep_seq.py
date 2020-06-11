@@ -7,11 +7,11 @@ from Bio.Seq import Seq
 from Bio.Alphabet import generic_dna
 from collections import Counter
 
-file_path = getcwd() + "/Internship_Training/Shannon entropy data"
+file_path = getcwd() + "/COVID_Pathogen_Classification/Shannon entropy data"
 
 # Reading in the Data as a List Comprehension
-ribovirus_example =  [line.replace("\n", "") for line in open(f"{file_path}/{listdir(file_path)[0]}", "r").readlines()]
-
+ribovirus_example =  [line.replace("\n", "") for line in open(f"{file_path}/{listdir(file_path)[1]}", "r").readlines()]
+ribovirus_example
 # Transforming Each Sequence into a BioPython Seq Object
 ribovirus_object = [Seq(line, generic_dna) for line in ribovirus_example]
 
