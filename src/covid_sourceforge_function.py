@@ -44,7 +44,8 @@ def fasta_scraper(test_name: str, family_name: str):
 
     # Creating a Folder to Store All Files Pertaining to Virus Family
     chdir(f"data/{test_name}")
-    system(f"mkdir {family_name}")
+    if family_name not in listdir(getcwd()):
+        system(f"mkdir {family_name}")
     chdir("../..")
 
     # Getting the Starting Index of Each / to Pinpoint File Name
