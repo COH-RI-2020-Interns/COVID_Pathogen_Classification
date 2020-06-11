@@ -11,13 +11,14 @@ file_path = getcwd() + "/COVID_Pathogen_Classification/data/Test1/Riboviria"
 
 # Reading in the Data as a List Comprehension
 ribovirus_example =  [line.replace("\n", "") for line in open(f"{file_path}/{listdir(file_path)[0]}", "r").readlines()]
-
+ribovirus_example
 # Transforming Each Sequence into a BioPython Seq Object
 ribovirus_object = [Seq(line, generic_dna) for line in ribovirus_example]
 
 # Getting Frequency of Each Base in DNA
 dna_base_frequencies = [Counter(seq) for seq in ribovirus_example]
-dna_base_frequencies
+dna_base_frequencies[1:]
+len(dna_base_frequencies)
 totals = [sum(list(freq.values())) for freq in dna_base_frequencies]
 
 dna_base_frequencies[0]
