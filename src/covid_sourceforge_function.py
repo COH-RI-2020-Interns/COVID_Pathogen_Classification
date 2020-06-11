@@ -18,7 +18,7 @@ import re
 import time
 import requests
 from bs4 import BeautifulSoup
-from os import getcwd, system, chdir
+from os import getcwd, listdir, system, chdir
 
 def fasta_scraper(test_name: str, family_name: str):
 
