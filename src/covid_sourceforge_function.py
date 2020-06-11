@@ -54,8 +54,9 @@ def fasta_scraper(test_name: str, family_name: str):
     # Downloading All the Files to the data folder
     for i, link in enumerate(links):
         file_name = link[slash_routes[-2]+1:slash_routes[-1]]
-        get_req = requests.get(link, allow_redirects=True)
-        open(f"{fasta_path}/{test_name}/{family_name}/{file_name}", 'wb').write(get_req.content)
-        print(f"{test_name}/{family_name} Fasta Sequence {i+1}: {file_name} successfully downloaded.")
-        time.sleep(5)
+        if file_name not in listdir(f"{fasta_path}/{test_name}/{family_name}"):
+            get_req = requests.get(link, allow_redirects=True)
+            open(f"{fasta_path}/{test_name}/{family_name}/{file_name}", 'wb').write(get_req.content)
+            print(f"{test_name}/{family_name} Fasta Sequence {i+1}: {file_name} successfully downloaded.")
+            time.sleep(5)
     return "Thanks for using the scraper!"
