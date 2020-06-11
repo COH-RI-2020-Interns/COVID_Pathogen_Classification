@@ -6,12 +6,12 @@ from os import getcwd, listdir
 from Bio import SeqIO
 
 # Loading in the Data
-file_path = getcwd() + "/Shannon entropy data"
+file_path = getcwd() + "/COVID_Pathogen_Classification/Shannon entropy data"
 file_path
 file = listdir(file_path)[1]
 file
 ribo_example = list(SeqIO.parse(f"{file_path}/{file}", "fasta"))
-
+ribo_example
 len(ribo_example[0].seq)
 
 seq = "".join([char for char in ribo_example[0].seq])
