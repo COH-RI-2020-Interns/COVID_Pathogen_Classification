@@ -27,3 +27,8 @@ list_numeric
 #Calculating discrete numerical representation
 𝐹𝑖(𝑘)=∑𝑗=0𝑝−1𝑓(𝑆𝑖(𝑗))⋅𝑒(−2𝜋𝑖/𝑝)𝑘𝑗
 #Results  = [6, -1 -3i , 0, 1+3i]
+#Logic =
+#to get 6 do (1) + (2) + (3)
+#to get -1 -3i do 1 + 3*e^(-pi(i)/2) + 2*e^(-pi(i)) + 0
+#to get 0 do 1 + 3*e^(-pi(i)) + 2*e^(-2pi(i)) + 0
+#to get -1+3i 1 + 3*e^(-3/2(pi(i))) + 2*e^(-3(pi)(i)) + 0
