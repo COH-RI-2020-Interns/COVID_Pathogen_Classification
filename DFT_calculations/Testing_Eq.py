@@ -59,3 +59,13 @@ def dtf(list_of_numbers, length):
 dtf(list_numeric, length)
 
 list_dtf
+
+mag_list = []
+def mag(list_of_dtf):
+    for i in list_of_dtf:
+        i = abs(i)
+        mag_list.append(i)
+
+list_test = [-1, 2, -4, 7]
+mag(list_test)
+print(mag_list)
