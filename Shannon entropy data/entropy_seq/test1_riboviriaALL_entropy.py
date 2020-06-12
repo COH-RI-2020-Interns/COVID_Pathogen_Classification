@@ -11,7 +11,7 @@ file_path
 
 for i in range(len(file_path)-1):
     file = listdir(file_path)[i]
-    print(file)
+    file
 
     for f in range(len(file) - 1):
         ribo_example = list(SeqIO.parse(f"{file_path}/{file}", "fasta"))
