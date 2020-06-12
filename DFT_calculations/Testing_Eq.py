@@ -1,3 +1,5 @@
+import math
+
 #Practice with MLDSP methods
 
 #Making the Si dna_strand
@@ -32,3 +34,28 @@ list_numeric
 #to get -1 -3i do 1 + 3*e^(-pi(i)/2) + 2*e^(-pi(i)) + 0
 #to get 0 do 1 + 3*e^(-pi(i)) + 2*e^(-2pi(i)) + 0
 #to get -1+3i 1 + 3*e^(-3/2(pi(i))) + 2*e^(-3(pi)(i)) + 0
+
+list_dtf = []
+length = len(list_numeric)
+length
+
+def dtf(list_of_numbers, length):
+    k = 0
+    j = 0
+    sum = 0
+    pi = math.pi
+    e = math.e
+    i = 1j
+    exponent = (-2 * pi * i) / length
+    for m in range(k,length):
+        for n in list_of_numbers:
+            sum = sum + (n * e**(exponent * m * j))
+            j = j+1
+        list_dtf.append(sum)
+        sum = 0
+        j = 0
+
+
+dtf(list_numeric, length)
+
+list_dtf
