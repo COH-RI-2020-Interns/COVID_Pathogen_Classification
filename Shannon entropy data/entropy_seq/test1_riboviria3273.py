@@ -6,7 +6,7 @@ from os import getcwd, listdir
 from Bio import SeqIO
 
 # Loading in the Data
-file_path = getcwd() + "/COVID_Pathogen_Classification/Shannon entropy data"
+file_path = getcwd() + "/Shannon entropy data"
 file_path
 file = listdir(file_path)[1]
 file
