@@ -1,15 +1,16 @@
 import math
 
+
 #Practice with MLDSP methods
 
 #Making the Si dna_strand
 dna_strand = "CGAT"
 
 
-#making a function that changes from Si to Ni
-#Integer representation = T:0, C:1, A:2, G:3
-list_numeric = []
 
+
+#Integer representation using if statements
+list_numeric = []
 def numeric(strand):
     for i in strand:
          if (i == "T"):
@@ -20,7 +21,6 @@ def numeric(strand):
              list_numeric.append(2)
          elif (i == "G"):
              list_numeric.append(3)
-
 
 numeric(dna_strand)
 list_numeric
@@ -43,22 +43,24 @@ def dtf(list_of_numbers, length):
     k = 0
     j = 0
     sum = 0
-    pi = math.pi
-    e = math.e
+    pi = np.pi
+    e = np.e
     i = 1j
     exponent = (-2 * pi * i) / length
     for m in range(k,length):
         for n in list_of_numbers:
-            sum = sum + (n * e**(exponent * m * j))
+            sum = sum + (n * np.exp(exponent * m * j))
             j = j+1
         list_dtf.append(sum)
         sum = 0
         j = 0
 
 
+
 dtf(list_numeric, length)
 
 list_dtf
+
 
 mag_list = []
 def mag(list_of_dtf):
@@ -66,6 +68,6 @@ def mag(list_of_dtf):
         i = abs(i)
         mag_list.append(i)
 
-list_test = [-1, 2, -4, 7]
+list_test = [-1 -4j, 2-3j, -4, 7]
 mag(list_test)
 print(mag_list)
