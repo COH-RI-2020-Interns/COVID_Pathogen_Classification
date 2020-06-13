@@ -1,29 +1,25 @@
-import math
-
+import numpy as np
+from scipy.fft import fft, ifft
+from scipy import stats
 #Practice with MLDSP methods
 
 #Making the Si dna_strand
-dna_strand = "CGAT"
-
+dna_strand = "CGATAGTCCCTTAGTCTAAGGTTCCCCTTTAAAA"
+dna_strand2 = "CGAGAGTCCATTAGTCCCAAGGTGCATTACTAAA"
 
 #making a function that changes from Si to Ni
 #Integer representation = T:0, C:1, A:2, G:3
-list_numeric = []
+dict_of_bases = {"T":0, "C":1, "A":2, "G":3}
+numeric = []
+def numerical(dna_strand):
+    for base in dna_strand:
+        numeric.append(dict_of_bases[base])
+    return np.array(numeric)
 
-def numeric(strand):
-    for i in strand:
-         if (i == "T"):
-             list_numeric.append(0)
-         elif (i == "C"):
-             list_numeric.append(1)
-         elif(i == "A"):
-             list_numeric.append(2)
-         elif (i == "G"):
-             list_numeric.append(3)
-
-
-numeric(dna_strand)
-list_numeric
+dna_strand_1 = np.array(numerical(dna_strand))
+dna_strand_2 = np.array(numerical(dna_strand2))
+type(dna_strand_1)
+type(dna_strand_2)
 
 
 #Calculating discrete numerical representation
@@ -35,37 +31,26 @@ list_numeric
 #to get 0 do 1 + 3*e^(-pi(i)) + 2*e^(-2pi(i)) + 0
 #to get -1+3i 1 + 3*e^(-3/2(pi(i))) + 2*e^(-3(pi)(i)) + 0
 
-list_dtf = []
-length = len(list_numeric)
-length
-
-def dtf(list_of_numbers, length):
-    k = 0
-    j = 0
-    sum = 0
-    pi = math.pi
-    e = math.e
-    i = 1j
-    exponent = (-2 * pi * i) / length
-    for m in range(k,length):
-        for n in list_of_numbers:
-            sum = sum + (n * e**(exponent * m * j))
-            j = j+1
-        list_dtf.append(sum)
-        sum = 0
-        j = 0
+dft_strand_1 = fft(dna_strand_1)
+dft_strand_2 = fft(dna_strand_2)
 
 
-dtf(list_numeric, length)
-
-list_dtf
-
+#Finding magnitude
 mag_list = []
 def mag(list_of_dtf):
-    for i in list_of_dtf:
-        i = abs(i)
-        mag_list.append(i)
+    mag_list = abs(list_of_dtf)
+    return mag_list
 
-list_test = [-1, 2, -4, 7]
-mag(list_test)
-print(mag_list)
+
+mag_strand_1 = mag(dft_strand_1)
+mag_strand_2 = mag(dft_strand_2)
+
+
+
+#Finding Pearson's Correlation Coefficiet
+stats.pearsonr(mag_strand_1, mag_strand_2)
+
+#first result = pearson's correlation coefficient so closer to 1, higher similarity
+#second result = p-value, the lower the p-value the more statistically significant the correlation is
+#the lower the p-value the more accurate the Results
+#comparing identical strands gives a p-values of 0 and a PCC of 1
