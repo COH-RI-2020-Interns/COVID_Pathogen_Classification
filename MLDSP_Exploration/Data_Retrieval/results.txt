@@ -1,0 +1,30 @@
+Results and Observations for the integer and justA representations
+
+
+
+
+Integer_Rep:
+1.Test1, Folder 1
+  (polyomaviridae_2630, riboviria_2842): (0.8838608519976172, 0.0)
+
+2.Test1, Folder 1
+  (polyomaviridae_2631, riboviria_2843): (0.8964701037950177, 0.0)
+
+
+
+
+
+JustA:
+1.Test1, Folder 1
+ (polyomaviridae_2630, riboviria_2842): (0.5550240328528129, 0.0)
+
+2.Test1, Folder 1
+ (polyomaviridae_2631, riboviria_2843): (0.635370711814415, 0.0)
+
+
+Purine, Pyrimidine:
+1.Test1, Folder 1
+ (polyomaviridae_2630, riboviria_2842): (0.044313822601184376, 0.001420418524875686)
+
+ 2.Test1, Folder 1
+  (polyomaviridae_2631, riboviria_2843): (-0.026917139844982833, 0.057488678583044725)

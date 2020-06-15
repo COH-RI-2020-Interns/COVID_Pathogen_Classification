@@ -37,7 +37,6 @@ def make_sequence(file, path_of_file):
 
 polyomaviridae = make_sequence(file_list[1], file_path)
 print(polyomaviridae)
-len(polyomaviridae)
 riboviria = make_sequence(file_list2[1], file_path2)
 print(riboviria)
 len(riboviria)
@@ -51,7 +50,7 @@ polyomaviridae
 # If we cut one sequence we could be taking away key genetic info
 
 # Converting sequence based on JustA representation
-dict_of_bases = {"T":0, "C":0, "A":1, "G":0}
+dict_of_bases = {"T":1, "C":1, "A":-1, "G":-1}
 numeric = []
 def numerical(dna_strand):
     for base in dna_strand:
@@ -82,6 +81,7 @@ dft_polyomaviridae
 dft_riboviria = fft(riboviria_nums)
 len(dft_riboviria)
 dft_riboviria
+
 #Finding magnitude
 mag_list = []
 def mag(list_of_dtf):

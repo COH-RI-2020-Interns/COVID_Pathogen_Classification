@@ -23,9 +23,9 @@ len(listdir(file_path2))
 
 # Sorting folders and selecting file
 file_list = sorted(listdir(file_path))
-file_list[0]
+print(file_list[1])
 file_list2 = sorted(listdir(file_path2))
-file_list2[0]
+file_list2[1]
 type(file_list)
 
 # Extracting string from file
@@ -35,9 +35,9 @@ def make_sequence(file, path_of_file):
     seq = "".join([char for char in ribo_example[0].seq])
     return seq
 
-polyomaviridae = make_sequence(file_list[0], file_path)
+polyomaviridae = make_sequence(file_list[1], file_path)
 print(polyomaviridae)
-riboviria = make_sequence(file_list2[0], file_path2)
+riboviria = make_sequence(file_list2[1], file_path2)
 print(riboviria)
 len(riboviria)
 
