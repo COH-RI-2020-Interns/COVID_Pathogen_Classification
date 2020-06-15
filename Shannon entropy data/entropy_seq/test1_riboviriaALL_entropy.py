@@ -6,7 +6,7 @@ from os import getcwd, listdir
 from Bio import SeqIO
 
 # Loading in the Data
-file_path = getcwd() + "/COVID_Pathogen_Classification/Shannon entropy data/data/Test1/Riboviria"
+file_path = getcwd() + "/Shannon entropy data/data/Test1/Riboviria"
 listdir(file_path)
 
 def entropy(sequence):
@@ -32,3 +32,8 @@ for file in listdir(file_path):
     entropy_values.append(entropy(seq))
 
 entropy_values #more entropy = more info (ML) = more uncertainty
+
+def Avg(lst):
+    return sum(lst) / len(lst)
+
+Avg(entropy_values)

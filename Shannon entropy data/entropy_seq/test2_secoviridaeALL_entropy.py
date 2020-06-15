@@ -32,3 +32,8 @@ for file in listdir(file_path):
     entropy_values.append(entropy(seq))
 
 entropy_values #more entropy = more info (ML) = more uncertainty
+
+def Avg(lst):
+    return sum(lst) / len(lst)
+
+Avg(entropy_values)
