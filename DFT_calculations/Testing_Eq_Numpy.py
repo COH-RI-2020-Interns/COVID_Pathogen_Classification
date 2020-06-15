@@ -20,7 +20,7 @@ dna_strand_1 = np.array(numerical(dna_strand))
 dna_strand_2 = np.array(numerical(dna_strand2))
 type(dna_strand_1)
 type(dna_strand_2)
-
+#run strand 1 and then rerun for strand 2
 
 #Calculating discrete numerical representation
 𝐹𝑖(𝑘)=∑𝑗=0𝑝−1𝑓(𝑆𝑖(𝑗))⋅𝑒(−2𝜋𝑖/𝑝)𝑘𝑗
@@ -43,14 +43,16 @@ def mag(list_of_dtf):
 
 
 mag_strand_1 = mag(dft_strand_1)
+len(mag_strand_1)
 mag_strand_2 = mag(dft_strand_2)
+len(mag_strand_2)
 
 
 
 #Finding Pearson's Correlation Coefficiet
 stats.pearsonr(mag_strand_1, mag_strand_2)
 
-#first result = pearson's correlation coefficient so closer to 1, higher similarity
-#second result = p-value, the lower the p-value the more statistically significant the correlation is
-#the lower the p-value the more accurate the Results
+#first result = pearson's correlation coefficient so close to 1, higher similarity
+#second result = p-value (0 to 1), the lower the p-value the more statistically significant the correlation is
+#the lower the p-value the more accurate the results
 #comparing identical strands gives a p-values of 0 and a PCC of 1
