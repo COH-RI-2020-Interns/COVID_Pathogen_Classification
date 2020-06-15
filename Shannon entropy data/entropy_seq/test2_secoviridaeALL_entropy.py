@@ -6,7 +6,7 @@ from os import getcwd, listdir
 from Bio import SeqIO
 
 # Loading in the Data
-file_path = getcwd() + "/Shannon entropy data/data/Test2/Secoviridae"
+file_path = getcwd() + "/data/Test2/Secoviridae"
 listdir(file_path)
 
 def entropy(sequence):
