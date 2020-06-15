@@ -83,8 +83,8 @@ def mag(list_of_dtf):
     return mag_list
 
 
-mag_polyviridae = mag(dft_polyomaviridae)
-mag_polyviridae
+mag_polyomaviridae = mag(dft_polyomaviridae)
+mag_polyomaviridae
 len(mag_polyviridae)
 
 mag_riboviria = mag(dft_riboviria)
@@ -93,7 +93,7 @@ len(mag_riboviria)
 
 
 #Finding Pearson's Correlation Coefficient
-stats.pearsonr(mag_polyviridae, mag_riboviria)
+stats.pearsonr(mag_polyomaviridae, mag_riboviria)
 # PCC is extremely sensitive to extreme values
 # The p-value measures the percent risk that the data seems to correlate when there is actually no correlation
 # testing if caused by chance
