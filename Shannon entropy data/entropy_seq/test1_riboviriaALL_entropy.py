@@ -2,7 +2,7 @@ import numpy as np
 from collections import Counter
 from os import getcwd, listdir
 
-
+#riboviria all
 from Bio import SeqIO
 
 # Loading in the Data
@@ -20,6 +20,7 @@ entropy_values = []
 #for i in range(len(listdir(file_path))-1):
     #file = listdir(file_path)[i]
     #file
+
 
 for file in listdir(file_path):
     ribo_example = list(SeqIO.parse(f"{file_path}/{file}", "fasta"))

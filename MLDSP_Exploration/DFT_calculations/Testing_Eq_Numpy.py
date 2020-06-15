@@ -49,10 +49,16 @@ len(mag_strand_2)
 
 
 
-#Finding Pearson's Correlation Coefficiet
+#Finding Pearson's Correlation Coefficient
 stats.pearsonr(mag_strand_1, mag_strand_2)
 
 #first result = pearson's correlation coefficient so close to 1, higher similarity
 #second result = p-value (0 to 1), the lower the p-value the more statistically significant the correlation is
 #the lower the p-value the more accurate the results
 #comparing identical strands gives a p-values of 0 and a PCC of 1
+
+#if we are looking at Covid-19 data,let's say you are classifying
+#between Betacoronavirus, Alphacoronoavirus, Gammacoronavirus and Deltacoronavirus
+#You have 200 sequences of each and make them into 20 groups of 10 base Alphacoronoavirus
+#With each group from Covid-19 and Alphacoronavirus/Gamma/Delta/Beta you can apply the pcc and then you end up with 20 points for each
+#you plot the points on a graph and then check for least distance
