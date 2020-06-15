@@ -49,7 +49,7 @@ len(polyomaviridae)
 polyomaviridae
 # If we cut one sequence we could be taking away key genetic info
 
-# Converting sequence based on integer representation
+# Converting sequence based on JustA representation
 dict_of_bases = {"T":0, "C":1, "A":2, "G":3}
 numeric = []
 def numerical(dna_strand):
@@ -59,9 +59,11 @@ def numerical(dna_strand):
 
 polyomaviridae_nums = np.array(numerical(polyomaviridae))
 len(polyomaviridae_nums)
+polyomaviridae_nums
 
 riboviria_nums = np.array(numerical(riboviria))
 len(riboviria_nums)
+riboviria_nums
 #run strand 1 and then rerun for strand 2
 
 #Calculating discrete numerical representation
@@ -75,9 +77,10 @@ len(riboviria_nums)
 
 dft_polyomaviridae = fft(polyomaviridae_nums)
 len(dft_polyomaviridae)
-
+dft_polyomaviridae
 dft_riboviria = fft(riboviria_nums)
 len(dft_riboviria)
+dft_riboviria
 
 #Finding magnitude
 mag_list = []
