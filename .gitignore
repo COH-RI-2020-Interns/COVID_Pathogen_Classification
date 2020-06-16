@@ -1,2 +1,5 @@
 __pycache__
 data/*/*/*.fasta
+
+.DS_Store
+data/.DS_Store
