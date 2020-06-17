@@ -31,6 +31,14 @@ Purine, Pyrimidine:
   (polyomaviridae_2631, riboviria_2843): (-0.026917139844982833, 0.057488678583044725)
 
 
+Real:
+
+3.Test1, Folder1
+(polyomaviridae_2631, riboviria_2775):(0.013821455974086452, 0.32942753969447885)
+
+
+
+
 Testing Different Methods of Length normalization ('PP' num rep used)
 
 Minimum Length:
