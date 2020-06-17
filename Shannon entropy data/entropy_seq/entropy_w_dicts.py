@@ -50,10 +50,21 @@ def entropy(sequence):
 
 entropy_values = []
 
+my_dict.keys()
+my_dict['Test1'].keys()
+my_dict["Test1"]["Polyomaviridae"]
+
+
+
+
+my_dict
+my_dict[]
+file_path_1 = getcwd() + "/data"
 for folder in my_dict.keys():
     for sub_folder in my_dict[folder].keys():
         #print(sub_folder)
-        for file in range(0, len(my_dict[folder][sub_folder])):
+        for file in my_dict[folder][sub_folder]:
+            file_path_1 = listdir(f"/data/{folder}/{sub_folder}/{file}")
             ribo_example = list(SeqIO.parse(f"{my_dict[folder][sub_folder][file]}", "fasta"))
             print(ribo_example)
             count = len(ribo_example[0].seq)

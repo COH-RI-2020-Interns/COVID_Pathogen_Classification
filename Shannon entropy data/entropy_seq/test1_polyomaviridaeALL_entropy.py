@@ -23,6 +23,7 @@ entropy_values = []
 
 for file in listdir(file_path):
     ribo_example = list(SeqIO.parse(f"{file_path}/{file}", "fasta"))
+    print(ribo_example)
 
     count = len(ribo_example[0].seq)
 
