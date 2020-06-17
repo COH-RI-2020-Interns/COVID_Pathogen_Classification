@@ -57,21 +57,38 @@ my_dict["Test1"]["Polyomaviridae"]
 
 
 
-my_dict
-my_dict[]
-file_path_1 = getcwd() + "/data"
+
+file_path_1 = getcwd()
+file_path_1
+count_1 = 0
+entropy_values = []
 for folder in my_dict.keys():
     for sub_folder in my_dict[folder].keys():
         #print(sub_folder)
         for file in my_dict[folder][sub_folder]:
-            file_path_1 = listdir(f"/data/{folder}/{sub_folder}/{file}")
-            ribo_example = list(SeqIO.parse(f"{my_dict[folder][sub_folder][file]}", "fasta"))
-            print(ribo_example)
+            count_1 = count_1 +1
+            #file_path_1 = listdir(f"/data/{folder}/{sub_folder}/{file}")
+            ribo_example = list(SeqIO.parse((f"{file_path_1}/data/{folder}/{sub_folder}/{file}"), "fasta"))
+            #print(ribo_example)
             count = len(ribo_example[0].seq)
             seq = "".join([char for char in ribo_example[0].seq])
             entropy_values.append(entropy(seq))
 
-entropy_values #more entropy = more info (ML) = more uncertainty
+len(entropy_values) #more entropy = more info (ML) = more uncertainty
+count_1
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def Avg(lst):
     return sum(lst) / len(lst)

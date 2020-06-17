@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 from collections import Counter
 from os import getcwd, listdir
 from Bio import SeqIO
@@ -38,6 +37,7 @@ def make_sequence(file, path_of_file):
 
 polyomaviridae = make_sequence(file_list[1], file_path)
 print(polyomaviridae)
+len(polyomaviridae)
 riboviria = make_sequence(file_list2[1], file_path2)
 print(riboviria)
 len(riboviria)
@@ -51,7 +51,7 @@ polyomaviridae
 # If we cut one sequence we could be taking away key genetic info
 
 # Converting sequence based on JustA representation
-dict_of_bases = {"T":1, "C":1, "A":-1, "G":-1}
+dict_of_bases = {"T":-1.5, "C":0.5, "A":1.5, "G":-0.5}
 
 def numerical(dna_strand):
     numeric = []
@@ -66,7 +66,6 @@ polyomaviridae_nums
 riboviria_nums = np.array(numerical(riboviria))
 len(riboviria_nums)
 riboviria_nums
-
 
 #Calculating discrete numerical representation
 𝐹𝑖(𝑘)=∑𝑗=0𝑝−1𝑓(𝑆𝑖(𝑗))⋅𝑒(−2𝜋𝑖/𝑝)𝑘𝑗
@@ -99,23 +98,6 @@ mag_riboviria = mag(dft_riboviria)
 mag_riboviria
 len(mag_riboviria)
 
-#DTF magnitude spectra graph PP representation
-poly_50 = mag_polyomaviridae[0:50]
-ribo_50 = mag_riboviria[0:50]
-plt.plot(poly_50)
-plt.plot(ribo_50)
-plt.title("First 50 DFT Magnitude Spectra PP representation")
-plt.legend(["Poly_50", "Ribo_50"])
-
-
-#Discrete digital signal graph PP representation
-polyomaviridae_nums_50 = polyomaviridae_nums[0:50]
-riboviria_nums_50 = riboviria_nums[0:50]
-plt.plot(polyomaviridae_nums_50)
-plt.plot(riboviria_nums_50)
-plt.title("First 50 discrete digital signal PP representation")
-plt.legend(["Poly_dds_50", "Ribo_dds_50"])
-#Purines are -1 (AG) and Pyrimidines are 1 (TC)
 
 #Finding Pearson's Correlation Coefficient
 stats.pearsonr(mag_polyomaviridae, mag_riboviria)
