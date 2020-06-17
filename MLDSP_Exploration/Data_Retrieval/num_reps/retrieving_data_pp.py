@@ -117,6 +117,7 @@ plt.title("First 50 discrete digital signal PP representation")
 plt.legend(["Poly_dds_50", "Ribo_dds_50"])
 #Purines are -1 (AG) and Pyrimidines are 1 (TC)
 
+
 #Finding Pearson's Correlation Coefficient
 stats.pearsonr(mag_polyomaviridae, mag_riboviria)
 # PCC is extremely sensitive to extreme values
