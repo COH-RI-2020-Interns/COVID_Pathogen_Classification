@@ -25,7 +25,7 @@ len(listdir(file_path2))
 file_list = sorted(listdir(file_path))
 file_list[0]
 file_list2 = sorted(listdir(file_path2))
-file_list2[0]
+file_list2[3]
 type(file_list)
 
 # Extracting string from file
@@ -37,24 +37,13 @@ def make_sequence(file, path_of_file):
 
 polyomaviridae = make_sequence(file_list[0], file_path)
 print(polyomaviridae)
-riboviria = make_sequence(file_list2[0], file_path2)
+riboviria = make_sequence(file_list2[], file_path2)
 print(riboviria)
-len(riboviria)
-
-# Length normalization
-len(riboviria)
 len(polyomaviridae)
-type(polyomaviridae)
-
-if(len(riboviria)>len(polyomaviridae)):
-    riboviria = riboviria[0:(len(polyomaviridae))]
-else:
-    polyomaviridae = polyomaviridae[0:len(riboviria)]
-
-
-
 len(riboviria)
-len(polyomaviridae)
+
+
+
 
 # If we cut one sequence we could be taking away key genetic info
 
@@ -75,6 +64,27 @@ riboviria_nums = np.array(numerical(riboviria))
 len(riboviria_nums)
 riboviria_nums
 #run strand 1 and then rerun for strand 2
+
+
+# Length normalization
+if(len(riboviria_nums)>len(polyomaviridae_nums)):
+    num_zeros = len(riboviria_nums)-len(polyomaviridae_nums)
+    for i in range(0, num_zeros):
+        polyomaviridae_nums = np.append(polyomaviridae_nums,0)
+else:
+    num_zeros = len(polyomaviridae_nums)-len(riboviria_nums)
+    for i in range(0, num_zeros):
+        riboviria_nums = np.append(riboviria_nums, 0)
+#make sure to use np.append and withing it list the array you would like to append to
+#make sure to set the array
+
+polyomaviridae_nums
+riboviria_nums
+
+len(polyomaviridae_nums)
+len(riboviria_nums)
+
+
 
 #Calculating discrete numerical representation
 𝐹𝑖(𝑘)=∑𝑗=0𝑝−1𝑓(𝑆𝑖(𝑗))⋅𝑒(−2𝜋𝑖/𝑝)𝑘𝑗
