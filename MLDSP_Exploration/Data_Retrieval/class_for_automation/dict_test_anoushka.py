@@ -43,11 +43,15 @@ for folder in folders:
     for sub_folder in listdir(f"{folder_path}/{folder}"):
         for file in listdir(f"{folder_path}/{folder}/{sub_folder}"):
             file_tuple_list.append((folder,sub_folder,file))
-    print(file_tuple_list)
-
-dict_2
+file_tuple_list
 
 file_combos = list(permutations(file_tuple_list, 2))
 
-file_combos[0]
-file_combos
+
+for i in file_combos:
+    if (i[0][1] == i[1][1]):
+        file_combos.remove(i)
+
+
+
+#taking a while to go through everything
