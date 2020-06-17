@@ -3,7 +3,7 @@ import pandas as pd
 import json
 from Bio import SeqIO
 from os import getcwd, listdir, system
-from itertools import combinations
+from itertools import permutations
 
 # Going to Test folders
 folder_path = getcwd() + "/data"
@@ -39,11 +39,16 @@ file_tuple_list = []
 
 for folder in folders:
     for sub_folder in listdir(f"{folder_path}/{folder}"):
+        print(sub_folder)
         for file in listdir(f"{folder_path}/{folder}/{sub_folder}"):
             file_tuple_list.append((folder, sub_folder, file))
 
 file_tuple_list
 
-file_combos = list(combinations(file_tuple_list, 2))
+file_perms = list(permutations(file_tuple_list, 2))
 
-file_combos
+file_perms
+
+#for i in file_combos:
+    #if (i[0][1] == i[1][1]):
+        #file_combos.remove(i)
