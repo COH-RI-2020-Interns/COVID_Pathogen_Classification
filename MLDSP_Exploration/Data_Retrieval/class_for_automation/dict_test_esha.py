@@ -8,7 +8,7 @@ from itertools import combinations
 # Going to Test folders
 folder_path = getcwd() + "/data"
 
-folders = sorted(listdir(folder_path))[2:9]
+folders = sorted(listdir(folder_path))[1:8]
 folders
 
 folder_dict = {}
