@@ -55,14 +55,12 @@ my_dict['Test1'].keys()
 my_dict["Test1"]["Polyomaviridae"]
 
 
-
-
-
 file_path_1 = getcwd()
 file_path_1
 count_1 = 0
 entropy_values = []
 for folder in my_dict.keys():
+    #print(folder)
     for sub_folder in my_dict[folder].keys():
         #print(sub_folder)
         for file in my_dict[folder][sub_folder]:
@@ -72,9 +70,10 @@ for folder in my_dict.keys():
             #print(ribo_example)
             count = len(ribo_example[0].seq)
             seq = "".join([char for char in ribo_example[0].seq])
-            entropy_values.append(entropy(seq))
+            entropy_values.append((folder, sub_folder, file, entropy(seq)))
 
-len(entropy_values) #more entropy = more info (ML) = more uncertainty
+entropy_values #more entropy = more info (ML) = more uncertainty
+len(entropy_values)
 count_1
 
 
