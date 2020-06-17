@@ -34,18 +34,18 @@ with open(f"{output_path}/fasta_files.json", "w") as my_file:
 f = open(f"{output_path}/{listdir(output_path)[0]}", )
 
 my_dict = json.load(f)
-my_dict
+my_dict.values()
 
 # Getting all possible combinations of 2 for the fasta files
-
+file_tuple_list = []
 dict_2 = {}
 for folder in folders:
     for sub_folder in listdir(f"{folder_path}/{folder}"):
         for file in listdir(f"{folder_path}/{folder}/{sub_folder}"):
             file_tuple_list.append((folder,sub_folder,file))
+    print(file_tuple_list)
 
-
-file_tuple_list
+dict_2
 
 file_combos = list(permutations(file_tuple_list, 2))
 
