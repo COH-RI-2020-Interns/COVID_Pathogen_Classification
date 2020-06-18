@@ -84,10 +84,8 @@ for key in new_dict_2.keys():
             file_list_2.append((i,j))
     new_dict_3[key] = file_list_2
 
-new_dict_3.keys()
-
-new_dict_3["Test1"][0]
-
+#___________________________________________________________________________
+#Using the dictionary to apply to our code
 
 def make_sequence(path_of_file):
     start_seq = list(SeqIO.parse(f"{path_of_file}", "fasta"))
@@ -95,27 +93,19 @@ def make_sequence(path_of_file):
     final_seq = "".join([char for char in start_seq[0].seq])
     return final_seq
 
-
-
-
-
-
 pearsons_dict = {}
 for test in new_dict_3:
+    list_sequences= []
     for file1,file2 in new_dict_3[test]:
-        file_path = getcwd() + f"/data/Test6/{file1[0]}/{file1[1]}"
-        file_path2 = getcwd() + f"/data/Test6/{file2[0]}/{file2[1]}"
+        file_path = getcwd() + f"/data/{test}/{file1[0]}/{file1[1]}"
+        file_path2 = getcwd() + f"/data/{test}/{file2[0]}/{file2[1]}"
         seq1  = make_sequence(file_path)
         seq2 = make_sequence(file_path2)
+        list_sequences.append((file1[1], seq1, file2[1], seq2))
+    pearsons_dict[test] = list_sequences
 
 
-
-
-
-
-pearsons_dict[test] = (file1, seq1, file2, seq2)
-
-
+pearsons_dict
 
 
 
