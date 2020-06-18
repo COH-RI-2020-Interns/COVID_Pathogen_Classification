@@ -91,7 +91,7 @@ def make_sequence(path_of_file):
     final_seq = "".join([char for char in start_seq[0].seq])
     return final_seq
 
-dict_of_bases = {"T":1, "C":1, "A":-1, "G":-1}
+dict_of_bases = {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1}
 
 def numerical_pp(dna_strand):
     numeric = []
@@ -164,15 +164,19 @@ for file1,file2 in new_dict_3['Test5']:
     pp2 = numerical_pp(seq2)
     pp1_norm = normalization(pp1,pp2)[0]
     pp2_norm = normalization(pp1,pp2)[1]
-    #print(len(pp1),len(pp1_norm), file1[1],len(pp2),len(pp2_norm),file2[1])
+    if(len(pp1_norm) == 30480 or len(pp2_norm) == 30480):
+        print(len(pp1),len(pp1_norm), file1[1],len(pp2),len(pp2_norm),file2[1])
     fft_1 = fft(pp1_norm)
     fft_2 = fft(pp2_norm)
     mag_1 = abs(fft_1)
     mag_2 = abs(fft_2)
     pcc = stats.pearsonr(mag_1, mag_2)
     list_sequences.append((file1[1],file2[1],pcc))
-pearsons_dict["Test5"] = list_sequences
 
 
 
-pearsons_dict["Test6"]
+
+
+
+
+new_dict_3['Test5']
