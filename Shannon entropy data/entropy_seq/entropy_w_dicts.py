@@ -48,61 +48,22 @@ def entropy(sequence):
     products = {key: props[key]*np.log(props[key]) for key in props}
     return -1 * sum(products.values())
 
-entropy_values = []
-
 my_dict.keys()
 my_dict['Test1'].keys()
 my_dict["Test1"]["Polyomaviridae"]
 
 
-file_tuple_list = []
-
-for folder in folders:
-    for sub_folder in listdir(f"{folder_path}/{folder}"):
-        for file in listdir(f"{folder_path}/{folder}/{sub_folder}"):
-            file_tuple_list.append((folder,sub_folder,file))
-
-
-#each of the keys shows tuples, first element is the virus, second is file
-
-new_dict = {}
-#each of the keys shows tuples, first element is the virus, second is file
-
+entropy_dict = {}
 for test in my_dict.keys():
-    file_list = []
-    for family in my_dict[test].keys():
+    entropy_values = []
+    temp_entropy_dict = {}
+    for family in  my_dict[test].keys():
         for file in my_dict[test][family]:
-            file_list.append((family,file))
-        new_dict[test] = file_list
+            start_seq = list(SeqIO.parse((f"{file_path_1}/data/{test}/{family}/{file}"), "fasta"))
+            count = len(start_seq[0].seq)
+            final_seq = "".join([char for char in start_seq[0].seq])
+            entropy_values.append((file, entropy(seq)))
+            temp_entropy_dict[family] = entropy_values
+    entropy_dict[test] = temp_entropy_dict
 
-new_dict
-
-file_path_1 = getcwd()
-entropy_values = []
-
-for folder in my_dict.keys():
-    #print(folder)
-    for sub_folder in  my_dict[folder].keys():
-        #print(sub_folder)
-        for file in my_dict[folder][sub_folder]:
-            ribo_example = list(SeqIO.parse((f"{file_path_1}/data/{folder}/{sub_folder}/{file}"), "fasta"))
-            #print(ribo_example)
-            count = len(ribo_example[0].seq)
-            seq = "".join([char for char in ribo_example[0].seq])
-            entropy_values.append((folder, sub_folder, file, entropy(seq)))
-
-entropy_values[0] #more entropy = more info (ML) = more uncertainty
-
-
-
-new_dict = {}
-
-new_dict = {}
-for key in :
-    file_list_2 = []
-    for i,j in new_dict_2[key]:
-        if(i[0] != j[0]):
-            file_list_2.append((i,j))
-    new_dict_3[key] = file_list_2
-
-new_dict_3
+temp_entropy_dict
