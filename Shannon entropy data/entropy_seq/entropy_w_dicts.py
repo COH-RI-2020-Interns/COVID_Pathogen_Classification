@@ -55,32 +55,6 @@ my_dict['Test1'].keys()
 my_dict["Test1"]["Polyomaviridae"]
 
 
-file_path_1 = getcwd()
-file_path_1
-count_1 = 0
-entropy_values = []
-for folder in my_dict.keys():
-    #print(folder)
-    for sub_folder in my_dict[folder].keys():
-        #print(sub_folder)
-        for file in my_dict[folder][sub_folder]:
-            count_1 = count_1 +1
-            #file_path_1 = listdir(f"/data/{folder}/{sub_folder}/{file}")
-            ribo_example = list(SeqIO.parse((f"{file_path_1}/data/{folder}/{sub_folder}/{file}"), "fasta"))
-            #print(ribo_example)
-            count = len(ribo_example[0].seq)
-            seq = "".join([char for char in ribo_example[0].seq])
-            entropy_values.append((folder, sub_folder, file, entropy(seq)))
-
-entropy_values #more entropy = more info (ML) = more uncertainty
-len(entropy_values)
-count_1
-
-
-
-
-
-# Getting all possible combinations of 2 for the fasta files
 file_tuple_list = []
 
 for folder in folders:
@@ -88,29 +62,43 @@ for folder in folders:
         for file in listdir(f"{folder_path}/{folder}/{sub_folder}"):
             file_tuple_list.append((folder,sub_folder,file))
 
+
+#each of the keys shows tuples, first element is the virus, second is file
+
 new_dict = {}
 #each of the keys shows tuples, first element is the virus, second is file
 
-for i in my_dict.keys():
+for test in my_dict.keys():
     file_list = []
-    for j in my_dict[i].keys():
-        for file in my_dict[i][j]:
-            file_list.append((j,file))
-        new_dict[i] = file_list
+    for family in my_dict[test].keys():
+        for file in my_dict[test][family]:
+            file_list.append((family,file))
+        new_dict[test] = file_list
 
-new_dict['Test1']
-len(new_dict['Test1'])
+new_dict
 
-new_dict_2 = {}
-for key in new_dict.keys():
-    seq_perm = list(permutations(new_dict[key], 2))
-    new_dict_2[key] =  seq_perm
+file_path_1 = getcwd()
+entropy_values = []
+
+for folder in my_dict.keys():
+    #print(folder)
+    for sub_folder in  my_dict[folder].keys():
+        #print(sub_folder)
+        for file in my_dict[folder][sub_folder]:
+            ribo_example = list(SeqIO.parse((f"{file_path_1}/data/{folder}/{sub_folder}/{file}"), "fasta"))
+            #print(ribo_example)
+            count = len(ribo_example[0].seq)
+            seq = "".join([char for char in ribo_example[0].seq])
+            entropy_values.append((folder, sub_folder, file, entropy(seq)))
+
+entropy_values[0] #more entropy = more info (ML) = more uncertainty
 
 
-new_dict_2
 
-new_dict_3 = {}
-for key in new_dict_2.keys():
+new_dict = {}
+
+new_dict = {}
+for key in :
     file_list_2 = []
     for i,j in new_dict_2[key]:
         if(i[0] != j[0]):

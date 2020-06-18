@@ -53,7 +53,7 @@ for i in my_dict.keys():
             file_list.append((j,file))
         new_dict[i] = file_list
 
-
+new_dict
 
 new_dict_2 = {}
 for key in new_dict.keys():
