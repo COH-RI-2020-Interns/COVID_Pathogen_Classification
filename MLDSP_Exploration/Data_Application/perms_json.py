@@ -74,9 +74,6 @@ for key in new_dict.keys():
     seq_perm = list(permutations(new_dict[key], 2))
     new_dict_2[key] =  seq_perm
 
-
-new_dict_2
-
 new_dict_3 = {}
 for key in new_dict_2.keys():
     file_list_2 = []
@@ -106,19 +103,25 @@ def numerical_pp(dna_strand):
 def normalization(numerical1, numerical2):
     if len(numerical1)>len(numerical2):
         dna_seq = np.array(numerical2)
-        pad_width = (len(numerical1)- len(numerical2))/2
-        if((len(numerical1)- len(numerical2))%2 != 0):
-             numerical2 = pywt.pad(dna_seq,pad_width, "antisymmetric")
-             numerical1 = numerical1[0:len(numerical1)-1]
+        numer = len(numerical1)- len(numerical2)
+        if(numer%2 != 0):
+            numer = numer - 0.5
+            pad_width = numer/2
+            numerical2 = pywt.pad(dna_seq, pad_width, "antisymmetric")
+            numerical1 = numerical1[0:len(numerical1)-1]
         else:
-             numerical2 = pywt.pad(dna_seq,pad_width, "antisymmetric")
+            pad_width = numer/2
+            numerical2 = pywt.pad(dna_seq,pad_width, "antisymmetric")
     else:
         dna_seq = np.array(numerical1)
-        pad_width = (len(numerical2)- len(numerical1))/2
-        if((len(numerical1)- len(numerical2))%2 != 0):
-            numerical1 = pywt.pad(dna_seq,pad_width,"antisymmetric")
+        numer = len(numerical2)- len(numerical1)
+        if(numer%2 != 0):
+            numer = numer - 0.5
+            pad_width = numer/2
+            numerical1 = pywt.pad(dna_seq, pad_width, "antisymmetric")
             numerical2 = numerical2[0:len(numerical2)-1]
         else:
+            pad_width = numer/2
             numerical1 = pywt.pad(dna_seq,pad_width, "antisymmetric")
 
     return numerical1,numerical2
@@ -128,7 +131,7 @@ def normalization(numerical1, numerical2):
 
 pearsons_dict = {}
 for test in new_dict_3:
-    #list_sequences= []
+    list_sequences= []
     for file1,file2 in new_dict_3[test]:
         file_path = getcwd() + f"/data/{test}/{file1[0]}/{file1[1]}"
         file_path2 = getcwd() + f"/data/{test}/{file2[0]}/{file2[1]}"
@@ -138,24 +141,18 @@ for test in new_dict_3:
         pp2 = numerical_pp(seq2)
         pp1_norm = normalization(pp1,pp2)[0]
         pp2_norm = normalization(pp1,pp2)[1]
-        print(len(pp1),len(pp1_norm), file1[1],len(pp2),len(pp2_norm),file2[1])
-        # fft_1 = fft(pp1)
-        # fft_2 = fft(pp2)
-        # mag_1 = abs(fft_1)
-        # mag_2 = abs(fft_2)
-        # pcc = stats.pearsonr(mag_1, mag_2)
+        #print(len(pp1),len(pp1_norm), file1[1],len(pp2),len(pp2_norm),file2[1])
+        fft_1 = fft(pp1_norm)
+        fft_2 = fft(pp2_norm)
+        mag_1 = abs(fft_1)
+        mag_2 = abs(fft_2)
+        pcc = stats.pearsonr(mag_1, mag_2)
+        list_sequences.append((file1[1],file2[1],pcc))
+    pearsons_dict[test] = list_sequences
 
-        #list_sequences.append((file1[1], seq1, file2[1], seq2))
-    #pearsons_dict[test] = list_sequences
 
+#pearsons_dict
 
-pearsons_dict
-<<<<<<< HEAD
-hi
-hEll0
-=======
-
->>>>>>> 79176a151e0c711a6a5542e0f8507eb5891d1c19
 
 
 
