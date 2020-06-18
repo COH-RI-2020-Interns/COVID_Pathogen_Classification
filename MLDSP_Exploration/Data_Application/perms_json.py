@@ -116,7 +116,7 @@ def normalization(numerical1, numerical2):
         dna_seq = np.array(numerical1)
         pad_width = (len(numerical2)- len(numerical1))/2
         if((len(numerical1)- len(numerical2))%2 != 0):
-            numerical1 = pywt.pad(dna_seq,pad_width, "antisymmetric")
+            numerical1 = pywt.pad(dna_seq,pad_width,"antisymmetric")
             numerical2 = numerical2[0:len(numerical2)-1]
         else:
             numerical1 = pywt.pad(dna_seq,pad_width, "antisymmetric")
