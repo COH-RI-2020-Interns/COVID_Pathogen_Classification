@@ -1,14 +1,8 @@
 __pycache__
 data/*/*/*.fasta
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
 */.DS_Store
->>>>>>> cf1332694cb7d0d261615ea8de004fb90ed40c76
-=======
-
 .DS_Store
->>>>>>> a570e67178089051df9541f0ccdcf3a094908544
 data/.DS_Store
+
 data/JSON_files/final_permutations.json
