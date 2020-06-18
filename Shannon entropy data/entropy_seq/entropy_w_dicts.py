@@ -52,7 +52,7 @@ my_dict.keys()
 my_dict['Test1'].keys()
 my_dict["Test1"]["Polyomaviridae"]
 
-
+file_path_1 = getcwd()
 entropy_dict = {}
 for test in my_dict.keys():
     entropy_values = []
