@@ -24,7 +24,7 @@ my_dict = json.load(f)
 #Using dictionary instead
 folder_path = getcwd() + "/data"
 
-folders = sorted(listdir(folder_path))[2:9]
+folders = sorted(listdir(folder_path))[1:8]
 folders
 folder_dict = {}
 
@@ -157,6 +157,24 @@ for test in new_dict_3:
 pearsons_dict = {}
 list_sequences= []
 
+# Test 1
+for file1,file2 in new_dict_3['Test1']:
+    file_path = getcwd() + f"/data/Test1/{file1[0]}/{file1[1]}"
+    file_path2 = getcwd() + f"/data/Test1/{file2[0]}/{file2[1]}"
+    seq1  = make_sequence(file_path)
+    seq2 = make_sequence(file_path2)
+    pp1 = numerical_pp(seq1)
+    pp2 = numerical_pp(seq2)
+    pp1_norm = normalization(pp1,pp2)[0]
+    pp2_norm = normalization(pp1,pp2)[1]
+    fft_1 = fft(pp1_norm)
+    fft_2 = fft(pp2_norm)
+    mag_1 = abs(fft_1)
+    mag_2 = abs(fft_2)
+    pcc = stats.pearsonr(mag_1, mag_2)
+    list_sequences.append((file1[1],file2[1],pcc))
+pearsons_dict["Test1"] = list_sequences
+
 # Test 2
 for file1,file2 in new_dict_3['Test2']:
     file_path = getcwd() + f"/data/Test2/{file1[0]}/{file1[1]}"
@@ -167,7 +185,6 @@ for file1,file2 in new_dict_3['Test2']:
     pp2 = numerical_pp(seq2)
     pp1_norm = normalization(pp1,pp2)[0]
     pp2_norm = normalization(pp1,pp2)[1]
-    #print(len(pp1),len(pp1_norm), file1[1],len(pp2),len(pp2_norm),file2[1])
     fft_1 = fft(pp1_norm)
     fft_2 = fft(pp2_norm)
     mag_1 = abs(fft_1)
@@ -262,18 +279,11 @@ pearsons_dict
 pearsons_dict.keys()
 
 
-
-<<<<<<< HEAD
-# Test 6
+# Test6
 for file1,file2 in new_dict_3['Test6']:
+    list_sequences = []
     file_path = getcwd() + f"/data/Test6/{file1[0]}/{file1[1]}"
     file_path2 = getcwd() + f"/data/Test6/{file2[0]}/{file2[1]}"
-=======
-for file1,file2 in new_dict_3['Test2']:
-    list_sequences = []
-    file_path = getcwd() + f"/data/Test2/{file1[0]}/{file1[1]}"
-    file_path2 = getcwd() + f"/data/Test2/{file2[0]}/{file2[1]}"
->>>>>>> 9fb7ea540a5dcc7aab7407bc84fcc6810f2f5f31
     seq1  = make_sequence(file_path)
     seq2 = make_sequence(file_path2)
     pp1 = numerical_pp(seq1)
@@ -287,8 +297,5 @@ for file1,file2 in new_dict_3['Test2']:
     mag_2 = abs(fft_2)
     pcc = stats.pearsonr(mag_1, mag_2)
     list_sequences.append((file1[1],file2[1],pcc))
-pearsons_dict["Test2"] = list_sequences
-
-
-
-pearsons_dict.keys()
+    pearsons_dict["Test6"] = list_sequences
+pearsons_dict
