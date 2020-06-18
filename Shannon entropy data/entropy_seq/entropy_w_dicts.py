@@ -10,7 +10,7 @@ from Bio import SeqIO
 # Going to Test folders
 folder_path = getcwd() + "/data"
 
-folders = sorted(listdir(folder_path))[1:8]
+folders = sorted(listdir(folder_path))[2:9]
 folders
 
 folder_dict = {}
@@ -80,16 +80,41 @@ count_1
 
 
 
+# Getting all possible combinations of 2 for the fasta files
+file_tuple_list = []
+
+for folder in folders:
+    for sub_folder in listdir(f"{folder_path}/{folder}"):
+        for file in listdir(f"{folder_path}/{folder}/{sub_folder}"):
+            file_tuple_list.append((folder,sub_folder,file))
+
+new_dict = {}
+#each of the keys shows tuples, first element is the virus, second is file
+
+for i in my_dict.keys():
+    file_list = []
+    for j in my_dict[i].keys():
+        for file in my_dict[i][j]:
+            file_list.append((j,file))
+        new_dict[i] = file_list
+
+new_dict['Test1']
+len(new_dict['Test1'])
+
+new_dict_2 = {}
+for key in new_dict.keys():
+    seq_perm = list(permutations(new_dict[key], 2))
+    new_dict_2[key] =  seq_perm
 
 
+new_dict_2
 
+new_dict_3 = {}
+for key in new_dict_2.keys():
+    file_list_2 = []
+    for i,j in new_dict_2[key]:
+        if(i[0] != j[0]):
+            file_list_2.append((i,j))
+    new_dict_3[key] = file_list_2
 
-
-
-
-
-
-def Avg(lst):
-    return sum(lst) / len(lst)
-
-Avg(entropy_values)
+new_dict_3

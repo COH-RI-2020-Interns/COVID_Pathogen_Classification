@@ -8,8 +8,7 @@ from itertools import permutations
 # Going to Test folders
 folder_path = getcwd() + "/data"
 
-folders = sorted(listdir(folder_path))[1:8]
-
+folders = sorted(listdir(folder_path))[2:9]
 
 folder_dict = {}
 
@@ -20,10 +19,6 @@ for folder in folders:
         subfolder_dict[sub_folder] = listdir(f"{folder_path}/{folder}/{sub_folder}")
     folder_dict[folder] = subfolder_dict
 
-
-
-folder_dict.keys()
-folder_dict.values()
 
 # Adding data to a JSON file
 output_path = getcwd() + "/data/JSON_Files"
@@ -85,21 +80,6 @@ with open(f"{output_path}/final_permutations.json", "w") as my_file:
 f = open(f"{output_path}/{listdir(output_path)[1]}", )
 
 perm_dict = json.load(f)
-
-
-len(my_dict)
-file_tuple_list_practice = {}
-
-for i in my_dict:
-   file_tuple_list_practice  = {}
-   file_tuple_list_practice = my_dict[i]
-   print(file_tuple_list_practice)
-
-
-file_tuple_list
-
-
-file_combos[6000000]
 
 
  #taking a while to go through everything
