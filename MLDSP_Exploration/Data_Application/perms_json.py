@@ -263,10 +263,17 @@ pearsons_dict.keys()
 
 
 
+<<<<<<< HEAD
 # Test 6
 for file1,file2 in new_dict_3['Test6']:
     file_path = getcwd() + f"/data/Test6/{file1[0]}/{file1[1]}"
     file_path2 = getcwd() + f"/data/Test6/{file2[0]}/{file2[1]}"
+=======
+for file1,file2 in new_dict_3['Test2']:
+    list_sequences = []
+    file_path = getcwd() + f"/data/Test2/{file1[0]}/{file1[1]}"
+    file_path2 = getcwd() + f"/data/Test2/{file2[0]}/{file2[1]}"
+>>>>>>> 9fb7ea540a5dcc7aab7407bc84fcc6810f2f5f31
     seq1  = make_sequence(file_path)
     seq2 = make_sequence(file_path2)
     pp1 = numerical_pp(seq1)
@@ -280,8 +287,8 @@ for file1,file2 in new_dict_3['Test6']:
     mag_2 = abs(fft_2)
     pcc = stats.pearsonr(mag_1, mag_2)
     list_sequences.append((file1[1],file2[1],pcc))
-pearsons_dict["Test6"] = list_sequences
+pearsons_dict["Test2"] = list_sequences
 
 
-pearsons_dict
+
 pearsons_dict.keys()

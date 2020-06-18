@@ -10,7 +10,7 @@ from Bio import SeqIO
 # Going to Test folders
 folder_path = getcwd() + "/data"
 
-folders = sorted(listdir(folder_path))[2:9]
+folders = sorted(listdir(folder_path))[1:9]
 folders
 
 folder_dict = {}
@@ -55,15 +55,17 @@ my_dict["Test1"]["Polyomaviridae"]
 file_path_1 = getcwd()
 entropy_dict = {}
 for test in my_dict.keys():
-    entropy_values = []
     temp_entropy_dict = {}
     for family in  my_dict[test].keys():
+        entropy_values = []
         for file in my_dict[test][family]:
             start_seq = list(SeqIO.parse((f"{file_path_1}/data/{test}/{family}/{file}"), "fasta"))
             count = len(start_seq[0].seq)
             final_seq = "".join([char for char in start_seq[0].seq])
-            entropy_values.append((file, entropy(seq)))
+            entropy_values.append((file, entropy(final_seq)))
             temp_entropy_dict[family] = entropy_values
     entropy_dict[test] = temp_entropy_dict
 
-temp_entropy_dict
+
+
+entropy_dict["Test1"]["Polyomaviridae"]
