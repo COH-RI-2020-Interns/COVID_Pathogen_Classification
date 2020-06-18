@@ -24,7 +24,7 @@ my_dict = json.load(f)
 #Using dictionary instead
 folder_path = getcwd() + "/data"
 
-folders = sorted(listdir(folder_path))[1:8]
+folders = sorted(listdir(folder_path))[2:9]
 folders
 folder_dict = {}
 
@@ -91,7 +91,7 @@ def make_sequence(path_of_file):
     final_seq = "".join([char for char in start_seq[0].seq])
     return final_seq
 
-dict_of_bases = {"T":1, "t":1, "C":1, "c":1, "A":-1, "a":-1, "G":-1, "g":-1}
+dict_of_bases = {"T":1, "C":1, "A":-1, "G":-1}
 
 def numerical_pp(dna_strand):
     numeric = []
@@ -128,7 +128,7 @@ def normalization(numerical1, numerical2):
 
 
 
-# Takes too long
+
 pearsons_dict = {}
 for test in new_dict_3:
     list_sequences= []
@@ -152,111 +152,9 @@ for test in new_dict_3:
 
 
 #___________________________________________________________________
-# Printing PCC data Individual by Test Instead
+# Printing PCC data by Test
 
-pearsons_dict = {}
-list_sequences= []
-
-# Test 1
-for file1,file2 in new_dict_3['Test1']:
-    file_path = getcwd() + f"/data/Test1/{file1[0]}/{file1[1]}"
-    file_path2 = getcwd() + f"/data/Test1/{file2[0]}/{file2[1]}"
-    seq1  = make_sequence(file_path)
-    seq2 = make_sequence(file_path2)
-    pp1 = numerical_pp(seq1)
-    pp2 = numerical_pp(seq2)
-    pp1_norm = normalization(pp1,pp2)[0]
-    pp2_norm = normalization(pp1,pp2)[1]
-    fft_1 = fft(pp1_norm)
-    fft_2 = fft(pp2_norm)
-    mag_1 = abs(fft_1)
-    mag_2 = abs(fft_2)
-    pcc = stats.pearsonr(mag_1, mag_2)
-    list_sequences.append((file1[1],file2[1],pcc))
-pearsons_dict["Test1"] = list_sequences
-
-# Test 2
-for file1,file2 in new_dict_3['Test2']:
-    file_path = getcwd() + f"/data/Test2/{file1[0]}/{file1[1]}"
-    file_path2 = getcwd() + f"/data/Test2/{file2[0]}/{file2[1]}"
-    seq1  = make_sequence(file_path)
-    seq2 = make_sequence(file_path2)
-    pp1 = numerical_pp(seq1)
-    pp2 = numerical_pp(seq2)
-    pp1_norm = normalization(pp1,pp2)[0]
-    pp2_norm = normalization(pp1,pp2)[1]
-    fft_1 = fft(pp1_norm)
-    fft_2 = fft(pp2_norm)
-    mag_1 = abs(fft_1)
-    mag_2 = abs(fft_2)
-    pcc = stats.pearsonr(mag_1, mag_2)
-    list_sequences.append((file1[1],file2[1],pcc))
-pearsons_dict["Test2"] = list_sequences
-
-# Test 3a
-for file1,file2 in new_dict_3['Test3a']:
-    file_path = getcwd() + f"/data/Test3a/{file1[0]}/{file1[1]}"
-    file_path2 = getcwd() + f"/data/Test3a/{file2[0]}/{file2[1]}"
-    seq1  = make_sequence(file_path)
-    seq2 = make_sequence(file_path2)
-    pp1 = numerical_pp(seq1)
-    pp2 = numerical_pp(seq2)
-    pp1_norm = normalization(pp1,pp2)[0]
-    pp2_norm = normalization(pp1,pp2)[1]
-    #print(len(pp1),len(pp1_norm), file1[1],len(pp2),len(pp2_norm),file2[1])
-    fft_1 = fft(pp1_norm)
-    fft_2 = fft(pp2_norm)
-    mag_1 = abs(fft_1)
-    mag_2 = abs(fft_2)
-    pcc = stats.pearsonr(mag_1, mag_2)
-    list_sequences.append((file1[1],file2[1],pcc))
-pearsons_dict["Test3a"] = list_sequences
-
-# Test 3b
-for file1,file2 in new_dict_3['Test3b']:
-    file_path = getcwd() + f"/data/Test3b/{file1[0]}/{file1[1]}"
-    file_path2 = getcwd() + f"/data/Test3b/{file2[0]}/{file2[1]}"
-    seq1  = make_sequence(file_path)
-    seq2 = make_sequence(file_path2)
-    pp1 = numerical_pp(seq1)
-    pp2 = numerical_pp(seq2)
-    pp1_norm = normalization(pp1,pp2)[0]
-    pp2_norm = normalization(pp1,pp2)[1]
-    #print(len(pp1),len(pp1_norm), file1[1],len(pp2),len(pp2_norm),file2[1])
-    fft_1 = fft(pp1_norm)
-    fft_2 = fft(pp2_norm)
-    mag_1 = abs(fft_1)
-    mag_2 = abs(fft_2)
-    pcc = stats.pearsonr(mag_1, mag_2)
-    list_sequences.append((file1[1],file2[1],pcc))
-pearsons_dict["Test3b"] = list_sequences
-
-pearsons_dict
-pearsons_dict.keys()
-
-# Test 4
-for file1,file2 in new_dict_3['Test4']:
-    file_path = getcwd() + f"/data/Test4/{file1[0]}/{file1[1]}"
-    file_path2 = getcwd() + f"/data/Test4/{file2[0]}/{file2[1]}"
-    seq1  = make_sequence(file_path)
-    seq2 = make_sequence(file_path2)
-    pp1 = numerical_pp(seq1)
-    pp2 = numerical_pp(seq2)
-    pp1_norm = normalization(pp1,pp2)[0]
-    pp2_norm = normalization(pp1,pp2)[1]
-    #print(len(pp1),len(pp1_norm), file1[1],len(pp2),len(pp2_norm),file2[1])
-    fft_1 = fft(pp1_norm)
-    fft_2 = fft(pp2_norm)
-    mag_1 = abs(fft_1)
-    mag_2 = abs(fft_2)
-    pcc = stats.pearsonr(mag_1, mag_2)
-    list_sequences.append((file1[1],file2[1],pcc))
-pearsons_dict["Test4"] = list_sequences
-
-pearsons_dict
-pearsons_dict.keys()
-
-# Test 5
+list_sequences = []
 for file1,file2 in new_dict_3['Test5']:
     file_path = getcwd() + f"/data/Test5/{file1[0]}/{file1[1]}"
     file_path2 = getcwd() + f"/data/Test5/{file2[0]}/{file2[1]}"
@@ -275,27 +173,6 @@ for file1,file2 in new_dict_3['Test5']:
     list_sequences.append((file1[1],file2[1],pcc))
 pearsons_dict["Test5"] = list_sequences
 
-pearsons_dict
-pearsons_dict.keys()
 
 
-# Test6
-for file1,file2 in new_dict_3['Test6']:
-    list_sequences = []
-    file_path = getcwd() + f"/data/Test6/{file1[0]}/{file1[1]}"
-    file_path2 = getcwd() + f"/data/Test6/{file2[0]}/{file2[1]}"
-    seq1  = make_sequence(file_path)
-    seq2 = make_sequence(file_path2)
-    pp1 = numerical_pp(seq1)
-    pp2 = numerical_pp(seq2)
-    pp1_norm = normalization(pp1,pp2)[0]
-    pp2_norm = normalization(pp1,pp2)[1]
-    #print(len(pp1),len(pp1_norm), file1[1],len(pp2),len(pp2_norm),file2[1])
-    fft_1 = fft(pp1_norm)
-    fft_2 = fft(pp2_norm)
-    mag_1 = abs(fft_1)
-    mag_2 = abs(fft_2)
-    pcc = stats.pearsonr(mag_1, mag_2)
-    list_sequences.append((file1[1],file2[1],pcc))
-    pearsons_dict["Test6"] = list_sequences
-pearsons_dict
+pearsons_dict["Test6"]
