@@ -49,10 +49,10 @@ len(polyomaviridae)
 polyomaviridae
 # If we cut one sequence we could be taking away key genetic info
 
-# Converting sequence based on JustA representation
+# Converting sequence based on Integer representation
 dict_of_bases = {"T":0, "C":1, "A":2, "G":3}
-numeric = []
 def numerical(dna_strand):
+    numeric = []
     for base in dna_strand:
         numeric.append(dict_of_bases[base])
     return np.array(numeric)
