@@ -25,8 +25,9 @@ my_dict = json.load(f)
 #Using dictionary instead
 folder_path = getcwd() + "/data"
 
-folders = sorted(listdir(folder_path))[1:8]
+folders = sorted(listdir(folder_path))[1:9]
 
+folders
 folder_dict = {}
 
 # Going to Specific Virus Folders inside the Test folders
@@ -92,7 +93,7 @@ def make_sequence(path_of_file):
     return final_seq
 
 # Replace nucleotide bases with numbers using JustA representation
-dict_of_bases = {"T":0, "C":0, "A":1, "G":0}
+dict_of_bases = {"T":0, 't':0, "C":0, 'c':0, "A":1, 'a':1, "G":0, 'g':0}
 def numerical_pp(dna_strand):
     numeric = []
     for base in dna_strand:

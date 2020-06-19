@@ -4,7 +4,6 @@ import json
 from Bio import SeqIO
 from os import getcwd, listdir, system
 from collections import Counter
-from Bio import SeqIO
 
 
 # Going to Test folders
@@ -69,3 +68,4 @@ for test in my_dict.keys():
 
 
 entropy_dict["Test1"]["Polyomaviridae"]
+entropy_dict['Test1']['Riboviria']

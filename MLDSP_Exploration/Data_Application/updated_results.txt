@@ -63,14 +63,15 @@ Testing Different Methods of Length normalization
  e. Test1, Polyomaviridae & Polyomaviridae
 (polyomaviridae_2630, polyomaviridae_2633):(0.08394024394131985, 1.0115177002987232e-09)
 
-Zero-padding is inaccurate because when tested against the same family, it gives us a number close to 0 showing that there is very little correlation
+Zero-padding is inaccurate because when tested against the same family, it gives us a number close to 0
+showing that there is very little correlation
 
 3. Anti-symmetric Padding:
   a.
   b.
   c.
   d. Test 1, Riboviria & polyomaviridae
-  (polyomaviridae_2630, riboviria_2774): 0.02260188471280157, 0.014505099941137946
+  (polyomaviridae_2630, riboviria_2774): 0.02260188471280157, 0.014505099941137946)
 
 
 closest to actual state of correlation
