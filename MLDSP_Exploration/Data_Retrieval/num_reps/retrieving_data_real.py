@@ -50,7 +50,7 @@ len(polyomaviridae)
 polyomaviridae
 # If we cut one sequence we could be taking away key genetic info
 
-# Converting sequence based on JustA representation
+# Converting sequence based on Real representation
 dict_of_bases = {"T":-1.5, "C":0.5, "A":1.5, "G":-0.5}
 
 def numerical(dna_strand):
