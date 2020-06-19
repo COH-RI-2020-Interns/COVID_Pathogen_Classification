@@ -66,17 +66,30 @@ len(riboviria_nums)
 riboviria_nums
 #run strand 1 and then rerun for strand 2
 
+
+
 if len(riboviria_nums)>len(polyomaviridae_nums):
     dna_seq = np.array(polyomaviridae_nums)
-    pad_width = (len(riboviria)- len(polyomaviridae))/2
+    numer = len(riboviria)- len(polyomaviridae)
+    if(numer%2 != 0):
+        numer = numer - 0.5
+        pad_width = numer/2
+        polyomaviridae_nums = pywt.pad(dna_seq, pad_width, "antisymmetric")
+        riboviria_nums = riboviria_nums[0:len(riboviria_nums)-1]
+    else:
+        pad_width = numer/2
+        polyomaviridae_nums = pywt.pad(dna_seq,pad_width, "antisymmetric")
 else:
-    dna_seq = np.array(riboviria)
-    pad_width = (len(polyomaviridae)- len(riboviria))/2
-
-
-dna_seq = np.array(riboviria)
-dna_seq
-print(pywt.pad(dna_seq,pad_width , "antisymmetric"))
+    dna_seq = np.array(riboviria_nums)
+    numer = len(polyomaviridae_nums)- len(riboviria_nums)
+    if(numer%2 != 0):
+        numer = numer - 0.5
+        pad_width = numer/2
+        riboviria_nums = pywt.pad(dna_seq, pad_width, "antisymmetric")
+        polyomaviridae_nums = numerical2[0:len(numerical2)-1]
+    else:
+        pad_width = numer/2
+        riboviria_nums = pywt.pad(dna_seq,pad_width, "antisymmetric")
 
 
 
