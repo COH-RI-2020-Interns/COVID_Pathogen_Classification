@@ -69,3 +69,4 @@ for test in my_dict.keys():
 
 
 entropy_dict["Test1"]["Polyomaviridae"]
+entropy_dict['Test1']['Riboviria']
