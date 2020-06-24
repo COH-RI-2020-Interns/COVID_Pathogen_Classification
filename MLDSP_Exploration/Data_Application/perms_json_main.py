@@ -155,9 +155,9 @@ for test in new_dict_3:
 # Printing PCC data by Test
 
 list_sequences = []
-for file1,file2 in new_dict_3['Test5']:
-    file_path = getcwd() + f"/data/Test5/{file1[0]}/{file1[1]}"
-    file_path2 = getcwd() + f"/data/Test5/{file2[0]}/{file2[1]}"
+for file1,file2 in new_dict_3['Test3b']:
+    file_path = getcwd() + f"/data/Test3b/{file1[0]}/{file1[1]}"
+    file_path2 = getcwd() + f"/data/Test3b/{file2[0]}/{file2[1]}"
     seq1  = make_sequence(file_path)
     seq2 = make_sequence(file_path2)
     pp1 = numerical_pp(seq1)
@@ -179,4 +179,6 @@ for file1,file2 in new_dict_3['Test5']:
 
 
 
-new_dict_3['Test5']
+new_dict_3['Test3b']
+new_dict_3[0]
+new_dict_3[1]
