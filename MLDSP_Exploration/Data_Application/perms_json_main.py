@@ -173,6 +173,7 @@ for file1,file2 in new_dict_3['Test3b']:
     pp2 = numerical_pp(seq2)
     pp1_norm = normalization_min(pp1,pp2)[0]
     pp2_norm = normalization_min(pp1,pp2)[1]
+    print(type(pp1_norm),type(pp2_norm))
     fft_1 = fft(pp1_norm)
     fft_2 = fft(pp2_norm)
     mag_1 = abs(fft_1)

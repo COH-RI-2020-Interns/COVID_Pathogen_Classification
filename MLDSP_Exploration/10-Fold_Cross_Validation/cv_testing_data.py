@@ -19,7 +19,7 @@ import pywt
 folder_path = getcwd() + "/data"
 
 
-folders = sorted(listdir(folder_path))[1:9]
+folders = sorted(listdir(folder_path))[1:8]
 folders
 folder_dict = {}
 
@@ -39,45 +39,8 @@ with open(f"{output_path}/fasta_files.json", "w") as my_file:
 f = open(f"{output_path}/{listdir(output_path)[0]}", )
 
 my_dict = json.load(f)
-
-
-# Getting all possible combinations of 2 for the fasta files
-file_tuple_list = []
-
-for folder in folders:
-    for sub_folder in listdir(f"{folder_path}/{folder}"):
-        for file in listdir(f"{folder_path}/{folder}/{sub_folder}"):
-            file_tuple_list.append((folder,sub_folder,file))
-
-
-file_combos = list(permutations(file_tuple_list, 2))
-
-new_dict = {}
-#each of the keys shows tuples, first element is the virus, second is file
-
-for i in my_dict.keys():
-    file_list = []
-    for j in my_dict[i].keys():
-        for file in my_dict[i][j]:
-            file_list.append((j,file))
-        new_dict[i] = file_list
-
-
-
-new_dict_2 = {}
-for key in new_dict.keys():
-    seq_perm = list(permutations(new_dict[key], 2))
-    new_dict_2[key] =  seq_perm
-
-new_dict_3 = {}
-for key in new_dict_2.keys():
-    file_list_2 = []
-    for i,j in new_dict_2[key]:
-        if(i[0] != j[0]):
-            file_list_2.append((i,j))
-    new_dict_3[key] = file_list_2
-
-#___________________________________________________________________________
+my_dict
+______________________________________________________________________
 #Using the dictionary to apply to our code
 
 def make_sequence(path_of_file):
@@ -126,28 +89,59 @@ def normalization(numerical1, numerical2):
 #___________________________________________________________________
 # Printing PCC data by Test
 
-list_sequences = []
-for file1,file2 in new_dict_3['Test3b']:
-    file_path = getcwd() + f"/data/Test3b/{file1[0]}/{file1[1]}"
-    file_path2 = getcwd() + f"/data/Test3b/{file2[0]}/{file2[1]}"
-    seq1  = make_sequence(file_path)
-    seq2 = make_sequence(file_path2)
-    pp1 = numerical_pp(seq1)
-    pp2 = numerical_pp(seq2)
-    pp1_norm = normalization(pp1,pp2)[0]
-    pp2_norm = normalization(pp1,pp2)[1]
-    if(len(pp1_norm) == 30480 or len(pp2_norm) == 30480):
-        print(len(pp1),len(pp1_norm), file1[1],len(pp2),len(pp2_norm),file2[1])
-    fft_1 = fft(pp1_norm)
-    fft_2 = fft(pp2_norm)
-    mag_1 = abs(fft_1)
-    mag_2 = abs(fft_2)
-    pcc = stats.pearsonr(mag_1, mag_2)
-    list_sequences.append((file1[1],file2[1],pcc))
+
+new_dict_4 = {}
+new_dict_5 = {}
+for folder in my_dict['Test3b']:
+    list_sequences = []
+    for file in my_dict["Test3b"][folder]:
+        file_path = getcwd() + f"/data/Test3b/{folder}/{file}"
+        seq  = make_sequence(file_path)
+        pp = numerical_pp(seq)
+        fft = np.fft.fft(pp)
+        mag = abs(fft)
+        list_sequences.append(mag)
+    new_dict_4[folder] = list_sequences
 
 
-new_dict_3['Test3b']
+new_dict_4["Deltacoronavirus"]
+new_dict_4["Alphacoronavirus"]
+new_dict_4["Betacoronavirus"]
+
+
+
+#___________________________________________________________________
+
+#train_test_split
+#Using delta and alphacoronavirus data from Test3b
+delta = new_dict_4["Deltacoronavirus"]
+alpha = new_dict_4["Alphacoronavirus"]
+test3_data = [delta]
+
+#making an array of all the names for the first column (Delta/Alpha)
+name1 = []
+for i in range(len(delta)):
+    name1.append("Deltacoronavirus")
+for i in range(len(alpha)):
+    name1.append("Alphacoronavirus")
+
+#dataframe has all the values of the magnitudes split up into base pairs
+#inserting family name
+df = pd.DataFrame(data= delta + alpha)
+df.insert(0, "Family", name1)
+
+#Setting X to be the family name, y to be the magnitudes 
+X = df["Family"]
+y = df.drop(columns = ["Family"])
+
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=0)
+
+clf = svm.SVC(kernel='linear', C=1).fit(X_train, y_train)
+clf.score(X_test, y_test)
+
+
 
 
 #essentially we are trying to find how correlated the 2 sequences are
-X, y = datasets.load_iris(return_X_y=True)
+#
