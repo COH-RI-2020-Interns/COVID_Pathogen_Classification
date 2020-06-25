@@ -7,11 +7,15 @@ import pylab
 import math
 
 
-loc = getcwd() + "/data/Test1/Adenoviridae/Adenoviridae_139.fasta"
+loc = getcwd() + "/data/Test1/Anelloviridae/Anelloviridae_199.fasta"
 f = open(loc)
 s1 = f.read()
 data = "".join(s1.split("\n")[1:])
+data
 
+#The N is used to remove a certain base pair A,T,C,G if needed
+#finding the number of each unique k-mer in the sequence, for example
+#it finds the number of time the kmer CAT appears in the sequence, and continues with each 3-mer
 def count_kmers(sequence, k):
     d = collections.defaultdict(int)
     for i in range(len(data)-(k-1)):
@@ -21,6 +25,8 @@ def count_kmers(sequence, k):
             del d[key]
     return d
 
+
+# getting the count of a specific kmer, dividing by (length of sequence - length of kmer +1)
 def probabilities(kmer_count, k):
         probabilities = collections.defaultdict(float)
         N = len(data)
@@ -60,8 +66,10 @@ def chaos_game_representation(probabilities, k):
 
         return chaos
 
-
+#each box represents a k-mer
 f3 = count_kmers(data, 3)
+len(data)
+f3
 f3_prob = probabilities(f3, 3)
 chaos_k3 = chaos_game_representation(f3_prob, 3)
 pylab.title('Chaos game representation for 3-mers')
