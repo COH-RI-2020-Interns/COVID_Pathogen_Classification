@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import json
+import matplotlib.pyplot as plt
 from Bio import SeqIO
 from os import getcwd, listdir, system
 from itertools import permutations
@@ -24,7 +25,7 @@ my_dict = json.load(f)
 #Using dictionary instead
 folder_path = getcwd() + "/data"
 
-folders = sorted(listdir(folder_path))[2:9]
+folders = sorted(listdir(folder_path))[1:8]
 folders
 folder_dict = {}
 
@@ -127,7 +128,13 @@ def normalization(numerical1, numerical2):
     return numerical1,numerical2
 
 
+def normalization_min(numerical1, numerical2):
+    if len(numerical1)>len(numerical2):
+        numerical1 = numerical1[0:len(numerical2)]
+    else:
+        numerical2 = numerical2[0:len(numerical1)]
 
+    return numerical1,numerical2
 
 pearsons_dict = {}
 for test in new_dict_3:
@@ -145,7 +152,9 @@ for test in new_dict_3:
         fft_1 = fft(pp1_norm)
         fft_2 = fft(pp2_norm)
         mag_1 = abs(fft_1)
+        print(mag1)
         mag_2 = abs(fft_2)
+        print(mag2)
         pcc = stats.pearsonr(mag_1, mag_2)
         list_sequences.append((file1[1],file2[1],pcc))
     pearsons_dict[test] = list_sequences
@@ -153,7 +162,7 @@ for test in new_dict_3:
 
 #___________________________________________________________________
 # Printing PCC data by Test
-
+pearsons_dict = {}
 list_sequences = []
 for file1,file2 in new_dict_3['Test3b']:
     file_path = getcwd() + f"/data/Test3b/{file1[0]}/{file1[1]}"
@@ -162,23 +171,25 @@ for file1,file2 in new_dict_3['Test3b']:
     seq2 = make_sequence(file_path2)
     pp1 = numerical_pp(seq1)
     pp2 = numerical_pp(seq2)
-    pp1_norm = normalization(pp1,pp2)[0]
-    pp2_norm = normalization(pp1,pp2)[1]
-    if(len(pp1_norm) == 30480 or len(pp2_norm) == 30480):
-        print(len(pp1),len(pp1_norm), file1[1],len(pp2),len(pp2_norm),file2[1])
+    pp1_norm = normalization_min(pp1,pp2)[0]
+    pp2_norm = normalization_min(pp1,pp2)[1]
     fft_1 = fft(pp1_norm)
     fft_2 = fft(pp2_norm)
     mag_1 = abs(fft_1)
     mag_2 = abs(fft_2)
     pcc = stats.pearsonr(mag_1, mag_2)
-    list_sequences.append((file1[1],file2[1],pcc))
+    list_sequences.append((file1[1],file2[1],pcc, mag_1 , mag_2))
+    pearsons_dict["Test3b"] = list_sequences
 
 
+pearsons_dict["Test3b"][200]
+one = pearsons_dict["Test3b"][200][3]
+two = pearsons_dict["Test3b"][200][4]
 
+len(one)
+len(two)
 
+pcc = stats.pearsonr(one, two)
+print(pcc)
 
-
-
-new_dict_3['Test3b']
-new_dict_3[0]
-new_dict_3[1]
+plt.scatter(one, two)
