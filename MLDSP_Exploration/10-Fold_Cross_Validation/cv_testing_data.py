@@ -11,7 +11,11 @@ from itertools import permutations
 from scipy.fft import fft, ifft
 from scipy import stats
 from Bio import SeqIO
+from sklearn.preprocessing import StandardScaler
 import pywt
+import math
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, classification_report, confusion_matrix
 
 
 
@@ -91,7 +95,7 @@ def normalization(numerical1, numerical2):
 
 
 new_dict_4 = {}
-new_dict_5 = {}
+
 for folder in my_dict['Test3b']:
     list_sequences = []
     for file in my_dict["Test3b"][folder]:
@@ -104,10 +108,6 @@ for folder in my_dict['Test3b']:
     new_dict_4[folder] = list_sequences
 
 
-new_dict_4["Deltacoronavirus"]
-new_dict_4["Alphacoronavirus"]
-new_dict_4["Betacoronavirus"]
-
 
 
 #___________________________________________________________________
@@ -116,32 +116,78 @@ new_dict_4["Betacoronavirus"]
 #Using delta and alphacoronavirus data from Test3b
 delta = new_dict_4["Deltacoronavirus"]
 alpha = new_dict_4["Alphacoronavirus"]
-test3_data = [delta]
+one = []
+two  = []
+for i in delta:
+    one.append(len(i))
+for i in alpha:
+    two.append(len(i))
+print(sorted(one))
+
+print(sorted(two))
 
 #making an array of all the names for the first column (Delta/Alpha)
 name1 = []
 for i in range(len(delta)):
-    name1.append("Deltacoronavirus")
-for i in range(len(alpha)):
-    name1.append("Alphacoronavirus")
+    name1.append("1")
+for i in range(len(alpha)-1):
+    name1.append("2")
 
 #dataframe has all the values of the magnitudes split up into base pairs
 #inserting family name
 df = pd.DataFrame(data= delta + alpha)
+df = df.drop(68)
+len(df)
+for i in df.columns:
+    if(i>25401):
+        df = df.drop(columns = [i])
+df
 df.insert(0, "Family", name1)
 
-#Setting X to be the family name, y to be the magnitudes 
-X = df["Family"]
-y = df.drop(columns = ["Family"])
-
-
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=0)
-
-clf = svm.SVC(kernel='linear', C=1).fit(X_train, y_train)
-clf.score(X_test, y_test)
 
 
 
 
-#essentially we are trying to find how correlated the 2 sequences are
-#
+#Setting X to magnitudes, y to be family name
+y = df["Family"]
+
+X = df.drop(columns = ["Family"])
+
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle = True, random_state=0)
+
+
+X_train
+y_train
+X_test
+y_test
+
+
+
+# sc_X =  StandardScaler()
+# X_train = sc_X.fit_transform(X_train)
+# X_test = sc
+
+#using a k value of 3
+math.sqrt(len(y_test))
+sc_X = StandardScaler()
+X_train = sc_X.fit_transform(X_train)
+X_test  = sc_X.transform(X_test)
+classifier = KNeighborsClassifier(n_neighbors = 3, p = 2, metric = "euclidean")
+classifier.fit(X_train, y_train)
+y_pred = classifier.predict(X_test)
+
+y_pred
+
+
+cm = confusion_matrix(y_test, y_pred)
+cm
+
+
+
+
+
+
+print(f1_score(y_test, y_pred))
+print(precision_score(y_test, y_pred))
+print(recall_score(y_test, y_pred))
