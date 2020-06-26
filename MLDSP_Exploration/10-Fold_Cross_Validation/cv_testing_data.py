@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import json
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn import datasets
 from sklearn import svm
@@ -16,6 +17,8 @@ import pywt
 import math
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, classification_report, confusion_matrix
+from sklearn.svm import SVC
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
 
 
@@ -123,7 +126,6 @@ for i in delta:
 for i in alpha:
     two.append(len(i))
 print(sorted(one))
-
 print(sorted(two))
 
 #making an array of all the names for the first column (Delta/Alpha)
@@ -133,61 +135,124 @@ for i in range(len(delta)):
 for i in range(len(alpha)-1):
     name1.append("2")
 
+
 #dataframe has all the values of the magnitudes split up into base pairs
 #inserting family name
 df = pd.DataFrame(data= delta + alpha)
 df = df.drop(68)
-len(df)
 for i in df.columns:
     if(i>25401):
         df = df.drop(columns = [i])
-df
 df.insert(0, "Family", name1)
-
-
-
-
+df
 
 #Setting X to magnitudes, y to be family name
 y = df["Family"]
-
 X = df.drop(columns = ["Family"])
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle = True, random_state=0) # making Test size 0.2 instead of 0.1
 
-
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle = True, random_state=0)
-
-
-X_train
-y_train
-X_test
-y_test
-
-
-
-# sc_X =  StandardScaler()
-# X_train = sc_X.fit_transform(X_train)
-# X_test = sc
-
-#using a k value of 3
-math.sqrt(len(y_test))
+#Standardizing the scale of the X train and X test to fall between -1 and 1
 sc_X = StandardScaler()
 X_train = sc_X.fit_transform(X_train)
 X_test  = sc_X.transform(X_test)
-classifier = KNeighborsClassifier(n_neighbors = 3, p = 2, metric = "euclidean")
-classifier.fit(X_train, y_train)
-y_pred = classifier.predict(X_test)
-
-y_pred
 
 
-cm = confusion_matrix(y_test, y_pred)
-cm
+#K_neighbors classification:
+k_value = int(math.sqrt(len(y_test)) )#using a k value of 3, odd number and closest to
+k_neighbors_classifier = KNeighborsClassifier(n_neighbors = k_value, p = 2, metric = "euclidean")
+k_neighbors_classifier.fit(X_train, y_train)   #fitting the classifier on the training data, testing the ouput with y-pred
+y_pred_k_neighbors = k_neighbors_classifier.predict(X_test)
+print(confusion_matrix(y_test,y_pred_k_neighbors))
+print(classification_report(y_test,y_pred_k_neighbors))
+
+
+#Linear SVM classifier:
+linear_svm_classifier = SVC(kernel='linear')
+linear_svm_classifier.fit(X_train, y_train)
+y_pred_linear_svm = linear_svm_classifier.predict(X_test)
+print(confusion_matrix(y_test,y_pred_linear_svm))
+print(classification_report(y_test,y_pred_linear_svm))
+
+
+
+#Linear Discriminant classifier:
+linear_discriminant_classifier = LinearDiscriminantAnalysis()
+linear_discriminant_classifier.fit(X_train, y_train)
+y_pred_linear_discriminant = linear_discriminant_classifier.predict(X_test)
+print(confusion_matrix(y_test,y_pred_linear_discriminant))
+print(classification_report(y_test,y_pred_linear_discriminant))
+
+
+#Polynomial SVM Classifier (Types of SVM = linear, poly, rbf, etc)
+polynomial_svm_classifier = SVC(kernel = "poly")
+polynomial_svm_classifier.fit(X_train, y_train)
+y_pred_polynomial_svm = polynomial_svm_classifier.predict(X_test)
+print(confusion_matrix(y_test,y_pred_polynomial_svm))
+print(classification_report(y_test,y_pred_polynomial_svm))
 
 
 
 
 
+# Basic shaping of the linear and quadratic svm graphs
+X = np.c_[(.4, -.7),
+          (-1.5, -1),
+          (-1.4, -.9),
+          (-1.3, -1.2),
+          (-1.1, -.2),
+          (-1.2, -.4),
+          (-.5, 1.2),
+          (-1.5, 2.1),
+          (1, 1),
+          # --
+          (1.3, .8),
+          (1.2, .5),
+          (.2, -2),
+          (.5, -2.4),
+          (.2, -2.3),
+          (0, -2.7),
+          (1.3, 2.1)].T
+Y = [0] * 8 + [1] * 8
 
-print(f1_score(y_test, y_pred))
-print(precision_score(y_test, y_pred))
-print(recall_score(y_test, y_pred))
+
+
+# figure number
+fignum = 1
+
+# fit the model
+for kernel in ('linear', 'poly'):
+    clf = svm.SVC(kernel=kernel, gamma=2)
+    clf.fit(X, Y)
+
+    # plot the line, the points, and the nearest vectors to the plane
+    plt.figure(fignum, figsize=(4, 3))
+    plt.clf()
+
+    plt.scatter(clf.support_vectors_[:, 0], clf.support_vectors_[:, 1], s=80,
+                facecolors='none', zorder=10, edgecolors='k')
+    plt.scatter(X[:, 0], X[:, 1], c=Y, zorder=10, cmap=plt.cm.Paired,
+                edgecolors='k')
+
+    plt.axis('tight')
+    x_min = -3
+    x_max = 3
+    y_min = -3
+    y_max = 3
+
+    XX, YY = np.mgrid[x_min:x_max:200j, y_min:y_max:200j]
+    Z = clf.decision_function(np.c_[XX.ravel(), YY.ravel()])
+
+    # Put the result into a color plot
+    Z = Z.reshape(XX.shape)
+    plt.figure(fignum, figsize=(4, 3))
+    plt.pcolormesh(XX, YY, Z > 0, cmap=plt.cm.Paired)
+    plt.contour(XX, YY, Z, colors=['k', 'k', 'k'], linestyles=['--', '-', '--'],
+                levels=[-.5, 0, .5])
+
+    plt.xlim(x_min, x_max)
+    plt.ylim(y_min, y_max)
+
+    plt.xticks(())
+    plt.yticks(())
+    fignum = fignum + 1
+plt.show()
