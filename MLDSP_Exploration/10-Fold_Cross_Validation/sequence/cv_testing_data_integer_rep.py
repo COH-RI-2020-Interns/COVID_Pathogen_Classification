@@ -51,14 +51,14 @@ def make_sequence(path_of_file):
     final_seq = "".join([char for char in start_seq[0].seq])
     return final_seq
 
-dict_of_bases = {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1}
+# Replace nucleotide bases with numbers using integer representation
+dict_of_bases = {"T":0,"t":0, "C":1, "c":1,"A":2,"a":2,"G":3, "g":3}
 
-def numerical_pp(dna_strand):
+def integer_rep(dna_strand):
     numeric = []
     for base in dna_strand:
         numeric.append(dict_of_bases[base])
     return np.array(numeric)
-
 
 def normalization(numerical1, numerical2):
     if len(numerical1)>len(numerical2):
@@ -99,7 +99,7 @@ for folder in my_dict['Test3b']:
     for file in my_dict["Test3b"][folder]:
         file_path = getcwd() + f"/data/Test3b/{folder}/{file}"
         seq  = make_sequence(file_path)
-        pp = numerical_pp(seq)
+        pp = integer_rep(seq)
         list_sequences.append(pp)
     new_dict_4[folder] = list_sequences
 
@@ -150,6 +150,10 @@ X_train = sc_X.fit_transform(X_train)
 X_test  = sc_X.transform(X_test)
 
 
+X_train
+X_test
+y_train
+y_test
 
 #K_neighbors classification:
 k_value = int(math.sqrt(len(y_test)) )#using a k value of 3, odd number and closest to
