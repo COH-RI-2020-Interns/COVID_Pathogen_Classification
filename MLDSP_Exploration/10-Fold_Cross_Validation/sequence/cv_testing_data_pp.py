@@ -1,20 +1,15 @@
 import numpy as np
 import pandas as pd
-import json
+import json, pywt, math
 import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
-from sklearn import datasets
-from sklearn import svm
-from sklearn.model_selection import cross_val_score
-from sklearn import metrics
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn import datasets, svm, metrics
 from os import getcwd, listdir, system
 from itertools import permutations
 from scipy.fft import fft, ifft
 from scipy import stats
 from Bio import SeqIO
 from sklearn.preprocessing import StandardScaler
-import pywt
-import math
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, classification_report, confusion_matrix
 from sklearn.svm import SVC
@@ -105,9 +100,7 @@ for folder in my_dict['Test3b']:
         file_path = getcwd() + f"/data/Test3b/{folder}/{file}"
         seq  = make_sequence(file_path)
         pp = numerical_pp(seq)
-        fft = np.fft.fft(pp)
-        mag = abs(fft)
-        list_sequences.append(mag)
+        list_sequences.append(pp)
     new_dict_4[folder] = list_sequences
 
 
@@ -157,11 +150,17 @@ X_train = sc_X.fit_transform(X_train)
 X_test  = sc_X.transform(X_test)
 
 
+X_train
+X_test
+y_train
+y_test
+
 #K_neighbors classification:
 k_value = int(math.sqrt(len(y_test)) )#using a k value of 3, odd number and closest to
 k_neighbors_classifier = KNeighborsClassifier(n_neighbors = k_value, p = 2, metric = "euclidean")
 k_neighbors_classifier.fit(X_train, y_train)   #fitting the classifier on the training data, testing the ouput with y-pred
 y_pred_k_neighbors = k_neighbors_classifier.predict(X_test)
+y_pred_k_neighbors
 print(confusion_matrix(y_test,y_pred_k_neighbors))
 print(classification_report(y_test,y_pred_k_neighbors))
 
@@ -187,6 +186,7 @@ print(classification_report(y_test,y_pred_linear_discriminant))
 polynomial_svm_classifier = SVC(kernel = "poly")
 polynomial_svm_classifier.fit(X_train, y_train)
 y_pred_polynomial_svm = polynomial_svm_classifier.predict(X_test)
+y_pred_polynomial_svm
 print(confusion_matrix(y_test,y_pred_polynomial_svm))
 print(classification_report(y_test,y_pred_polynomial_svm))
 

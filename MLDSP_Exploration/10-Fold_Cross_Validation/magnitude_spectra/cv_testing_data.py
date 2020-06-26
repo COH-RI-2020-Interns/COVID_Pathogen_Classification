@@ -1,20 +1,15 @@
 import numpy as np
 import pandas as pd
-import json
+import json, pywt, math
 import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
-from sklearn import datasets
-from sklearn import svm
-from sklearn.model_selection import cross_val_score
-from sklearn import metrics
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn import datasets, svm, metrics
 from os import getcwd, listdir, system
 from itertools import permutations
 from scipy.fft import fft, ifft
 from scipy import stats
 from Bio import SeqIO
 from sklearn.preprocessing import StandardScaler
-import pywt
-import math
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, classification_report, confusion_matrix
 from sklearn.svm import SVC
@@ -189,8 +184,6 @@ polynomial_svm_classifier.fit(X_train, y_train)
 y_pred_polynomial_svm = polynomial_svm_classifier.predict(X_test)
 print(confusion_matrix(y_test,y_pred_polynomial_svm))
 print(classification_report(y_test,y_pred_polynomial_svm))
-
-
 
 
 
