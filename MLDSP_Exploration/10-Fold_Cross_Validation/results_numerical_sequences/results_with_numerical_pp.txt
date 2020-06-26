@@ -1,4 +1,4 @@
-Testing Results
+Testing Results Purine Pyrimidine representation on sequence
 
 Test 3b (Deltacoronavirus and Alphacoronavirus)
 
