@@ -249,3 +249,31 @@ for kernel in ('linear', 'poly'):
     plt.yticks(())
     fignum = fignum + 1
 plt.show()
+
+
+
+#Making K-mers of sequences and trying jaccard_similarity
+
+seq1 = 'ATGGACCAGATATAGGGAGAGCCAGGTAGGACA'
+seq2 = 'ATGGACCAGATATTGGGAGAGCCGGGTAGGACA'
+
+
+def k_mers(sequence, length):
+    k_mers_seq = []
+    for i in range(0,len(sequence)-length+1):
+        k_mers_seq.append(sequence[i:i+3])
+    return k_mers_seq
+
+def jaccard_similarity(a, b):
+    a = set(a)
+    b = set(b)
+
+    intersection = len(a.intersection(b))
+    union = len(a.union(b))
+
+    return intersection / union
+
+K = 10
+kmers1 = k_mers(seq1, K)
+kmers2 = k_mers(seq2, K)
+print(jaccard_similarity(kmers1, kmers2))
