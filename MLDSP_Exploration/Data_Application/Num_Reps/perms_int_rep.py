@@ -93,7 +93,7 @@ def make_sequence(path_of_file):
 
 # Replace nucleotide bases with numbers using integer representation
 dict_of_bases = {"T":0, "C":1, "A":2, "G":3}
-def numerical_pp(dna_strand):
+def integer_rep(dna_strand):
     numeric = []
     for base in dna_strand:
         numeric.append(dict_of_bases[base])
