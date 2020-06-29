@@ -14,7 +14,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, classification_report, confusion_matrix
 from sklearn.svm import SVC
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-
+from sklearn.ensemble import RandomForestClassifier
 
 
 #Using dictionary instead
@@ -186,8 +186,21 @@ y_pred_polynomial_svm
 print(confusion_matrix(y_test,y_pred_polynomial_svm))
 print(classification_report(y_test,y_pred_polynomial_svm))
 
+#Random Forest classifier
+random_forest_classifier = RandomForestClassifier(n_estimators = 100)
+random_forest_classifier.fit(X_train, y_train)
+y_pred_random_forest = random_forest_classifier.predict(X_test)
+print(confusion_matrix(y_test,y_pred_random_forest))
+print(classification_report(y_test,y_pred_random_forest))
 
-
+feature_imp= pd.DataFrame({'Value':model.feature_importance(),'Feature':X.columns})
+plt.figure(figsize=(40, 20))
+sns.set(font_scale = 5)
+sns.barplot(x="Value", y="Feature", data=feature_imp.sort_values(by="Value", ascending=False)[0:20])
+plt.title('LightGBM Features (avg over folds)')
+plt.tight_layout()
+plt.savefig('lgbm_importances-01.png')
+plt.show()
 
 
 # Basic shaping of the linear and quadratic svm graphs

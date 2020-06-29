@@ -14,8 +14,8 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, classification_report, confusion_matrix
 from sklearn.svm import SVC
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-from sklearn.naive_bayes import MultinomialNB
-from sklearn.ensemble import RandomForestClassifier
+
+
 
 #Using dictionary instead
 folder_path = getcwd() + "/data"
@@ -51,14 +51,14 @@ def make_sequence(path_of_file):
     final_seq = "".join([char for char in start_seq[0].seq])
     return final_seq
 
-# Replace nucleotide bases with numbers using integer representation
-dict_of_bases = {"T":0,"t":0, "C":1, "c":1,"A":2,"a":2,"G":3, "g":3}
+dict_of_bases = {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1}
 
-def integer_rep(dna_strand):
+def numerical_pp(dna_strand):
     numeric = []
     for base in dna_strand:
         numeric.append(dict_of_bases[base])
     return np.array(numeric)
+
 
 def normalization(numerical1, numerical2):
     if len(numerical1)>len(numerical2):
@@ -99,8 +99,10 @@ for folder in my_dict['Test3b']:
     for file in my_dict["Test3b"][folder]:
         file_path = getcwd() + f"/data/Test3b/{folder}/{file}"
         seq  = make_sequence(file_path)
-        pp = integer_rep(seq)
-        list_sequences.append(pp)
+        pp = numerical_pp(seq)
+        fft = np.fft.fft(pp)
+        mag = abs(fft)
+        list_sequences.append(mag)
     new_dict_4[folder] = list_sequences
 
 
@@ -125,8 +127,9 @@ print(sorted(two))
 name1 = []
 for i in range(len(delta)):
     name1.append("1")
-for i in range(len(alpha)-1): #removed one column
+for i in range(len(alpha)-1):
     name1.append("2")
+
 
 #dataframe has all the values of the magnitudes split up into base pairs
 #inserting family name
@@ -141,26 +144,22 @@ df
 #Setting X to magnitudes, y to be family name
 y = df["Family"]
 X = df.drop(columns = ["Family"])
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle = True, random_state=0) # making Test size 0.2 instead of 0.
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle = True, random_state=0) # making Test size 0.2 instead of 0.1
+
 #Standardizing the scale of the X train and X test to fall between -1 and 1
 sc_X = StandardScaler()
 X_train = sc_X.fit_transform(X_train)
 X_test  = sc_X.transform(X_test)
 
 
-X_train
-X_test
-y_train
-y_test
-
 #K_neighbors classification:
 k_value = int(math.sqrt(len(y_test)) )#using a k value of 3, odd number and closest to
 k_neighbors_classifier = KNeighborsClassifier(n_neighbors = k_value, p = 2, metric = "euclidean")
 k_neighbors_classifier.fit(X_train, y_train)   #fitting the classifier on the training data, testing the ouput with y-pred
 y_pred_k_neighbors = k_neighbors_classifier.predict(X_test)
-y_pred_k_neighbors
 print(confusion_matrix(y_test,y_pred_k_neighbors))
 print(classification_report(y_test,y_pred_k_neighbors))
+
 
 #Linear SVM classifier:
 linear_svm_classifier = SVC(kernel='linear')
@@ -168,6 +167,7 @@ linear_svm_classifier.fit(X_train, y_train)
 y_pred_linear_svm = linear_svm_classifier.predict(X_test)
 print(confusion_matrix(y_test,y_pred_linear_svm))
 print(classification_report(y_test,y_pred_linear_svm))
+
 
 
 #Linear Discriminant classifier:
@@ -182,16 +182,8 @@ print(classification_report(y_test,y_pred_linear_discriminant))
 polynomial_svm_classifier = SVC(kernel = "poly")
 polynomial_svm_classifier.fit(X_train, y_train)
 y_pred_polynomial_svm = polynomial_svm_classifier.predict(X_test)
-y_pred_polynomial_svm
 print(confusion_matrix(y_test,y_pred_polynomial_svm))
 print(classification_report(y_test,y_pred_polynomial_svm))
-
-#Random Forest classifier
-random_forest_classifier = RandomForestClassifier(n_estimators = 100)
-random_forest_classifier.fit(X_train, y_train)
-y_pred_random_forest = random_forest_classifier.predict(X_test)
-print(confusion_matrix(y_test,y_pred_random_forest))
-print(classification_report(y_test,y_pred_random_forest))
 
 
 
@@ -257,3 +249,31 @@ for kernel in ('linear', 'poly'):
     plt.yticks(())
     fignum = fignum + 1
 plt.show()
+
+
+
+#Making K-mers of sequences and trying jaccard_similarity
+
+seq1 = 'ATGGACCAGATATAGGGAGAGCCAGGTAGGACA'
+seq2 = 'ATGGACCAGATATTGGGAGAGCCGGGTAGGACA'
+
+
+def k_mers(sequence, length):
+    k_mers_seq = []
+    for i in range(0,len(sequence)-length+1):
+        k_mers_seq.append(sequence[i:i+3])
+    return k_mers_seq
+
+def jaccard_similarity(a, b):
+    a = set(a)
+    b = set(b)
+
+    intersection = len(a.intersection(b))
+    union = len(a.union(b))
+
+    return intersection / union
+
+K = 10
+kmers1 = k_mers(seq1, K)
+kmers2 = k_mers(seq2, K)
+print(jaccard_similarity(kmers1, kmers2))
