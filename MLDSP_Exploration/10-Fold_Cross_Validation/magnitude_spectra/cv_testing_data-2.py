@@ -112,39 +112,44 @@ for folder in my_dict['Test3b']:
 
 #train_test_split
 #Using delta and alphacoronavirus data from Test3b
-delta = new_dict_4["Deltacoronavirus"]
-alpha = new_dict_4["Alphacoronavirus"]
-one = []
-two  = []
-for i in delta:
-    one.append(len(i))
-for i in alpha:
-    two.append(len(i))
-print(sorted(one))
-print(sorted(two))
+anelloviridae = new_dict_4["Anelloviridae"]
+genomoviridae = new_dict_4["Genomoviridae"]
+microviridae = new_dict_4["Microviridae"]
+ortervirales = new_dict_4["Ortervirales"]
+parvoviridae = new_dict_4["Parvoviridae"]
+
+list_one= [anelloviridae, genomoviridae, microviridae, ortervirales, parvoviridae]
+anelloviridae
+two = []
+for i in list_one:
+    one = []
+    for j in i:
+        one.append(len(j))
+    two.append(min(one))
+two
+
 
 #making an array of all the names for the first column (Delta/Alpha)
 name1 = []
-for i in range(len(delta)):
+for i in range(len(anelloviridae)):
     name1.append("1")
-for i in range(len(alpha)-1):
+for i in range(len(genomoviridae)):
     name1.append("2")
+for i in range(len(microviridae)):
+    name1.append("3")
+for i in range(len(ortervirales)):
+    name1.append("4")
+for i in range(len(parvoviridae)):
+    name1.append("5")
+
+len(name1)
 
 
-#dataframe has all the values of the magnitudes split up into base pairs
-#inserting family name
-df = pd.DataFrame(data= delta + alpha)
-df = df.drop(68)
+df = pd.DataFrame(data= anelloviridae + genomoviridae + microviridae + ortervirales+ parvoviridae)
 for i in df.columns:
-    if(i>25401):
+    if(i>2001):
         df = df.drop(columns = [i])
 df.insert(0, "Family", name1)
-df
-
-#Setting X to magnitudes, y to be family name
-y = df["Family"]
-X = df.drop(columns = ["Family"])
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle = True, random_state=0) # making Test size 0.2 instead of 0.1
 
 #Standardizing the scale of the X train and X test to fall between -1 and 1
 sc_X = StandardScaler()
