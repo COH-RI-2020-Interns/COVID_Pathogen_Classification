@@ -6,7 +6,10 @@ from os import getcwd
 from collections import OrderedDict
 from matplotlib import pyplot as plt
 from matplotlib import cm
-from scipy.fftpack import dct
+from scipy.fftpack import dct, idct
+import pandas as pd
+from PIL import Image
+from OpenCv import cv2
 
 #_______________________________________________________________________________
 # Finding FCGR
@@ -80,22 +83,17 @@ chaos_k7
 
 # run together for full plot
 pylab.title('Chaos game representation for 7-mers')
-pylab.imshow(chaos_k4, interpolation='nearest', cmap=cm.gray_r)
-pylab.show()
+k_mer_plot = pylab.imshow(chaos_k7, interpolation='nearest', cmap=cm.gray_r)
+# pylab.show()
+k_mer_plot
 
 #_______________________________________________________________________________
 # Calculating DCT
 type(chaos_k7)
 x = np.array(chaos_k7)
+x
 dct = dct(dct(x, type=2, norm='ortho'), type=3, norm='ortho')
-
-
-x = np.array([1.0, 2.0, 1.0, -1.0, 1.5])
-dct(dct(x, type=2, norm='ortho'), type=3, norm='ortho')
-
-
-
-
+dct
 
 #_______________________________________________________________________________
 from scipy.fftpack import dct, idct
@@ -120,3 +118,16 @@ plt.plot(t, yr, 'g+')
 plt.legend(['x', '$x_{20}$', '$x_{15}$'])
 plt.grid()
 plt.show()
+
+#_______________________________________________________________________________
+# Finding Single Value Decomposition
+
+
+# read image in grayscale
+# img = cv2.imread('beach-2179624_960_720.jpg', 0)
+
+# obtain svd
+U, S, V = np.linalg.svd()
+
+# inspect shapes of the matrices
+print(U.shape, S.shape, V.shape)
