@@ -14,8 +14,8 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, classification_report, confusion_matrix
 from sklearn.svm import SVC
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-
-
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.naive_bayes import MultinomialNB
 
 #Using dictionary instead
 folder_path = getcwd() + "/data"
@@ -128,6 +128,8 @@ for i in list_one:
     two.append(min(one))
 two
 
+for i in list_one:
+    print(len(i))
 
 #making an array of all the names for the first column (Delta/Alpha)
 name1 = []
@@ -168,9 +170,9 @@ k_value = int(math.sqrt(len(y_test)) )#using a k value of 3, odd number and clos
 k_neighbors_classifier = KNeighborsClassifier(n_neighbors = k_value, p = 2, metric = "euclidean")
 k_neighbors_classifier.fit(X_train, y_train)   #fitting the classifier on the training data, testing the ouput with y-pred
 y_pred_k_neighbors = k_neighbors_classifier.predict(X_test)
-print(confusion_matrix(y_test,y_pred_k_neighbors))
-print(classification_report(y_test,y_pred_k_neighbors))
-
+print("CM:",confusion_matrix(y_test,y_pred_k_neighbors))
+print("CR:", classification_report(y_test,y_pred_k_neighbors))
+print("Accuracy: " ,accuracy_score(y_test,y_pred_k_neighbors))
 
 #Linear SVM classifier:
 linear_svm_classifier = SVC(kernel='linear')
@@ -178,7 +180,7 @@ linear_svm_classifier.fit(X_train, y_train)
 y_pred_linear_svm = linear_svm_classifier.predict(X_test)
 print(confusion_matrix(y_test,y_pred_linear_svm))
 print(classification_report(y_test,y_pred_linear_svm))
-
+print("Accuracy: " ,accuracy_score(y_test,y_pred_linear_svm))
 
 
 #Linear Discriminant classifier:
@@ -187,7 +189,7 @@ linear_discriminant_classifier.fit(X_train, y_train)
 y_pred_linear_discriminant = linear_discriminant_classifier.predict(X_test)
 print(confusion_matrix(y_test,y_pred_linear_discriminant))
 print(classification_report(y_test,y_pred_linear_discriminant))
-
+print("Accuracy: " ,accuracy_score(y_test,y_pred_linear_discriminant))
 
 #Polynomial SVM Classifier (Types of SVM = linear, poly, rbf, etc)
 polynomial_svm_classifier = SVC(kernel = "poly")
@@ -195,6 +197,28 @@ polynomial_svm_classifier.fit(X_train, y_train)
 y_pred_polynomial_svm = polynomial_svm_classifier.predict(X_test)
 print(confusion_matrix(y_test,y_pred_polynomial_svm))
 print(classification_report(y_test,y_pred_polynomial_svm))
+print("Accuracy: " ,accuracy_score(y_test,y_pred_polynomial_svm))
+
+
+#Random Forest classifier
+random_forest_classifier = RandomForestClassifier(n_estimators = 100)
+random_forest_classifier.fit(X_train, y_train)
+y_pred_random_forest = random_forest_classifier.predict(X_test)
+print("CM:" , confusion_matrix(y_test,y_pred_random_forest))
+print("CR:" , classification_report(y_test,y_pred_random_forest))
+print("Accuracy score:" ,  accuracy_score(y_test,y_pred_random_forest))
+
+
+
+df
+#Naive naive_bayes
+naive_bayes_classifier = MultinomialNB()
+naive_bayes_classifier.fit(X_train, y_train)
+y_pred_naive_bayes = naive_bayes_classifier.predict(X_test)
+print("CM:" , confusion_matrix(y_test,y_pred_naive_bayes))
+print("CR:" , classification_report(y_test,y_pred_naive_bayes))
+print("Accuracy score:" ,  accuracy_score(y_test,y_pred_naive_bayes))
+
 
 
 
@@ -272,7 +296,7 @@ seq2 = 'ATGGACCAGATATTGGGAGAGCCGGGTAGGACA'
 def k_mers(sequence, length):
     k_mers_seq = []
     for i in range(0,len(sequence)-length+1):
-        k_mers_seq.append(sequence[i:i+3])
+        k_mers_seq.append(sequence[i:i+length])
     return k_mers_seq
 
 def jaccard_similarity(a, b):
@@ -284,7 +308,9 @@ def jaccard_similarity(a, b):
 
     return intersection / union
 
-K = 10
+K = 3
 kmers1 = k_mers(seq1, K)
 kmers2 = k_mers(seq2, K)
+
+print(kmers1)
 print(jaccard_similarity(kmers1, kmers2))
