@@ -25,7 +25,8 @@ def count_kmers(sequence, k):
     return d
 
 
-# getting the count of a specific kmer, dividing by (length of sequence - length of kmer +1)
+# getting the count of a specific kmer,
+# dividing by (length of sequence - length of kmer + 1)
 def probabilities(kmer_count, k):
         probabilities = collections.defaultdict(float)
         N = len(data)
