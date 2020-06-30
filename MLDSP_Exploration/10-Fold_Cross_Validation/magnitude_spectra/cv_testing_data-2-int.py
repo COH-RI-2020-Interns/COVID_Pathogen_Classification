@@ -164,7 +164,7 @@ X_test  = sc_X.transform(X_test)
 
 
 #K_neighbors classification:
-k_value = int(math.sqrt(len(y_test)) )#using a k value of 3, odd number and closest to
+k_value = int(math.sqrt(len(y_test)))#using a k value of 3, odd number and closest to
 k_neighbors_classifier = KNeighborsClassifier(n_neighbors = k_value, p = 2, metric = "euclidean")
 k_neighbors_classifier.fit(X_train, y_train)   #fitting the classifier on the training data, testing the ouput with y-pred
 y_pred_k_neighbors = k_neighbors_classifier.predict(X_test)

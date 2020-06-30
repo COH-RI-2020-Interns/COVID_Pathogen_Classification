@@ -117,7 +117,7 @@ ortervirales = new_dict_4["Ortervirales"]
 parvoviridae = new_dict_4["Parvoviridae"]
 
 list_one= [anelloviridae, genomoviridae, microviridae, ortervirales, parvoviridae]
-anelloviridae
+
 two = []
 for i in list_one:
     one = []
@@ -141,6 +141,8 @@ for i in range(len(parvoviridae)):
     name1.append("5")
 
 len(name1)
+
+
 
 #dataframe has all the values of the magnitudes split up into base pairs
 #inserting family name
