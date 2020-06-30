@@ -1,10 +1,15 @@
 import collections
+import numpy as np
+import pylab
+import math
 from os import getcwd
 from collections import OrderedDict
 from matplotlib import pyplot as plt
 from matplotlib import cm
-import pylab
-import math
+from scipy.fftpack import dct
+
+#_______________________________________________________________________________
+# Finding FCGR
 
 # Extracting Sequence from File
 loc = getcwd() + "/data/Test1/Anelloviridae/Anelloviridae_199.fasta"
@@ -70,7 +75,48 @@ def chaos_game_representation(probabilities, k):
 # get k-mers = 7
 f7 = count_kmers(data, 7)
 f7_prob = probabilities(f7, 7)
-chaos_k4 = chaos_game_representation(f7_prob, 7)
+chaos_k7 = chaos_game_representation(f7_prob, 7)
+chaos_k7
+
+# run together for full plot
 pylab.title('Chaos game representation for 7-mers')
 pylab.imshow(chaos_k4, interpolation='nearest', cmap=cm.gray_r)
 pylab.show()
+
+#_______________________________________________________________________________
+# Calculating DCT
+type(chaos_k7)
+x = np.array(chaos_k7)
+dct = dct(dct(x, type=2, norm='ortho'), type=3, norm='ortho')
+
+
+x = np.array([1.0, 2.0, 1.0, -1.0, 1.5])
+dct(dct(x, type=2, norm='ortho'), type=3, norm='ortho')
+
+
+
+
+
+#_______________________________________________________________________________
+from scipy.fftpack import dct, idct
+import matplotlib.pyplot as plt
+N = 100
+t = np.linspace(0,20,N)
+x = np.exp(-t/3)*np.cos(2*t)
+y = dct(x, norm='ortho')
+window = np.zeros(N)
+window[:20] = 1
+yr = idct(y*window, norm='ortho')
+sum(abs(x-yr)**2) / sum(abs(x)**2)
+#0.0010901402257
+plt.plot(t, x, '-bx')
+plt.plot(t, yr, 'ro')
+window = np.zeros(N)
+window[:15] = 1
+yr = idct(y*window, norm='ortho')
+sum(abs(x-yr)**2) / sum(abs(x)**2)
+#0.0718818065008
+plt.plot(t, yr, 'g+')
+plt.legend(['x', '$x_{20}$', '$x_{15}$'])
+plt.grid()
+plt.show()
