@@ -19,6 +19,7 @@ loc = getcwd() + "/data/Test1/Anelloviridae/Anelloviridae_199.fasta"
 f = open(loc)
 s1 = f.read()
 data = "".join(s1.split("\n")[1:])
+data
 
 #The N is used to remove a certain base pair A,T,C,G if needed
 #finding the number of each unique k-mer in the sequence, for example
@@ -80,6 +81,7 @@ f7 = count_kmers(data, 7)
 f7_prob = probabilities(f7, 7)
 chaos_k7 = chaos_game_representation(f7_prob, 7)
 chaos_k7
+
 
 # run together for full plot
 plt.title('Chaos game representation for 7-mers')
