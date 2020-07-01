@@ -9,7 +9,7 @@ from matplotlib import cm
 from scipy.fftpack import dct, idct
 import pandas as pd
 from PIL import Image
-from OpenCv import cv2
+import cv2
 
 #_______________________________________________________________________________
 # Finding FCGR
