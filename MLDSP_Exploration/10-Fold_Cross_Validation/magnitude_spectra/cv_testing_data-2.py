@@ -14,7 +14,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, classification_report, confusion_matrix
 from sklearn.svm import SVC
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-
+from sklearn.ensemble import RandomForestClassifier
 
 
 #Using dictionary instead
@@ -51,7 +51,7 @@ def make_sequence(path_of_file):
     final_seq = "".join([char for char in start_seq[0].seq])
     return final_seq
 
-dict_of_bases = {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1}
+dict_of_bases = {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1}
 
 def numerical_pp(dna_strand):
     numeric = []
@@ -94,10 +94,10 @@ def normalization(numerical1, numerical2):
 
 new_dict_4 = {}
 
-for folder in my_dict['Test3b']:
+for folder in my_dict['Test1']:
     list_sequences = []
-    for file in my_dict["Test3b"][folder]:
-        file_path = getcwd() + f"/data/Test3b/{folder}/{file}"
+    for file in my_dict["Test1"][folder]:
+        file_path = getcwd() + f"/data/Test1/{folder}/{file}"
         seq  = make_sequence(file_path)
         pp = numerical_pp(seq)
         fft = np.fft.fft(pp)
@@ -119,7 +119,7 @@ ortervirales = new_dict_4["Ortervirales"]
 parvoviridae = new_dict_4["Parvoviridae"]
 
 list_one= [anelloviridae, genomoviridae, microviridae, ortervirales, parvoviridae]
-anelloviridae
+
 two = []
 for i in list_one:
     one = []
@@ -156,22 +156,28 @@ sc_X = StandardScaler()
 X_train = sc_X.fit_transform(X_train)
 X_test  = sc_X.transform(X_test)
 
+#Setting X to magnitudes, y to be family name
+y = df["Family"]
+X = df.drop(columns = ["Family"])
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle = True, random_state=0) # making Test
 
 #K_neighbors classification:
-k_value = int(math.sqrt(len(y_test)) )#using a k value of 3, odd number and closest to
+k_value = int(math.sqrt(len(y_test)))#using a k value of 3, odd number and closest to
 k_neighbors_classifier = KNeighborsClassifier(n_neighbors = k_value, p = 2, metric = "euclidean")
-k_neighbors_classifier.fit(X_train, y_train)   #fitting the classifier on the training data, testing the ouput with y-pred
+k_neighbors_classifier.fit(X_train, y_train) #fitting the classifier on the training data, testing the ouput with y-pred
 y_pred_k_neighbors = k_neighbors_classifier.predict(X_test)
-print(confusion_matrix(y_test,y_pred_k_neighbors))
-print(classification_report(y_test,y_pred_k_neighbors))
+print("CM:" , confusion_matrix(y_test,y_pred_k_neighbors))
+print("CR:" , classification_report(y_test,y_pred_k_neighbors))
+print("Accuracy score:" ,  accuracy_score(y_test,y_pred_k_neighbors))
 
 
 #Linear SVM classifier:
 linear_svm_classifier = SVC(kernel='linear')
 linear_svm_classifier.fit(X_train, y_train)
 y_pred_linear_svm = linear_svm_classifier.predict(X_test)
-print(confusion_matrix(y_test,y_pred_linear_svm))
-print(classification_report(y_test,y_pred_linear_svm))
+print("CM:" , confusion_matrix(y_test,y_pred_linear_svm))
+print("CR:" , classification_report(y_test,y_pred_linear_svm))
+print("Accuracy score:" ,  accuracy_score(y_test,y_pred_linear_svm))
 
 
 
@@ -179,18 +185,28 @@ print(classification_report(y_test,y_pred_linear_svm))
 linear_discriminant_classifier = LinearDiscriminantAnalysis()
 linear_discriminant_classifier.fit(X_train, y_train)
 y_pred_linear_discriminant = linear_discriminant_classifier.predict(X_test)
-print(confusion_matrix(y_test,y_pred_linear_discriminant))
-print(classification_report(y_test,y_pred_linear_discriminant))
+print("CM:" , confusion_matrix(y_test,y_pred_linear_discriminant))
+print("CR:" , classification_report(y_test,y_pred_linear_discriminant))
+print("Accuracy score:" ,  accuracy_score(y_test,y_pred_linear_discriminant))
 
 
 #Polynomial SVM Classifier (Types of SVM = linear, poly, rbf, etc)
 polynomial_svm_classifier = SVC(kernel = "poly")
 polynomial_svm_classifier.fit(X_train, y_train)
 y_pred_polynomial_svm = polynomial_svm_classifier.predict(X_test)
-print(confusion_matrix(y_test,y_pred_polynomial_svm))
-print(classification_report(y_test,y_pred_polynomial_svm))
+print("CM:" , confusion_matrix(y_test,y_pred_polynomial_svm))
+print("CR:" , classification_report(y_test,y_pred_polynomial_svm))
+print("Accuracy score:" ,  accuracy_score(y_test,y_pred_polynomial_svm))
 
 
+
+#Random Forest classifier
+random_forest_classifier = RandomForestClassifier(n_estimators = 100)
+random_forest_classifier.fit(X_train, y_train)
+y_pred_random_forest = random_forest_classifier.predict(X_test)
+print("CM:" , confusion_matrix(y_test,y_pred_random_forest))
+print("CR:" , classification_report(y_test,y_pred_random_forest))
+print("Accuracy score:" ,  accuracy_score(y_test,y_pred_random_forest))
 
 # Basic shaping of the linear and quadratic svm graphs
 X = np.c_[(.4, -.7),
