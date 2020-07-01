@@ -1,15 +1,15 @@
 import collections
-import numpy as np
-import pylab
+import cv2
 import math
 from os import getcwd
-from collections import OrderedDict
-from matplotlib import pyplot as plt
 from matplotlib import cm
-from scipy.fftpack import dct, idct
+from matplotlib import pyplot as plt
+import numpy as np
 import pandas as pd
 from PIL import Image
-import cv2
+import pylab
+from scipy.fftpack import dct, idct
+from scipy.linalg import svd
 
 #_______________________________________________________________________________
 # Finding FCGR
@@ -82,18 +82,30 @@ chaos_k7 = chaos_game_representation(f7_prob, 7)
 chaos_k7
 
 # run together for full plot
-pylab.title('Chaos game representation for 7-mers')
-k_mer_plot = pylab.imshow(chaos_k7, interpolation='nearest', cmap=cm.gray_r)
-# pylab.show()
-k_mer_plot
+plt.title('Chaos game representation for 7-mers')
+plt.imshow(chaos_k7, interpolation='nearest', cmap=cm.gray_r)
+plt.show()
+
 
 #_______________________________________________________________________________
 # Calculating DCT
+
 type(chaos_k7)
 x = np.array(chaos_k7)
 x
 dct = dct(dct(x, type=2, norm='ortho'), type=3, norm='ortho')
 dct
+
+#_______________________________________________________________________________
+# Finding Single Value Decomposition
+
+U, s, VT = svd(dct)
+print(U)
+print(s)
+print(VT)
+
+
+
 
 #_______________________________________________________________________________
 from scipy.fftpack import dct, idct
@@ -118,16 +130,3 @@ plt.plot(t, yr, 'g+')
 plt.legend(['x', '$x_{20}$', '$x_{15}$'])
 plt.grid()
 plt.show()
-
-#_______________________________________________________________________________
-# Finding Single Value Decomposition
-
-
-# read image in grayscale
-# img = cv2.imread('beach-2179624_960_720.jpg', 0)
-
-# obtain svd
-U, S, V = np.linalg.svd()
-
-# inspect shapes of the matrices
-print(U.shape, S.shape, V.shape)
