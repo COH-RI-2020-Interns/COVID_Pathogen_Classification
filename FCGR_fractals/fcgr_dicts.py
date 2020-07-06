@@ -111,7 +111,7 @@ for k in range(3,8):
                 freq = count_kmers(seq, k)
                 freq_prob = probabilities(freq, k, seq)
                 chaos_kmer = chaos_game_representation(freq_prob, k)
-                plt.title(str(k) + "-mer CGR:" + ' ' + file[0:len(file)-6])
+                #plt.title(str(k) + "-mer CGR:" + ' ' + file[0:len(file)-6])
                 plt.imshow(chaos_kmer, interpolation='nearest', cmap=cm.gray_r)
                 plt.show()
                 saved_path = getcwd() + f"/FCGR_fractals/plots/{k}-mers/{test}/{folder}"
