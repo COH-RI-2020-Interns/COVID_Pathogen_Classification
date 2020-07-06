@@ -1,12 +1,11 @@
 from Bio import SeqIO
 import collections
-from os import getcwd, listdir, makedirs, path
+from os import getcwd, listdir, makedirs, path, chdir
 from collections import OrderedDict
 from matplotlib import pyplot as plt
 from matplotlib import cm
 import math
 import json
-import PIL
 
 # Accessing the Fasta Files
 folder_path = getcwd() + "/data"
@@ -94,12 +93,18 @@ def chaos_game_representation(probabilities, k):
 
         return chaos
 
-
-
-# Generating the Chaos Game Representation Plots
+# Creating Folders to Save Plots
 for test in my_dict:
     for folder in my_dict[test]:
-        for k in range(2,8):
+        for k in range(3,8):
+            saved_path = getcwd() + f"/FCGR_fractals/plots/{k}-mers/{test}/{folder}"
+            if not path.exists(saved_path):
+                makedirs(saved_path)
+
+# Generating the Chaos Game Representation Plots
+for k in range(3,8):
+    for test in my_dict:
+        for folder in my_dict[test]:
             for file in my_dict[test][folder]:
                 file_path = getcwd() + f"/data/{test}/{folder}/{file}"
                 seq  = make_sequence(file_path)
@@ -109,18 +114,7 @@ for test in my_dict:
                 plt.title(str(k) + "-mer CGR:" + ' ' + file[0:len(file)-6])
                 plt.imshow(chaos_kmer, interpolation='nearest', cmap=cm.gray_r)
                 plt.show()
-                #plt.savefig(f'{file[0:len(file)-6]} {k}-mer plot.tif')
-
-
-# Creating Folders to Save Plots
-for test in my_dict:
-    for folder in my_dict[test]:
-        for k in range(1,8):
-            saved_path = getcwd() + f"/FCGR_fractals/plots/{k}-mers/{test}/{folder}"
-            if not path.exists(saved_path):
-                makedirs(saved_path)
-
-
-# with open(f"Polyomaviridae_2639 1-mer plot.tif", "r") as f2:
-#     data = f2.read()
-#     print(data)
+                saved_path = getcwd() + f"/FCGR_fractals/plots/{k}-mers/{test}/{folder}"
+                plt.savefig(saved_path + f'/{file[0:len(file)-6]}_{k}-mer_plot.tif')
+                #if not path.exists(saved_path):
+                    #plt.savefig(saved_path + f'/{file[0:len(file)-6]}_{k}-mer_plot.tif')
