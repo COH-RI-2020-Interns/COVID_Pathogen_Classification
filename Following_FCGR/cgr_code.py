@@ -7,7 +7,7 @@ import pylab
 import math
 
 
-loc = getcwd() + "/data/Test1/Anelloviridae/Anelloviridae_199.fasta"
+loc = getcwd() + "/data/Test3b/Alphacoronavirus/Alphacoronavirus_7.fasta"
 f = open(loc)
 s1 = f.read()
 data = "".join(s1.split("\n")[1:])
