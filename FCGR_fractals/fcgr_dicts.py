@@ -1,38 +1,67 @@
+from Bio import SeqIO
 import collections
-from os import getcwd
+from os import getcwd, listdir, makedirs, path
 from collections import OrderedDict
 from matplotlib import pyplot as plt
 from matplotlib import cm
 import math
+import json
+import PIL
+
+# Accessing the Fasta Files
+folder_path = getcwd() + "/data"
+
+folders = sorted(listdir(folder_path))[1:8]
+folder_dict = {}
+
+# Going to Specific Virus Folders inside the Test folders
+for folder in folders:
+    subfolder_dict = {}
+    for sub_folder in listdir(f"{folder_path}/{folder}"):
+        subfolder_dict[sub_folder] = listdir(f"{folder_path}/{folder}/{sub_folder}")
+    folder_dict[folder] = subfolder_dict
+
+output_path = getcwd() + "/data/JSON_Files"
 
 
-loc = getcwd() + "/data/Test1/Anelloviridae/Anelloviridae_199.fasta"
-f = open(loc)
-s1 = f.read()
-data = "".join(s1.split("\n")[1:])
-data
+with open(f"{output_path}/fasta_files.json", "w") as my_file:
+    json.dump(folder_dict, my_file)
 
-#The N is used to remove a certain base pair A,T,C,G if needed
-#finding the number of each unique k-mer in the sequence, for example
-#it finds the number of time the kmer CAT appears in the sequence, and continues with each 3-mer
-def count_kmers(sequence, k):
+f = open(f"{output_path}/{listdir(output_path)[0]}", )
+
+my_dict = json.load(f)
+
+
+# Extracting the Sequence from the Fasta File
+def make_sequence(path_of_file):
+    start_seq = list(SeqIO.parse(f"{path_of_file}", "fasta"))
+    count = len(start_seq[0].seq)
+    final_seq = "".join([char for char in start_seq[0].seq])
+    return final_seq
+
+# Counting total k-mers possible
+def count_kmers(final_seq, k):
     d = collections.defaultdict(int)
-    for i in range(len(data)-(k-1)):
-        d[sequence[i:i+k]] +=1
+    for i in range(len(final_seq)-(k-1)):
+        d[final_seq[i:i+k]] +=1
     for key in d.keys():
         if "N" in key:
             del d[key]
     return d
+#The N is used to remove a certain base pair A,T,C,G if needed
+#finding the number of each unique k-mer in the sequence, for example
+#it finds the number of time the kmer CAT appears in the sequence, and continues with each 3-mer
 
 
 # getting the count of a specific kmer, dividing by (length of sequence - length of kmer +1)
-def probabilities(kmer_count, k):
+def probabilities(kmer_count, k, final_seq):
         probabilities = collections.defaultdict(float)
-        N = len(data)
+        N = len(final_seq)
         for key, value in kmer_count.items():
             probabilities[key] = float(value) / (N - k + 1)
         return probabilities
 
+# Finding the Frequency of kmers
 def chaos_game_representation(probabilities, k):
         array_size = int(math.sqrt(4**k))
         chaos = []
@@ -65,28 +94,33 @@ def chaos_game_representation(probabilities, k):
 
         return chaos
 
-#each box represents a k-mer
-f3 = count_kmers(data, 3)
-len(data)
-f3
-f3_prob = probabilities(f3, 3)
-chaos_k3 = chaos_game_representation(f3_prob, 3)
-plt.title('Chaos game representation for 3-mers')
-plt.imshow(chaos_k3, interpolation='nearest', cmap=cm.gray_r)
-plt.show()
-
-f4 = count_kmers(data, 4)
-f4_prob = probabilities(f4, 4)
-chaos_k4 = chaos_game_representation(f4_prob, 4)
-plt.title('Chaos game representation for 4-mers')
-plt.imshow(chaos_k4, interpolation='nearest', cmap=cm.gray_r)
-plt.show()
 
 
+# Generating the Chaos Game Representation Plots
+for test in my_dict:
+    for folder in my_dict[test]:
+        for k in range(2,8):
+            for file in my_dict[test][folder]:
+                file_path = getcwd() + f"/data/{test}/{folder}/{file}"
+                seq  = make_sequence(file_path)
+                freq = count_kmers(seq, k)
+                freq_prob = probabilities(freq, k, seq)
+                chaos_kmer = chaos_game_representation(freq_prob, k)
+                plt.title(str(k) + "-mer CGR:" + ' ' + file[0:len(file)-6])
+                plt.imshow(chaos_kmer, interpolation='nearest', cmap=cm.gray_r)
+                plt.show()
+                #plt.savefig(f'{file[0:len(file)-6]} {k}-mer plot.tif')
 
-f7 = count_kmers(data, 7)
-f7_prob = probabilities(f7, 7)
-chaos_k7 = chaos_game_representation(f7_prob, 7)
-plt.title('Chaos game representation for 7-mers')
-plt.imshow(chaos_k7, interpolation='nearest', cmap=cm.gray_r)
-plt.show()
+
+# Creating Folders to Save Plots
+for test in my_dict:
+    for folder in my_dict[test]:
+        for k in range(1,8):
+            saved_path = getcwd() + f"/FCGR_fractals/plots/{k}-mers/{test}/{folder}"
+            if not path.exists(saved_path):
+                makedirs(saved_path)
+
+
+# with open(f"Polyomaviridae_2639 1-mer plot.tif", "r") as f2:
+#     data = f2.read()
+#     print(data)
