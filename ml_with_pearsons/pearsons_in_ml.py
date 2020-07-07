@@ -20,7 +20,7 @@ from sklearn.metrics import confusion_matrix, accuracy_score, matthews_corrcoef,
 #Using dictionary instead
 folder_path = getcwd() + "/data"
 
-folders = sorted(listdir(folder_path))[2:9]
+folders = sorted(listdir(folder_path))[1:8]
 
 folders
 folder_dict = {}
@@ -80,7 +80,8 @@ len(new_dict_2["Test3b"])
 73 * 73
 
 
-
+# Getting the PCC for each file in each tuple
+# Numerical Representation
 def make_sequence(path_of_file):
     start_seq = list(SeqIO.parse(f"{path_of_file}", "fasta"))
     count = len(start_seq[0].seq)
@@ -161,7 +162,7 @@ def pearsons(magnitude_array):
 test3a_pearsons = pearsons(test3a)
 test3a_pearsons = np.array(test3a_pearsons).reshape(82,82)
 test6_pearsons = pearsons(test6)
-test6_pearsons = np.array(test3a_pearsons).reshape(48,48)
+test6_pearsons = np.array(test6_pearsons).reshape(48,48)
 
 
 
@@ -188,8 +189,7 @@ def get_target(test_name):
              cluster_info.append(len(my_fasta[test_name][key]))
     return cluster_name
 
-cluster_info
-cluster_name
+
 # Hypertuning
 model_dict = {'log': LogisticRegression(),
              'rf': RandomForestClassifier(),
@@ -200,16 +200,11 @@ model_dict = {'log': LogisticRegression(),
 
 data_path = getcwd() + "/data/JSON_Files"
 
-<<<<<<< HEAD:ml_with_pearsons/pearsons_in_ml.py
-=======
 #opening the json file that contains all the different parameters of each classification model
->>>>>>> c42e61d6cf36b74ccacd22240aeac6e54a346bb7:rishov_code/proof_of_concept2.py
 with open(f"{data_path}/{(listdir(data_path))[1]}", "r") as f:
     parameter_config = json.load(f)
 parameter_config
 
-
-parameter_config
 
 def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 
@@ -237,6 +232,7 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 
     # Evaluating the Holdout
     print(f"The accuracy score is: {round(accuracy_score(Y_test, Y_pred)*100, 2)}% \n")
+    print(f"The Spearman's Rank Correlation Coefficient is: {stats.spearmanr(Y_test, Y_pred)} \n")
     print(f"The Matthew's Correlation Coefficient is: {matthews_corrcoef(Y_test, Y_pred)} \n")
     print(f"The confusion matrix is: {confusion_matrix(Y_test, Y_pred)} \n")
     print(classification_report(Y_test, Y_pred))
@@ -245,14 +241,8 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 
 
 #def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
-<<<<<<< HEAD:ml_with_pearsons/pearsons_in_ml.py
-ML_Pipeline(test3a_pearsons, cluster_name, 'knn', 10, 0.2, print_results=None)
-=======
-ML_Pipeline(test3a_pearsons, get_target("Test3a"), "knn" , 10, 0.2, print_results=True)
-
-
+ML_Pipeline(test3a_pearsons, get_target("Test3a"), "knn" , 10, 0.1, print_results=True)
 
 
 #why did antisymmetric padding not work
 # why are we getting different result every time we run the ml pipeline
->>>>>>> c42e61d6cf36b74ccacd22240aeac6e54a346bb7:rishov_code/proof_of_concept2.py
