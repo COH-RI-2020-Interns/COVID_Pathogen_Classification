@@ -167,7 +167,3 @@ test3a_pearsons = np.array(test3a_pearsons).reshape(82,82)
 
 len(test3a_pearsons)
 test3a_pearsons.shape
-#pearson_corr = np.array(pearson_corr).reshape(82,82)
-
-
-#[np.array((file1, file2)), np.array((file1, file3))]
