@@ -3,7 +3,7 @@ import pandas as pd
 from Bio import SeqIO
 import rapidjson
 from os import getcwd, listdir
-from itertools import permutations
+from itertools import permutations, combinations
 from scipy.fft import fft, ifft
 from scipy import stats
 import pywt
@@ -59,8 +59,8 @@ for folder in folders:
             file_tuple_list.append((sub_folder,file))
 
 
-file_combos = list(permutations(file_tuple_list, 2))
-file_combos
+file_combos = list(combinations(file_tuple_list, 2))
+
 
 new_dict = {}
 #each of the keys shows tuples, first element is the virus, second is file
@@ -76,13 +76,9 @@ for i in my_dict.keys():
 
 new_dict_2 = {}
 for key in new_dict.keys():
-    seq_perm = list(permutations(new_dict[key], 2))
+    seq_perm = list(combinations(new_dict[key], 2))
     new_dict_2[key] =  seq_perm
 
-new_dict_3 = {}
-for key in new_dict_2.keys():
-    file_list_2 = []
-    for i,j in new_dict_2[key]:
-        if(i[0] != j[0]):
-            file_list_2.append((i,j))
-    new_dict_3[key] = file_list_2
+
+len(new_dict_2["Test3a"])
+82 * 82
