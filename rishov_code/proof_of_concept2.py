@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from Bio import SeqIO
 import rapidjson
+
 from os import getcwd, listdir
 from itertools import permutations
 from scipy.fft import fft, ifft
@@ -21,8 +22,6 @@ for key in my_fasta['Test3a'].keys():
     for file_name in my_fasta['Test3a'][key]:
          cluster_name.append(key)
          cluster_info.append(len(my_fasta['Test3a'][key]))
-
-
 
 
 #Using dictionary instead
