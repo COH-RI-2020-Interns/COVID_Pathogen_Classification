@@ -176,6 +176,8 @@ for key in my_fasta['Test3a'].keys():
          cluster_name.append(key)
          cluster_info.append(len(my_fasta['Test3a'][key]))
 
+cluster_info
+cluster_name
 # Hypertuning
 model_dict = {'log': LogisticRegression(),
              'rf': RandomForestClassifier(),
@@ -186,8 +188,10 @@ model_dict = {'log': LogisticRegression(),
 
 data_path = getcwd() + "/data/JSON_Files"
 
-with open(f"{data_path}/{sorted(listdir(data_path))[2]}", "r") as f:
+with open(f"{data_path}/{(listdir(data_path))[2]}", "r") as f:
     parameter_config = json.load(f)
+
+parameter_config
 
 def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 
@@ -223,4 +227,4 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 
 
 #def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
-ML_Pipeline(test3a_pearsons, )
+ML_Pipeline(test3a_pearsons, cluster_name, 'knn', 10, 0.2, print_results=None)
