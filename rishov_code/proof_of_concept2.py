@@ -4,7 +4,7 @@ from Bio import SeqIO
 import rapidjson
 
 from os import getcwd, listdir
-from itertools import permutations
+from itertools import permutations, product
 from scipy.fft import fft, ifft
 from scipy import stats
 import pywt
@@ -27,7 +27,7 @@ for key in my_fasta['Test3a'].keys():
 #Using dictionary instead
 folder_path = getcwd() + "/data"
 
-folders = sorted(listdir(folder_path))[2:9]
+folders = sorted(listdir(folder_path))[1:8]
 folders
 folder_dict = {}
 
@@ -58,15 +58,7 @@ for folder in folders:
             file_tuple_list.append((folder, sub_folder,file))
 
 
-file_combos = list(permutations(file_tuple_list, 2))
-test3_list = []
-for i in file_tuple_list:
-    if(i[0] == "Test3a"):
-        test3_list.append(i)
-
-len(test3_list)
-
-test3_list
+file_combos = list(product(file_tuple_list, repeat=2))
 new_dict = {}
 #each of the keys shows tuples, first element is the virus, second is file
 
@@ -81,16 +73,96 @@ for i in my_dict.keys():
 
 new_dict_2 = {}
 for key in new_dict.keys():
-    seq_perm = list(permutations(new_dict[key], 2))
+    seq_perm = list(product(new_dict[key], repeat=2))
     new_dict_2[key] =  seq_perm
 
 
+len(new_dict_2["Test6"])
+47**2
+
 len(new_dict_2["Test3a"])
-83 * 83
-
-new_dict
-
-
-
-
 82 * 82
+len(new_dict_2["Test3b"])
+73 * 73
+#[np.array((file1, file2)), np.array((file1, file3))]
+
+
+
+def make_sequence(path_of_file):
+    start_seq = list(SeqIO.parse(f"{path_of_file}", "fasta"))
+    count = len(start_seq[0].seq)
+    final_seq = "".join([char for char in start_seq[0].seq])
+    return final_seq
+
+dict_of_bases = {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1}
+
+def numerical_pp(dna_strand):
+    numeric = []
+    for base in dna_strand:
+        numeric.append(dict_of_bases[base])
+    return np.array(numeric)
+
+# symmetric padding
+def normalization(numerical1, numerical2):
+    if len(numerical1)>len(numerical2):
+        dna_seq = np.array(numerical2)
+        numer = len(numerical1)- len(numerical2)
+        if(numer%2 != 0):
+            numer = numer - 0.5
+            pad_width = numer/2
+            numerical2 = pywt.pad(dna_seq, pad_width, "symmetric")
+            numerical1 = numerical1[0:len(numerical1)-1]
+        else:
+            pad_width = numer/2
+            numerical2 = pywt.pad(dna_seq,pad_width, "symmetric")
+    elif len(numerical1)<len(numerical2):
+        dna_seq = np.array(numerical1)
+        numer = len(numerical2)- len(numerical1)
+        if(numer%2 != 0):
+            numer = numer - 0.5
+            pad_width = numer/2
+            numerical1 = pywt.pad(dna_seq, pad_width, "symmetric")
+            numerical2 = numerical2[0:len(numerical2)-1]
+        else:
+            pad_width = numer/2
+            numerical1 = pywt.pad(dna_seq,pad_width, "symmetric")
+    else:
+        numerical1 = numerical1
+        numerical2 = numerical2
+
+    return numerical1,numerical2
+# CHECK WHY ANTISYMMETRIC PADDING DOESN"T WORK
+
+
+
+def magnitude_array(test, dict):
+    mag_list = []
+    for tuple in dict[test]:
+        file_path = getcwd() + f"/data/{test}/{tuple[0][0]}/{tuple[0][1]}"
+        file_path2 = getcwd() + f"/data/{test}/{tuple[1][0]}/{tuple[1][1]}"
+        seq1  = make_sequence(file_path)
+        seq2 = make_sequence(file_path2)
+        pp1 = numerical_pp(seq1)
+        pp2 = numerical_pp(seq2)
+        pp1_norm = normalization(pp1,pp2)[0]
+        pp2_norm = normalization(pp1,pp2)[1]
+        fft_1 = fft(pp1_norm)
+        fft_2 = fft(pp2_norm)
+        mag_1 = abs(fft_1)
+        mag_2 = abs(fft_2)
+        mag_list.append(np.array((mag_1, mag_2)))
+    return mag_list
+
+test3a = magnitude_array("Test3a", new_dict_2)
+
+def pearsons(magnitude_array):
+    pearson_corr = []
+    for perm in magnitude_array:
+        pearson_corr.append((stats.pearsonr(perm[0], perm[1]))[0])
+    return pearson_corr
+
+test3a_pearsons = pearsons(test3a)
+test3a_pearsons = np.array(test3a_pearsons).reshape(82,82)
+
+len(test3a_pearsons)
+test3a_pearsons.shape

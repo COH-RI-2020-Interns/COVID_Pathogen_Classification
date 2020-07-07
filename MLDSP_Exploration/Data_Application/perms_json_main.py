@@ -45,7 +45,7 @@ with open(f"{output_path}/fasta_files.json", "w") as my_file:
 f = open(f"{output_path}/{listdir(output_path)[0]}", )
 
 my_dict = json.load(f)
-
+my_dict
 
 # Getting all possible combinations of 2 for the fasta files
 file_tuple_list = []
