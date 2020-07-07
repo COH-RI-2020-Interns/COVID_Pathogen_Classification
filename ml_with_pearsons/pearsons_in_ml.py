@@ -148,6 +148,7 @@ def magnitude_array(test, dict):
     return mag_list
 
 test3a = magnitude_array("Test3a", new_dict_2)
+test6 = magnitude_array("Test6", new_dict_2)
 
 def pearsons(magnitude_array):
     pearson_corr = []
@@ -157,6 +158,9 @@ def pearsons(magnitude_array):
 
 test3a_pearsons = pearsons(test3a)
 test3a_pearsons = np.array(test3a_pearsons).reshape(82,82)
+
+test6_pearsons = pearsons(test6)
+test6_pearsons = np.array(test3a_pearsons).reshape(82, 82)
 
 len(test3a_pearsons)
 test3a_pearsons.shape
@@ -188,7 +192,7 @@ model_dict = {'log': LogisticRegression(),
 
 data_path = getcwd() + "/data/JSON_Files"
 
-with open(f"{data_path}/{(listdir(data_path))[2]}", "r") as f:
+with open(f"{data_path}/{(listdir(data_path))[1]}", "r") as f:
     parameter_config = json.load(f)
 
 parameter_config
