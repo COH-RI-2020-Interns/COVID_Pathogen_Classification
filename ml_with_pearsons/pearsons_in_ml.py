@@ -17,11 +17,11 @@ from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn.metrics import confusion_matrix, accuracy_score, matthews_corrcoef, classification_report
 
-
 #Using dictionary instead
 folder_path = getcwd() + "/data"
 
-folders = sorted(listdir(folder_path))[1:8]
+folders = sorted(listdir(folder_path))[2:9]
+
 folders
 folder_dict = {}
 
@@ -55,7 +55,7 @@ for folder in folders:
 file_combos = list(product(file_tuple_list, repeat=2))
 new_dict = {}
 #each of the keys shows tuples, first element is the virus, second is file
-
+#new_dict contains all the fasta files in each family in each test
 for i in my_dict.keys():
     file_list = []
     for j in my_dict[i].keys():
@@ -63,8 +63,7 @@ for i in my_dict.keys():
             file_list.append((j,file))
         new_dict[i] = file_list
 
-
-
+#new_dict2 contains all the products of the fasta files in the test folder
 new_dict_2 = {}
 for key in new_dict.keys():
     seq_perm = list(product(new_dict[key], repeat=2))
@@ -79,7 +78,7 @@ len(new_dict_2["Test3a"])
 
 len(new_dict_2["Test3b"])
 73 * 73
-#[np.array((file1, file2)), np.array((file1, file3))]
+
 
 
 def make_sequence(path_of_file):
@@ -128,7 +127,8 @@ def normalization(numerical1, numerical2):
 # CHECK WHY ANTISYMMETRIC PADDING DOESN"T WORK
 
 
-
+#uses new_dict_2 and finds all the magnitudes of each fasta file in the tuples
+#result  = np.array((mag_file1,mag_file2)), np.array((mag_file1, mag_file3))
 def magnitude_array(test, dict):
     mag_list = []
     for tuple in dict[test]:
@@ -150,14 +150,20 @@ def magnitude_array(test, dict):
 test3a = magnitude_array("Test3a", new_dict_2)
 test6 = magnitude_array("Test6", new_dict_2)
 
+#uses the two values to make one list of pearsons correlations
 def pearsons(magnitude_array):
     pearson_corr = []
     for perm in magnitude_array:
         pearson_corr.append((stats.pearsonr(perm[0], perm[1]))[0])
     return pearson_corr
 
+#Reshaping the array to be of size 82 by 82
 test3a_pearsons = pearsons(test3a)
 test3a_pearsons = np.array(test3a_pearsons).reshape(82,82)
+test6_pearsons = pearsons(test6)
+test6_pearsons = np.array(test3a_pearsons).reshape(48,48)
+
+
 
 test6_pearsons = pearsons(test6)
 test6_pearsons = np.array(test3a_pearsons).reshape(82, 82)
@@ -173,12 +179,14 @@ with open(f"{data_path}/{listdir(data_path)[0]}", "r") as my_file:
 
 my_fasta.keys()
 
-cluster_info = []
-cluster_name = []
-for key in my_fasta['Test3a'].keys():
-    for file_name in my_fasta['Test3a'][key]:
-         cluster_name.append(key)
-         cluster_info.append(len(my_fasta['Test3a'][key]))
+def get_target(test_name):
+    cluster_info = []
+    cluster_name = []
+    for key in my_fasta[test_name].keys():
+        for file_name in my_fasta[test_name][key]:
+             cluster_name.append(key)
+             cluster_info.append(len(my_fasta[test_name][key]))
+    return cluster_name
 
 cluster_info
 cluster_name
@@ -192,8 +200,14 @@ model_dict = {'log': LogisticRegression(),
 
 data_path = getcwd() + "/data/JSON_Files"
 
+<<<<<<< HEAD:ml_with_pearsons/pearsons_in_ml.py
+=======
+#opening the json file that contains all the different parameters of each classification model
+>>>>>>> c42e61d6cf36b74ccacd22240aeac6e54a346bb7:rishov_code/proof_of_concept2.py
 with open(f"{data_path}/{(listdir(data_path))[1]}", "r") as f:
     parameter_config = json.load(f)
+parameter_config
+
 
 parameter_config
 
@@ -231,4 +245,14 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 
 
 #def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
+<<<<<<< HEAD:ml_with_pearsons/pearsons_in_ml.py
 ML_Pipeline(test3a_pearsons, cluster_name, 'knn', 10, 0.2, print_results=None)
+=======
+ML_Pipeline(test3a_pearsons, get_target("Test3a"), "knn" , 10, 0.2, print_results=True)
+
+
+
+
+#why did antisymmetric padding not work
+# why are we getting different result every time we run the ml pipeline
+>>>>>>> c42e61d6cf36b74ccacd22240aeac6e54a346bb7:rishov_code/proof_of_concept2.py

@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-import json
+import rapidjson
 from Bio import SeqIO
 from os import getcwd, listdir, system
 from itertools import permutations
@@ -9,7 +9,7 @@ from itertools import permutations
 folder_path = getcwd() + "/data"
 
 folders = sorted(listdir(folder_path))[2:9]
-
+folders
 folder_dict = {}
 
 # Going to Specific Virus Folders inside the Test folders
