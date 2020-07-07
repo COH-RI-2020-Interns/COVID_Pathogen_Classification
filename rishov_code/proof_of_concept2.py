@@ -28,7 +28,7 @@ for key in my_fasta['Test3a'].keys():
 #Using dictionary instead
 folder_path = getcwd() + "/data"
 
-folders = sorted(listdir(folder_path))[1:8]
+folders = sorted(listdir(folder_path))[2:9]
 folders
 folder_dict = {}
 
