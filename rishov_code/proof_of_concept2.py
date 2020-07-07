@@ -18,6 +18,7 @@ from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn.metrics import confusion_matrix, accuracy_score, matthews_corrcoef, classification_report
 
+<<<<<<< HEAD
 data_path = getcwd() + "/data/JSON_Files"
 
 with open(f"{data_path}/{listdir(data_path)[0]}", "r") as my_file:
@@ -32,6 +33,8 @@ for key in my_fasta['Test3a'].keys():
          cluster_name.append(key)
          cluster_info.append(len(my_fasta['Test3a'][key]))
 
+=======
+>>>>>>> cbf8b6dcf5bc6c591e0fbe78c99efd6299f05e79
 
 #Using dictionary instead
 folder_path = getcwd() + "/data"
@@ -176,7 +179,20 @@ test3a_pearsons = np.array(test3a_pearsons).reshape(82,82)
 len(test3a_pearsons)
 test3a_pearsons.shape
 
+# Getting Clusters
+data_path = getcwd() + "/data/JSON_Files"
 
+with open(f"{data_path}/{listdir(data_path)[0]}", "r") as my_file:
+    my_fasta = rapidjson.load(my_file)
+
+my_fasta.keys()
+
+cluster_info = []
+cluster_name = []
+for key in my_fasta['Test3a'].keys():
+    for file_name in my_fasta['Test3a'][key]:
+         cluster_name.append(key)
+         cluster_info.append(len(my_fasta['Test3a'][key]))
 
 # Hypertuning
 model_dict = {'log': LogisticRegression(),
