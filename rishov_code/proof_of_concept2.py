@@ -79,6 +79,7 @@ for key in new_dict.keys():
     seq_perm = list(combinations(new_dict[key], 2))
     new_dict_2[key] =  seq_perm
 
+new_dict_2["Test3a"]
 
 len(new_dict_2["Test3a"])
 82 * 82
