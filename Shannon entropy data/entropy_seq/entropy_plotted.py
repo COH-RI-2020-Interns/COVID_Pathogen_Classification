@@ -5,6 +5,7 @@ from Bio import SeqIO
 from os import getcwd, listdir, system
 from collections import Counter
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Going to Test folders
 folder_path = getcwd() + "/data"
@@ -70,22 +71,30 @@ for test in entropy_dict:
             family_dict[family] = entropy_nums
     test_dict[test] = family_dict
 
-len(test_dict['Test1'].keys())
+len(test_dict['Test5']["Sarbecovirus"])
 
-for test in test_dict:
-    for fam in test_dict[test].keys():
-        entropy = test_dict[test][fam]
-        plt.plot(entropy)
-        plt.title("Entropy Values for " + fam)
-        plt.legend(fam)
+# Plotting Distribution
+colors = ["red", "royalblue", "gold", "darkorchid", "paleturquoise", "crimson", "m", "darkgreen", "olive", "aqua", "coral", "gray", "firebrick", "violet", "chartreuse"]
+def plot_entropy(test):
+    loc = 0
+    for family in test_dict[test]:
+        #sns.set(rc={"figure.figsize": (10, 7)})
+        plt.figure(figsize = (12,7))
+        print(sns.distplot(test_dict[test][family], color=colors[loc], label=family, bins = 1))
+        print(plt.title(family))
+        loc = loc + 1
 
-entropy1 = test_dict['Test1']['Riboviria']
-len(entropy1)
-entropy1 = entropy1[0:144]
-len(entropy1)
-entropy2 = test_dict['Test1']['Polyomaviridae']
-len(entropy2)
+plot_entropy("Test5")
+
+
+
+# Old graph
+
+entropy1 = test_dict['Test3a']['Gammacoronavirus']
+entropy2 = test_dict['Test3a']['Alphacoronavirus']
+entropy3 = test_dict['Test3a']['Deltacoronavirus']
 plt.plot(entropy1)
 plt.plot(entropy2)
-plt.title("Entropy Values of Polyomaviridae & Riboviria")
-plt.legend(["Riboviria", "Polyomaviridae"])
+plt.plot(entropy3)
+plt.title("Entropy Values of Test3a")
+plt.legend(["Gammacoronavirus", "Alphacoronavirus", "Deltacoronavirus"])
