@@ -7,6 +7,12 @@ from collections import Counter
 import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy.fft import fft, ifft
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from sklearn.model_selection import train_test_split, RandomizedSearchCV
+from sklearn.metrics import confusion_matrix, accuracy_score, matthews_corrcoef, classification_report
 
 #Going to Test folders
 folder_path = getcwd() + "/data"
@@ -85,71 +91,48 @@ def magtropy(sequence):
 
 
 # Saving Entropy values to dictionary
+#removed temp_entropy_dict
 file_path_1 = getcwd()
 entropy_dict = {}
 for test in my_dict.keys():
-    temp_entropy_dict = {}
+    entropy_values = []
     for family in  my_dict[test].keys():
-        entropy_values = []
         for file in my_dict[test][family]:
             start_seq = list(SeqIO.parse((f"{file_path_1}/data/{test}/{family}/{file}"), "fasta"))
             count = len(start_seq[0].seq)
             final_seq = "".join([char for char in start_seq[0].seq])
-            entropy_values.append((folder, entropy(final_seq), magnitude_avg(final_seq),magtropy(final_seq)))
-            temp_entropy_dict[family] = sorted(entropy_values)
-    entropy_dict[test] = temp_entropy_dict
+            entropy_values.append((family,magtropy(final_seq)))
+    entropy_dict[test] = entropy_values
 
-entropy_dict['Test5']["Embecovirus"]
-list_one = []
-for i in entropy_dict['Test2']["Bromoviridae"]:
-    list_one.append(i[3])
-list_two = []
-for i in entropy_dict['Test2']["Caliciviridae"]:
-    list_two.append(i[3])
-list_three = []
-for i in entropy_dict['Test2']["Peribunyaviridae"]:
-    list_three.append(i[3])
-list_four = []
-for i in entropy_dict['Test2']["Phenuiviridae"]:
-    list_four.append(i[3])
-list_five = []
-for i in entropy_dict['Test2']["Picornaviridae"]:
-    list_five.append(i[3])
-list_six = []
-for i in entropy_dict["Test2"]["Potyviridae"]:
-    list_six.append(i[3])
-list_seven = []
-for i in entropy_dict["Test2"]["Reoviridae"]:
-    list_seven.append(i[3])
-list_eight = []
-for i in entropy_dict["Test2"]["Rhabdoviridae"]:
-    list_eight.append(i[3])
-list_nine = []
-for i in entropy_dict["Test2"]["Secoviridae"]:
-    list_nine.append(i[3])
+test1 = pd.DataFrame.from_dict(entropy_dict["Test1"])
+test2 = pd.DataFrame.from_dict(entropy_dict["Test2"])
+test3a = pd.DataFrame.from_dict(entropy_dict["Test3a"])
+test3b = pd.DataFrame.from_dict(entropy_dict["Test3b"])
+test4 = pd.DataFrame.from_dict(entropy_dict["Test4"])
+test5  = pd.DataFrame.from_dict(entropy_dict["Test5"])
+test6 = pd.DataFrame.from_dict(entropy_dict["Test6"])
+
+test1.columns = ["Family", "Magtropy"]
+test2.columns = ["Family", "Magtropy"]
+test3a.columns = ["Family", "Magtropy"]
+test3b.columns = ["Family", "Magtropy"]
+test4.columns = ["Family", "Magtropy"]
+test5.columns = ["Family", "Magtropy"]
+test6.columns = ["Family", "Magtropy"]
+# Hypertuning
+model_dict = {'log': LogisticRegression(),
+             'rf': RandomForestClassifier(),
+             'ada': AdaBoostClassifier(),
+             'knn': KNeighborsClassifier(),
+             'svm': SVC()
+                }
+def removeCovid(test):
+    test = test.drop([test[test["Family"] == "COVID19"].index[0]], axis = 0)
+    return test
 
 
-list_one, list_two,list_three, list_four
-
-
-plt.hist(list_one)
-plt.hist(list_two)
-plt.hist(list_three)
-plt.hist(list_four)
-plt.hist(list_five)
-plt.hist(list_six)
-plt.hist(list_seven)
-plt.hist(list_eight)
-plt.hist(list_nine)
-
-
-
-
-
-
-
-
-
+test5 = removeCovid(test5)
+test5
 
 
 data_path = getcwd() + "/data/JSON_Files"
@@ -192,20 +175,21 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
     return ml_model
 
 
+ML_Pipeline(X, y, "knn", 10, 0.2, print_results = None)
 
 
 
 
 
+df=pd.DataFrame(test3a["Family"])
+df
+X = pd.DataFrame(test5["Magtropy"])
+y = pd.DataFrame(test5["Family"])
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle = True, random_state=0) # making Test size 0.2 instead of 0.1
+X_train
+y_train
 
-test_dict = {}
-for test in entropy_dict:
-    family_dict = {}
-    for family in entropy_dict[test]:
-        entropy_nums = []
-        for value in entropy_dict[test][family]:
-            entropy_nums.append(value[1])
-            family_dict[family] = entropy_nums
-    test_dict[test] = family_dict
 
-len(test_dict['Test5']["Sarbecovirus"])
+
+print(classification_report(y_test,y_pred_linear_svm))
+print("Accuracy: " ,accuracy_score(y_test,y_pred_linear_svm))
