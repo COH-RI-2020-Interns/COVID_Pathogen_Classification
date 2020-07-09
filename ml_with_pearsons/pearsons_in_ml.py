@@ -20,7 +20,7 @@ from sklearn.metrics import confusion_matrix, accuracy_score, matthews_corrcoef,
 #Using dictionary instead
 folder_path = getcwd() + "/data"
 
-folders = sorted(listdir(folder_path))[1:8]
+folders = sorted(listdir(folder_path))[2:9]
 
 folders
 folder_dict = {}
@@ -77,11 +77,10 @@ len(new_dict_2["Test3a"])
 82 * 82
 
 len(new_dict_2["Test3b"])
-73 * 73
+74 * 74
 
 
-# Getting the PCC for each file in each tuple
-# Numerical Representation
+
 def make_sequence(path_of_file):
     start_seq = list(SeqIO.parse(f"{path_of_file}", "fasta"))
     count = len(start_seq[0].seq)
@@ -149,7 +148,7 @@ def magnitude_array(test, dict):
     return mag_list
 
 test3a = magnitude_array("Test3a", new_dict_2)
-test6 = magnitude_array("Test6", new_dict_2)
+#test6 = magnitude_array("Test6", new_dict_2)
 
 #uses the two values to make one list of pearsons correlations
 def pearsons(magnitude_array):
@@ -161,13 +160,10 @@ def pearsons(magnitude_array):
 #Reshaping the array to be of size 82 by 82
 test3a_pearsons = pearsons(test3a)
 test3a_pearsons = np.array(test3a_pearsons).reshape(82,82)
-test6_pearsons = pearsons(test6)
-test6_pearsons = np.array(test6_pearsons).reshape(48,48)
+#test6_pearsons = pearsons(test6)
+#test6_pearsons = np.array(test3a_pearsons).reshape(48,48)
 
 
-
-test6_pearsons = pearsons(test6)
-test6_pearsons = np.array(test3a_pearsons).reshape(82, 82)
 
 len(test3a_pearsons)
 test3a_pearsons.shape
@@ -188,7 +184,6 @@ def get_target(test_name):
              cluster_name.append(key)
              cluster_info.append(len(my_fasta[test_name][key]))
     return cluster_name
-
 
 # Hypertuning
 model_dict = {'log': LogisticRegression(),
@@ -232,7 +227,6 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 
     # Evaluating the Holdout
     print(f"The accuracy score is: {round(accuracy_score(Y_test, Y_pred)*100, 2)}% \n")
-    print(f"The Spearman's Rank Correlation Coefficient is: {stats.spearmanr(Y_test, Y_pred)} \n")
     print(f"The Matthew's Correlation Coefficient is: {matthews_corrcoef(Y_test, Y_pred)} \n")
     print(f"The confusion matrix is: {confusion_matrix(Y_test, Y_pred)} \n")
     print(classification_report(Y_test, Y_pred))
@@ -241,8 +235,10 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 
 
 #def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
-ML_Pipeline(test3a_pearsons, get_target("Test3a"), "knn" , 10, 0.1, print_results=True)
+ML_Pipeline(test3a_pearsons, get_target("Test3a"), "knn" , 10, 0.2, print_results=True)
+
+
 
 
 #why did antisymmetric padding not work
-# why are we getting different result every time we run the ml pipeline
+#why are we getting different result every time we run the ml pipeline
