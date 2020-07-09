@@ -154,6 +154,7 @@ for i in df.columns:
 df.insert(0, "Family", name1)
 df
 
+
 #Setting X to magnitudes, y to be family name
 y = df["Family"]
 X = df.drop(columns = ["Family"])
