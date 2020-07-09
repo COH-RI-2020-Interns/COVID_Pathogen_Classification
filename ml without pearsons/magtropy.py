@@ -99,26 +99,49 @@ for test in my_dict.keys():
             temp_entropy_dict[family] = sorted(entropy_values)
     entropy_dict[test] = temp_entropy_dict
 
-entropy_dict['Test3a']["Alphacoronavirus"]
-entropy_dict['Test3a']["Deltacoronavirus"][0][3]
+entropy_dict['Test5']["Embecovirus"]
+
 list_one = []
-for i in entropy_dict['Test3a']["Gammacoronavirus"]:
+for i in entropy_dict['Test2']["Bromoviridae"]:
     list_one.append(i[3])
 list_two = []
-for i in entropy_dict['Test3a']["Alphacoronavirus"]:
+for i in entropy_dict['Test2']["Caliciviridae"]:
     list_two.append(i[3])
-list_two
 list_three = []
-for i in entropy_dict['Test3a']["Deltacoronavirus"]:
+for i in entropy_dict['Test2']["Peribunyaviridae"]:
     list_three.append(i[3])
-list_one, list_two, list_three
+list_four = []
+for i in entropy_dict['Test2']["Phenuiviridae"]:
+    list_four.append(i[3])
+list_five = []
+for i in entropy_dict['Test2']["Picornaviridae"]:
+    list_five.append(i[3])
+list_six = []
+for i in entropy_dict["Test2"]["Potyviridae"]:
+    list_six.append(i[3])
+list_seven = []
+for i in entropy_dict["Test2"]["Reoviridae"]:
+    list_seven.append(i[3])
+list_eight = []
+for i in entropy_dict["Test2"]["Rhabdoviridae"]:
+    list_eight.append(i[3])
+list_nine = []
+for i in entropy_dict["Test2"]["Secoviridae"]:
+    list_nine.append(i[3])
+
+
+list_one, list_two,list_three, list_four
 
 
 plt.hist(list_one)
 plt.hist(list_two)
 plt.hist(list_three)
-
-
+plt.hist(list_four)
+plt.hist(list_five)
+plt.hist(list_six)
+plt.hist(list_seven)
+plt.hist(list_eight)
+plt.hist(list_nine)
 
 
 
