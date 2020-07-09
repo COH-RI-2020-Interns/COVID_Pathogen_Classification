@@ -150,7 +150,7 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
     # Creating a Hyperparameter Tuning Strategy
     base_model = model_dict[estimator]
     model_params = parameter_config[estimator]
-    ml_model = RandomizedSearchCV(base_model, model_params, cv=cv)
+    ml_model = RandomizedSearchCV(base_model, model_params, n_iter= 15, cv=cv)
 
     # Train the Model
     ml_model.fit(X_train, Y_train)
@@ -175,7 +175,9 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
     return ml_model
 
 
-ML_Pipeline(X, y, "knn", 10, 0.2, print_results = None)
+ML_Pipeline(X, y, "svm", 10, 0.2, print_results = None)
+
+
 
 
 
@@ -183,8 +185,8 @@ ML_Pipeline(X, y, "knn", 10, 0.2, print_results = None)
 
 df=pd.DataFrame(test3a["Family"])
 df
-X = pd.DataFrame(test5["Magtropy"])
-y = pd.DataFrame(test5["Family"])
+X = pd.DataFrame(test2["Magtropy"])
+y = pd.DataFrame(test2["Family"])
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle = True, random_state=0) # making Test size 0.2 instead of 0.1
 X_train
 y_train
