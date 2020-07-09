@@ -148,7 +148,7 @@ def magnitude_array(test, dict):
     return mag_list
 
 test3a = magnitude_array("Test3a", new_dict_2)
-test6 = magnitude_array("Test6", new_dict_2)
+#test6 = magnitude_array("Test6", new_dict_2)
 
 #uses the two values to make one list of pearsons correlations
 def pearsons(magnitude_array):
@@ -160,8 +160,8 @@ def pearsons(magnitude_array):
 #Reshaping the array to be of size 82 by 82
 test3a_pearsons = pearsons(test3a)
 test3a_pearsons = np.array(test3a_pearsons).reshape(82,82)
-test6_pearsons = pearsons(test6)
-test6_pearsons = np.array(test3a_pearsons).reshape(48,48)
+#test6_pearsons = pearsons(test6)
+#test6_pearsons = np.array(test3a_pearsons).reshape(48,48)
 
 
 

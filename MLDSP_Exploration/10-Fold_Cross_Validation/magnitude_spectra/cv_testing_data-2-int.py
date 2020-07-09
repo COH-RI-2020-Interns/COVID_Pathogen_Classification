@@ -21,7 +21,7 @@ from sklearn.naive_bayes import MultinomialNB
 folder_path = getcwd() + "/data"
 
 
-folders = sorted(listdir(folder_path))[1:8]
+folders = sorted(listdir(folder_path))[2:9]
 folders
 folder_dict = {}
 

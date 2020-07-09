@@ -10,7 +10,7 @@ import seaborn as sns
 # Going to Test folders
 folder_path = getcwd() + "/data"
 
-folders = sorted(listdir(folder_path))[1:8]
+folders = sorted(listdir(folder_path))[2:9]
 folders
 
 folder_dict = {}
@@ -56,8 +56,9 @@ for test in my_dict.keys():
             count = len(start_seq[0].seq)
             final_seq = "".join([char for char in start_seq[0].seq])
             entropy_values.append((file, entropy(final_seq)))
-            temp_entropy_dict[family] = entropy_values
+            temp_entropy_dict[family] = sorted(entropy_values)
     entropy_dict[test] = temp_entropy_dict
+
 
 entropy_dict['Test1']['Riboviria']
 
@@ -71,7 +72,7 @@ for test in entropy_dict:
             family_dict[family] = entropy_nums
     test_dict[test] = family_dict
 
-len(test_dict['Test5']["Sarbecovirus"])
+test_dict['Test1']["Riboviria"]
 
 # Plotting Distribution
 colors = ["red", "royalblue", "gold", "darkorchid", "paleturquoise", "crimson", "m", "darkgreen", "olive", "aqua", "coral", "gray", "firebrick", "violet", "chartreuse"]
