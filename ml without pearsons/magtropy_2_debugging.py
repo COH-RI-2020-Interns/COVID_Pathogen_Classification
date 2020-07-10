@@ -132,11 +132,11 @@ def removeCovid(test):
 test5 = removeCovid(test5)
 test5[test5["Family"] == "COVID19"]
 
-df=pd.DataFrame(test1["Family"])
+df=pd.DataFrame(test5["Family"])
 
-X = pd.DataFrame(test1["Magtropy"])
+X = pd.DataFrame(test5["Magtropy"])
 X
-y = pd.DataFrame(test1["Family"])
+y = pd.DataFrame(test5["Family"])
 y
 data_path = getcwd() + "/data/JSON_Files"
 #opening the json file that contains all the different parameters of each classification model
@@ -193,4 +193,4 @@ COVID = {"Magtropy": [COVID]}
 COVID
 df = pd.DataFrame(COVID, columns = ["Magtropy"])
 df
-my_model.predict(df)
+my_model.predict(df2)
