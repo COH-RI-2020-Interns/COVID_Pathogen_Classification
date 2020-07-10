@@ -17,7 +17,7 @@ from sklearn.metrics import confusion_matrix, accuracy_score, matthews_corrcoef,
 #Going to Test folders
 folder_path = getcwd() + "/data"
 
-folders = sorted(listdir(folder_path))[2:10]
+folders = sorted(listdir(folder_path))[1:9]
 folders
 
 folder_dict = {}
@@ -31,8 +31,6 @@ for folder in folders:
 
 folder_dict.keys()
 
-len(folder_dict['Test1']['Anelloviridae'])
-len(folder_dict['Test1']['Caudovirales'])
 
 #Adding data to a JSON file
 output_path = getcwd() + "/data/JSON_Files"
@@ -88,7 +86,7 @@ def magnitude_avg(sequence, representation = "PP"):
 
 
 def magtropy(sequence):
-    return magnitude_avg(sequence)/entropy(sequence)
+    return entropy(sequence)/magnitude_avg(sequence)
 
 
 # Saving Entropy values to dictionary
@@ -122,6 +120,9 @@ test4.columns = ["Family", "Magtropy"]
 test5.columns = ["Family", "Magtropy"]
 test6.columns = ["Family", "Magtropy"]
 test8.columns = ["Family", "Magtropy"]
+
+
+test1
 
 # Hypertuning
 model_dict = {'log': LogisticRegression(),
@@ -191,3 +192,5 @@ df2 = pd.DataFrame(test3a, columns = ["Magtropy"])
 df2
 
 my_model.predict(df2)
+
+# Doing entropy divided by magnitude_average removed Caudovirales from the classification of test3a
