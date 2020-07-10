@@ -85,7 +85,7 @@ def magnitude_avg(sequence, representation = "PP"):
 
 
 def magtropy(sequence):
-    return magnitude_avg(sequence)/entropy(sequence)
+    return magnitude_avg(sequence, representation = "JustA")/entropy(sequence)
 
 
 # Saving Entropy values to dictionary
@@ -266,6 +266,8 @@ COVID
 
 COVID = {"Magtropy": [COVID]}
 COVID
-df2 = pd.DataFrame(COVID, columns = ["Magtropy"])
+
+df2 = pd.DataFrame(test8, columns = ["Magtropy"])
+test3a
 df2
 my_model.predict(df2)
