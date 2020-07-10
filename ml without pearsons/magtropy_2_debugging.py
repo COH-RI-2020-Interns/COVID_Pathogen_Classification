@@ -102,6 +102,7 @@ for test in my_dict.keys():
             entropy_values.append((family,magtropy(final_seq)))
     entropy_dict[test] = entropy_values
 
+
 test1 = pd.DataFrame.from_dict(entropy_dict["Test1"])
 test2 = pd.DataFrame.from_dict(entropy_dict["Test2"])
 test3a = pd.DataFrame.from_dict(entropy_dict["Test3a"])
@@ -132,11 +133,11 @@ def removeCovid(test):
 test5 = removeCovid(test5)
 test5[test5["Family"] == "COVID19"]
 
-df=pd.DataFrame(test5["Family"])
+df=pd.DataFrame(test1["Family"])
 
-X = pd.DataFrame(test5["Magtropy"])
+X = pd.DataFrame(test1["Magtropy"])
 X
-y = pd.DataFrame(test5["Family"])
+y = pd.DataFrame(test1["Family"])
 y
 data_path = getcwd() + "/data/JSON_Files"
 #opening the json file that contains all the different parameters of each classification model
@@ -191,6 +192,6 @@ COVID
 
 COVID = {"Magtropy": [COVID]}
 COVID
-df = pd.DataFrame(COVID, columns = ["Magtropy"])
-df
+df2 = pd.DataFrame(COVID, columns = ["Magtropy"])
+df2
 my_model.predict(df2)
