@@ -132,7 +132,6 @@ def removeCovid(test):
 test5 = removeCovid(test5)
 test5[test5["Family"] == "COVID19"]
 
-df=pd.DataFrame(test1["Family"])
 
 X = pd.DataFrame(test1["Magtropy"])
 X
@@ -179,7 +178,6 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 
 
 my_model = ML_Pipeline(X, y, "knn", 10, 0.2, print_results = None)
-
 
 
 
