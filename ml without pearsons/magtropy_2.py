@@ -17,7 +17,7 @@ from sklearn.metrics import confusion_matrix, accuracy_score, matthews_corrcoef,
 #Going to Test folders
 folder_path = getcwd() + "/data"
 
-folders = sorted(listdir(folder_path))[1:8]
+folders = sorted(listdir(folder_path))[2:9]
 folders
 
 folder_dict = {}
@@ -178,12 +178,8 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
     return ml_model
 
 
-<<<<<<< HEAD
-ML_Pipeline(X, y, "svm", 10, 0.2, print_results = None)x
-
-=======
 my_model = ML_Pipeline(X, y, "knn", 10, 0.2, print_results = None)
->>>>>>> 05985838562abf1043729c9a06105d34aec7cb03
+
 
 
 
