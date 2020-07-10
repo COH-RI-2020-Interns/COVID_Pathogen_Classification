@@ -17,7 +17,11 @@ from sklearn.metrics import confusion_matrix, accuracy_score, matthews_corrcoef,
 #Going to Test folders
 folder_path = getcwd() + "/data"
 
+<<<<<<< HEAD
 folders = sorted(listdir(folder_path))[1:9]
+=======
+folders = sorted(listdir(folder_path))[2:9]
+>>>>>>> b4ea0f3bcf166a147c97004301490374b69ebe33
 folders
 
 folder_dict = {}
@@ -44,7 +48,7 @@ my_dict = json.load(f)
 for test in my_dict:
     test = sorted(test)
 
-
+my_dict
 # Calculating Entropy
 def entropy(sequence):
     counts = Counter(sequence)

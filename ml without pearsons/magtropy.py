@@ -99,7 +99,7 @@ for test in my_dict.keys():
             temp_entropy_dict[family] = sorted(entropy_values)
     entropy_dict[test] = temp_entropy_dict
 
-entropy_dict['Test5']["Embecovirus"]
+entropy_dict['Test5']
 list_one = []
 for i in entropy_dict['Test2']["Bromoviridae"]:
     list_one.append(i[3])

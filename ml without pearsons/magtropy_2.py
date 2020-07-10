@@ -17,7 +17,7 @@ from sklearn.metrics import confusion_matrix, accuracy_score, matthews_corrcoef,
 #Going to Test folders
 folder_path = getcwd() + "/data"
 
-folders = sorted(listdir(folder_path))[1:8]
+folders = sorted(listdir(folder_path))[2:9]
 folders
 
 folder_dict = {}
@@ -132,7 +132,6 @@ def removeCovid(test):
 test5 = removeCovid(test5)
 test5[test5["Family"] == "COVID19"]
 
-df=pd.DataFrame(test1["Family"])
 
 X = pd.DataFrame(test1["Magtropy"])
 X
