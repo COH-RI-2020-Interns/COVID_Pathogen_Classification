@@ -17,7 +17,7 @@ from sklearn.metrics import confusion_matrix, accuracy_score, matthews_corrcoef,
 #Going to Test folders
 folder_path = getcwd() + "/data"
 
-folders = sorted(listdir(folder_path))[2:9]
+folders = sorted(listdir(folder_path))[1:8]
 folders
 
 folder_dict = {}
@@ -134,6 +134,9 @@ def removeCovid(test):
 test5 = removeCovid(test5)
 test5
 
+df=pd.DataFrame(test3a["Family"])
+X = pd.DataFrame(test5["Magtropy"])
+y = pd.DataFrame(test5["Family"])
 
 data_path = getcwd() + "/data/JSON_Files"
 #opening the json file that contains all the different parameters of each classification model
@@ -175,23 +178,41 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
     return ml_model
 
 
+<<<<<<< HEAD
 ML_Pipeline(X, y, "svm", 10, 0.2, print_results = None)x
 
+=======
+my_model = ML_Pipeline(X, y, "knn", 10, 0.2, print_results = None)
+>>>>>>> 05985838562abf1043729c9a06105d34aec7cb03
 
 
 
+start_seq = list(SeqIO.parse((getcwd() + f"/data/Test5/COVID19/MN908947.fasta"), "fasta"))
+count = len(start_seq[0].seq)
+final_seq = "".join([char for char in start_seq[0].seq])
+COVID = magtropy(final_seq)
 
+COVID
 
-
-df=pd.DataFrame(test3a["Family"])
+COVID = {"Magtropy": [COVID]}
+COVID
+df = pd.DataFrame(COVID, columns = ["Magtropy"])
 df
-X = pd.DataFrame(test2["Magtropy"])
-y = pd.DataFrame(test2["Family"])
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle = True, random_state=0) # making Test size 0.2 instead of 0.1
-X_train
-y_train
+my_model.predict(df)
 
-
-
-print(classification_report(y_test,y_pred_linear_svm))
-print("Accuracy: " ,accuracy_score(y_test,y_pred_linear_svm))
+# df=pd.DataFrame(test3a["Family"])
+# df
+# X = pd.DataFrame(test2["Magtropy"])
+# y = pd.DataFrame(test2["Family"])
+#
+# X
+# y
+#
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle = True, random_state=0) # making Test size 0.2 instead of 0.1
+# X_train
+# y_train
+#
+#
+#
+# print(classification_report(y_test,y_pred_linear_svm))
+# print("Accuracy: " ,accuracy_score(y_test,y_pred_linear_svm))

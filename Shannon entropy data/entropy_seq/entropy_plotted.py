@@ -81,13 +81,13 @@ def plot_entropy(test):
     for family in test_dict[test]:
         #sns.set(rc={"figure.figsize": (10, 7)})
         plt.figure(figsize = (12,7))
-        print(sns.distplot(test_dict[test][family], color=colors[loc], label=family, bins = 1))
+        print(sns.distplot(test_dict[test][family], color=colors[loc], label=family, bins = 20))
         print(plt.title(family))
         loc = loc + 1
 
 plot_entropy("Test5")
 
-
+len(test_dict['Test5']["Sarbecovirus"])
 
 # Old graph
 

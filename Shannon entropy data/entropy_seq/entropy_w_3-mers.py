@@ -3,7 +3,7 @@ import pandas as pd
 import json
 from Bio import SeqIO
 from os import getcwd, listdir, system
-from collections import Counter
+import collections
 
 
 # Going to Test folders
@@ -44,34 +44,31 @@ def make_sequence(path_of_file):
     return final_seq
 
 # Counting total k-mers possible
-def count_kmers(final_seq, k):
-    d = collections.defaultdict(int)
-    for i in range(len(final_seq)-(k-1)):
-        d[final_seq[i:i+k]] +=1
-    for key in d.keys():
-        if "N" in key:
-            del d[key]
-    return d
+def getKmers(sequence, k):
+    return [sequence[x:x+k].lower() for x in range(len(sequence) - k + 1)]
 
-
-# getting the count of a specific kmer, dividing by (length of sequence - length of kmer +1)
-def probabilities(kmer_count, k, final_seq):
-        probabilities = collections.defaultdict(float)
-        N = len(final_seq)
-        for key, value in kmer_count.items():
-            probabilities[key] = float(value) / (N - k + 1)
-        return probabilities
-
-# Find entropy of k-mers
+seq = "GAGAGACAAAGTTCAAAGGGCTATACAACCCCTGAATAGTAACAAAATACAGAAAAACCATAAAATTATAAAAATAACTAATCTGATCATCTAAATTTGACTAATTGGAAATAGCCGAACTCTACGGAGATGTAGGCGTCCGAACTCCACGGAGACGTAGGACAAAATTCTGCCGAACCCCAGACCATCGGGGACGTAGGCGTCTAATTTGTTTTTTTAATATTTTAC"
+len(seq)
 def entropy(sequence):
     counts = Counter(sequence)
     props = {key: counts[key] / sum(counts.values()) for key in counts}
     products = {key: props[key]*np.log(props[key]) for key in props}
     return -1 * sum(products.values())
 
-my_dict.keys()
-my_dict['Test1'].keys()
-my_dict["Test1"]["Polyomaviridae"]
+
+# Find entropy of k-mers
+def entropy_k(kmer):
+    kmer_lst = []
+    for sequence in kmer:
+        counts = Counter(sequence)
+        props = {key: counts[key] / sum(counts.values()) for key in counts}
+        products = {key: props[key]*np.log(props[key]) for key in props}
+        entropy_kmer = -1 * sum(products.values())
+        kmer_lst.append(entropy_kmer)
+    return np.average(kmer_lst)
+
+entropy(k)
+entropy_k(getKmers(seq, 5))
 
 file_path_1 = getcwd()
 entropy_dict = {}
