@@ -178,10 +178,22 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
     return ml_model
 
 
-ML_Pipeline(X, y, "knn", 10, 0.2, print_results = None)
+my_model = ML_Pipeline(X, y, "knn", 10, 0.2, print_results = None)
 
 
 
+start_seq = list(SeqIO.parse((getcwd() + f"/data/Test5/COVID19/MN908947.fasta"), "fasta"))
+count = len(start_seq[0].seq)
+final_seq = "".join([char for char in start_seq[0].seq])
+COVID = magtropy(final_seq)
+
+COVID
+
+COVID = {"Magtropy": [COVID]}
+COVID
+df = pd.DataFrame(COVID, columns = ["Magtropy"])
+df
+my_model.predict(df)
 
 # df=pd.DataFrame(test3a["Family"])
 # df
