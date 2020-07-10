@@ -166,7 +166,7 @@ test3a_pearsons = np.array(test3a_pearsons).reshape(82,82)
 
 
 len(test3a_pearsons)
-test3a_pearsons.shape
+test3a_pearsons
 
 # Getting Clusters
 data_path = getcwd() + "/data/JSON_Files"

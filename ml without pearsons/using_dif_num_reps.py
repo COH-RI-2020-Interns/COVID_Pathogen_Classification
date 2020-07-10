@@ -86,7 +86,7 @@ def magnitude_avg(sequence, representation = "PP"):
 
 
 def magtropy(sequence):
-    return entropy(sequence)/magnitude_avg(sequence)
+    return magnitude_avg(sequence, representation = "Just A")/entropy(sequence)
 
 
 # Saving Entropy values to dictionary
@@ -122,7 +122,6 @@ test6.columns = ["Family", "Magtropy"]
 test8.columns = ["Family", "Magtropy"]
 
 
-test1
 
 # Hypertuning
 model_dict = {'log': LogisticRegression(),
@@ -188,7 +187,7 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 my_model = ML_Pipeline(X, y, "knn", 10, 0.2, print_results = None)
 
 
-df2 = pd.DataFrame(test3a, columns = ["Magtropy"])
+df2 = pd.DataFrame(test8, columns = ["Magtropy"])
 df2
 
 my_model.predict(df2)
