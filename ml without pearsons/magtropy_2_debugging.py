@@ -101,8 +101,7 @@ for test in my_dict.keys():
             final_seq = "".join([char for char in start_seq[0].seq])
             entropy_values.append((family,magtropy(final_seq)))
     entropy_dict[test] = entropy_values
-
-
+entropy_dict["Test7"]
 test1 = pd.DataFrame.from_dict(entropy_dict["Test1"])
 test2 = pd.DataFrame.from_dict(entropy_dict["Test2"])
 test3a = pd.DataFrame.from_dict(entropy_dict["Test3a"])
@@ -110,6 +109,7 @@ test3b = pd.DataFrame.from_dict(entropy_dict["Test3b"])
 test4 = pd.DataFrame.from_dict(entropy_dict["Test4"])
 test5  = pd.DataFrame.from_dict(entropy_dict["Test5"])
 test6 = pd.DataFrame.from_dict(entropy_dict["Test6"])
+test7 = pd.DataFrame.from_dict(entropy_dict["Test7"])
 
 test1.columns = ["Family", "Magtropy"]
 test2.columns = ["Family", "Magtropy"]
@@ -118,6 +118,8 @@ test3b.columns = ["Family", "Magtropy"]
 test4.columns = ["Family", "Magtropy"]
 test5.columns = ["Family", "Magtropy"]
 test6.columns = ["Family", "Magtropy"]
+test7.columns = ["Family", "Magtropy"]
+
 # Hypertuning
 model_dict = {'log': LogisticRegression(),
              'rf': RandomForestClassifier(),
@@ -133,11 +135,11 @@ def removeCovid(test):
 test5 = removeCovid(test5)
 test5[test5["Family"] == "COVID19"]
 
-df=pd.DataFrame(test1["Family"])
+df=pd.DataFrame(test4["Family"])
 
-X = pd.DataFrame(test1["Magtropy"])
+X = pd.DataFrame(test7["Magtropy"])
 X
-y = pd.DataFrame(test1["Family"])
+y = pd.DataFrame(test4["Family"])
 y
 data_path = getcwd() + "/data/JSON_Files"
 #opening the json file that contains all the different parameters of each classification model
