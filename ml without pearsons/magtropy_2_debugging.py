@@ -17,7 +17,7 @@ from sklearn.metrics import confusion_matrix, accuracy_score, matthews_corrcoef,
 #Going to Test folders
 folder_path = getcwd() + "/data"
 
-folders = sorted(listdir(folder_path))[2:9]
+folders = sorted(listdir(folder_path))[1:8]
 folders
 
 folder_dict = {}
@@ -102,6 +102,7 @@ for test in my_dict.keys():
             entropy_values.append((family,magtropy(final_seq)))
     entropy_dict[test] = entropy_values
 
+
 test1 = pd.DataFrame.from_dict(entropy_dict["Test1"])
 test2 = pd.DataFrame.from_dict(entropy_dict["Test2"])
 test3a = pd.DataFrame.from_dict(entropy_dict["Test3a"])
@@ -182,7 +183,6 @@ my_model = ML_Pipeline(X, y, "knn", 10, 0.2, print_results = None)
 
 
 
-
 start_seq = list(SeqIO.parse((getcwd() + f"/data/Test5/COVID19/MN908947.fasta"), "fasta"))
 count = len(start_seq[0].seq)
 final_seq = "".join([char for char in start_seq[0].seq])
@@ -192,6 +192,6 @@ COVID
 
 COVID = {"Magtropy": [COVID]}
 COVID
-df = pd.DataFrame(COVID, columns = ["Magtropy"])
-df
-my_model.predict(df)
+df2 = pd.DataFrame(COVID, columns = ["Magtropy"])
+df2
+my_model.predict(df2)
