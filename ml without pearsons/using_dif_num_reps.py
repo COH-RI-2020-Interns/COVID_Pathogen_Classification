@@ -85,9 +85,39 @@ def magnitude_avg(sequence, representation = "PP"):
     return mag_avg
 
 
-def magtropy(sequence):
-    return magnitude_avg(sequence, representation = "Just A")/entropy(sequence)
+rep_dict = {"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
+"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4},
+#"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5},
+#"Atomic": {"T":6,"t":6,"C":58,"c":58, "A":70,"a":70 ,"G":78, "g":78},
+"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806},
+#"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1},
+#"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1},
+"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0},
+#"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0},
+"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1}}
+#"Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
 
+
+def magnitude_avg(sequence):
+    mag_avg_list = []
+    for rep in rep_dict:
+        dict_of_bases = rep_dict[rep]
+        numeric = []
+        for base in sequence:
+            numeric.append(dict_of_bases[base])
+        dft = fft(np.array(numeric))
+        mag = abs(dft)
+        mag_avg = np.average(mag)
+        mag_avg_list.append(mag_avg)
+    return mag_avg_list
+
+magnitude_avg("AGTC")
+def magtropy(sequence):
+    list_magtropy = [avg/entropy(sequence) for avg in magnitude_avg(sequence)]
+    return list_magtropy
+
+
+magtropy("AGTC")
 
 # Saving Entropy values to dictionary
 #removed temp_entropy_dict
@@ -102,6 +132,7 @@ for test in my_dict.keys():
             final_seq = "".join([char for char in start_seq[0].seq])
             entropy_values.append((family,magtropy(final_seq)))
     entropy_dict[test] = entropy_values
+
 
 test1 = pd.DataFrame.from_dict(entropy_dict["Test1"])
 test2 = pd.DataFrame.from_dict(entropy_dict["Test2"])
@@ -121,7 +152,7 @@ test5.columns = ["Family", "Magtropy"]
 test6.columns = ["Family", "Magtropy"]
 test8.columns = ["Family", "Magtropy"]
 
-
+test5
 
 # Hypertuning
 model_dict = {'log': LogisticRegression(),
@@ -141,9 +172,9 @@ model_dict = {'log': LogisticRegression(),
 #df=pd.DataFrame(test4["Family"])
 
 X = pd.DataFrame(test1["Magtropy"])
-X
+
 y = pd.DataFrame(test1["Family"])
-y
+
 data_path = getcwd() + "/data/JSON_Files"
 #opening the json file that contains all the different parameters of each classification model
 with open(f"{data_path}/{(listdir(data_path))[1]}", "r") as f:
@@ -184,11 +215,10 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
     return ml_model
 
 
-my_model = ML_Pipeline(X, y, "knn", 10, 0.2, print_results = None)
+my_model = ML_Pipeline(X, y, "knn", 10, 0.2)
 
 
-df2 = pd.DataFrame(test8, columns = ["Magtropy"])
-df2
+df2 = pd.DataFrame(test3a, columns = ["Magtropy"])
 
 my_model.predict(df2)
 
