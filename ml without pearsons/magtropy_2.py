@@ -17,7 +17,7 @@ from sklearn.metrics import confusion_matrix, accuracy_score, matthews_corrcoef,
 #Going to Test folders
 folder_path = getcwd() + "/data"
 
-folders = sorted(listdir(folder_path))[2:9]
+folders = sorted(listdir(folder_path))[2:10]
 folders
 
 folder_dict = {}
@@ -99,7 +99,7 @@ for test in my_dict.keys():
             start_seq = list(SeqIO.parse((f"{file_path_1}/data/{test}/{family}/{file}"), "fasta"))
             count = len(start_seq[0].seq)
             final_seq = "".join([char for char in start_seq[0].seq])
-            entropy_values.append((family,magtropy(final_seq)))
+            entropy_values.append((family, magtropy(final_seq), entropy(final_seq)))
     entropy_dict[test] = entropy_values
 
 test1 = pd.DataFrame.from_dict(entropy_dict["Test1"])
@@ -109,14 +109,20 @@ test3b = pd.DataFrame.from_dict(entropy_dict["Test3b"])
 test4 = pd.DataFrame.from_dict(entropy_dict["Test4"])
 test5  = pd.DataFrame.from_dict(entropy_dict["Test5"])
 test6 = pd.DataFrame.from_dict(entropy_dict["Test6"])
+test8 = pd.DataFrame.from_dict(entropy_dict["Test8"])
+test1.columns = ["Family","Magtropy","Entropy"]
+test2.columns = ["Family","Magtropy", "Entropy"]
+test3a.columns = ["Family","Magtropy","Entropy"]
+test3b.columns = ["Family","Magtropy", "Entropy"]
+test4.columns = ["Family","Magtropy", "Entropy"]
+test5.columns = ["Family", "Magtropy","Entropy"]
+test6.columns = ["Family","Magtropy" , "Entropy"]
+test8.columns = ["Family","Magtropy","Entropy"]
 
-test1.columns = ["Family", "Magtropy"]
-test2.columns = ["Family", "Magtropy"]
-test3a.columns = ["Family", "Magtropy"]
-test3b.columns = ["Family", "Magtropy"]
-test4.columns = ["Family", "Magtropy"]
-test5.columns = ["Family", "Magtropy"]
-test6.columns = ["Family", "Magtropy"]
+
+
+
+
 # Hypertuning
 model_dict = {'log': LogisticRegression(),
              'rf': RandomForestClassifier(),
@@ -124,18 +130,18 @@ model_dict = {'log': LogisticRegression(),
              'knn': KNeighborsClassifier(),
              'svm': SVC()
                 }
-def removeCovid(test):
-    test = test.drop([test[test["Family"] == "COVID19"].index[0]], axis = 0)
-    return test
+# def removeCovid(test):
+#     test = test.drop([test[test["Family"] == "COVID19"].index[0]], axis = 0)
+#     return test
+#
+#
+# test5 = removeCovid(test5)
+# test5[test5["Family"] == "COVID19"]
+test5
 
-
-test5 = removeCovid(test5)
-test5[test5["Family"] == "COVID19"]
-
-
-X = pd.DataFrame(test1["Magtropy"])
+X = test5.drop(columns = ["Family"])
 X
-y = pd.DataFrame(test1["Family"])
+y = pd.DataFrame(test5["Family"])
 y
 data_path = getcwd() + "/data/JSON_Files"
 #opening the json file that contains all the different parameters of each classification model
@@ -181,15 +187,40 @@ my_model = ML_Pipeline(X, y, "knn", 10, 0.2, print_results = None)
 
 
 
-start_seq = list(SeqIO.parse((getcwd() + f"/data/Test5/COVID19/MN908947.fasta"), "fasta"))
-count = len(start_seq[0].seq)
-final_seq = "".join([char for char in start_seq[0].seq])
-COVID = magtropy(final_seq)
+#
+# COVID_path = getcwd() + f"/data/Test8/COVID_files/"
+# COVID_magtropy = []
+# for file in my_dict["Test8"]["COVID_files"]:
+#     start_seq = list(SeqIO.parse((COVID_path + f"{file}"), "fasta"))
+#     count = len(start_seq[0].seq)
+#     final_seq = "".join([char for char in start_seq[0].seq])
+#     COVID = magtropy(final_seq)
+#     COVID_magtropy.append(COVID)
+#
+#
+# df2 = pd.DataFrame(COVID_magtropy, columns = ["Magtropy"])
+# df2
+# start_seq = list(SeqIO.parse((getcwd() + f"/data/Test8/COVID-19/Covid-19_Brazil.fasta"), "fasta"))
+# count = len(start_seq[0].seq)
+# final_seq = "".join([char for char in start_seq[0].seq])
+# COVID = magtropy(final_seq)
+#
+# COVID
+#
+# COVID = {"Magtropy": [COVID]}
+# COVID
+# df = pd.DataFrame(COVID, columns = ["Magtropy"])
+# df
+df2 = test8.drop(columns = ["Family"])
+df2
+my_model.predict(df2)
 
-COVID
 
-COVID = {"Magtropy": [COVID]}
-COVID
-df = pd.DataFrame(COVID, columns = ["Magtropy"])
-df
-my_model.predict(df)
+
+
+
+
+
+
+
+divide the entropy by the magnitude_avg

@@ -17,7 +17,11 @@ from sklearn.metrics import confusion_matrix, accuracy_score, matthews_corrcoef,
 #Going to Test folders
 folder_path = getcwd() + "/data"
 
+<<<<<<< HEAD
 folders = sorted(listdir(folder_path))[1:9]
+=======
+folders = sorted(listdir(folder_path))[2:10]
+>>>>>>> 649f04cfe8541e41d9cd559bbe9cc67a8b343e9b
 folders
 
 folder_dict = {}
@@ -110,7 +114,10 @@ test4 = pd.DataFrame.from_dict(entropy_dict["Test4"])
 test5  = pd.DataFrame.from_dict(entropy_dict["Test5"])
 test6 = pd.DataFrame.from_dict(entropy_dict["Test6"])
 test8 = pd.DataFrame.from_dict(entropy_dict["Test8"])
+<<<<<<< HEAD
 
+=======
+>>>>>>> 649f04cfe8541e41d9cd559bbe9cc67a8b343e9b
 test1.columns = ["Family", "Magtropy"]
 test2.columns = ["Family", "Magtropy"]
 test3a.columns = ["Family", "Magtropy"]
@@ -120,6 +127,81 @@ test5.columns = ["Family", "Magtropy"]
 test6.columns = ["Family", "Magtropy"]
 test8.columns = ["Family", "Magtropy"]
 
+<<<<<<< HEAD
+=======
+test8
+list_one = []
+for i in entropy_dict['Test5']:
+    if i[0] == "Merbecovirus":
+        list_one.append(i[1])
+
+
+list_two = []
+for i in entropy_dict['Test5']:
+    if i[0] == "Nobecovirus":
+        list_two.append(i[1])
+
+
+list_three = []
+for i in entropy_dict['Test5']:
+    if i[0] == "Embecovirus":
+        list_three.append(i[1])
+
+
+
+list_four = []
+for i in entropy_dict['Test5']:
+    if i[0] == "Sarbecovirus":
+        list_four.append(i[1])
+
+list_covid = []
+for i in entropy_dict["Test8"]:
+    list_covid.append(i[1])
+
+
+
+# list_five = []
+# for i in entropy_dict['Test2']["Picornaviridae"]:
+#     list_five.append(i[3])
+# list_six = []
+# for i in entropy_dict["Test2"]["Potyviridae"]:
+#     list_six.append(i[3])
+# list_seven = []
+# for i in entropy_dict["Test2"]["Reoviridae"]:
+#     list_seven.append(i[3])
+# list_eight = []
+# for i in entropy_dict["Test2"]["Rhabdoviridae"]:
+#     list_eight.append(i[3])
+# list_nine = []
+# for i in entropy_dict["Test2"]["Secoviridae"]:
+#     list_nine.append(i[3])
+
+
+list_one, list_two,list_three, list_four
+
+
+plt.hist(list_one)
+plt.hist(list_two)
+plt.hist(list_three)
+plt.hist(list_four)
+plt.hist(list_covid)
+plt.hist(list_one)
+plt.hist(list_seven)
+plt.hist(list_eight)
+plt.hist(list_nine)
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> 649f04cfe8541e41d9cd559bbe9cc67a8b343e9b
 # Hypertuning
 model_dict = {'log': LogisticRegression(),
              'rf': RandomForestClassifier(),
