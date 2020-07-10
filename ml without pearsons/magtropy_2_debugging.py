@@ -17,7 +17,7 @@ from sklearn.metrics import confusion_matrix, accuracy_score, matthews_corrcoef,
 #Going to Test folders
 folder_path = getcwd() + "/data"
 
-folders = sorted(listdir(folder_path))[1:8]
+folders = sorted(listdir(folder_path))[1:9]
 folders
 
 folder_dict = {}
@@ -135,11 +135,11 @@ def removeCovid(test):
 test5 = removeCovid(test5)
 test5[test5["Family"] == "COVID19"]
 
-df=pd.DataFrame(test4["Family"])
+#df=pd.DataFrame(test4["Family"])
 
 X = pd.DataFrame(test7["Magtropy"])
 X
-y = pd.DataFrame(test4["Family"])
+y = pd.DataFrame(test7["Family"])
 y
 data_path = getcwd() + "/data/JSON_Files"
 #opening the json file that contains all the different parameters of each classification model
@@ -196,4 +196,5 @@ COVID = {"Magtropy": [COVID]}
 COVID
 df2 = pd.DataFrame(COVID, columns = ["Magtropy"])
 df2
+
 my_model.predict(df2)
