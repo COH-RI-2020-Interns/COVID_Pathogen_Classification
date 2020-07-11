@@ -44,7 +44,7 @@ f = open(f"{output_path}/{listdir(output_path)[0]}", )
 my_dict = json.load(f)
 for test in my_dict:
     test = sorted(test)
-
+my_dict["Test3a"]["Betacoronavirus"]
 
 # Calculating Entropy
 def entropy(sequence):
@@ -105,7 +105,7 @@ def magtropy(sequence):
 #     entropy_dict[test] = entropy_values
 
 
-# file_path_1 = getcwd()
+file_path_1 = getcwd()
 entropy_dict = {}
 # for test in my_dict.keys():
 entropy_values = []
