@@ -82,43 +82,41 @@ def magnitude_avg(sequence):
         mag_avg_list.append(mag_avg)
     return mag_avg_list
 
-magnitude_avg("AGTC")
 def magtropy(sequence):
     list_magtropy = [avg/entropy(sequence) for avg in magnitude_avg(sequence)]
     return list_magtropy
 
 
-magtropy("AGTC")
 
 # Saving Entropy values to dictionary
 #removed temp_entropy_dict
-file_path_1 = getcwd()
-entropy_dict = {}
-for test in my_dict.keys():
-    entropy_values = []
-    for family in  my_dict[test].keys():
-        for file in my_dict[test][family]:
-            start_seq = list(SeqIO.parse((f"{file_path_1}/data/{test}/{family}/{file}"), "fasta"))
-            count = len(start_seq[0].seq)
-            final_seq = "".join([char for char in start_seq[0].seq])
-            entropy_values.append((family, magtropy(final_seq)[0], magtropy(final_seq)[1], magtropy(final_seq)[2], magtropy(final_seq)[3], magtropy(final_seq)[4]))
-    entropy_dict[test] = entropy_values
+
+
+# file_path_1 = getcwd()
+# entropy_dict = {}
+# for test in my_dict.keys():
+#     entropy_values = []
+#     for family in  my_dict[test].keys():
+#         for file in my_dict[test][family]:
+#             start_seq = list(SeqIO.parse((f"{file_path_1}/data/{test}/{family}/{file}"), "fasta"))
+#             count = len(start_seq[0].seq)
+#             final_seq = "".join([char for char in start_seq[0].seq])
+#             entropy_values.append((family, magtropy(final_seq)[0], magtropy(final_seq)[1], magtropy(final_seq)[2], magtropy(final_seq)[3], magtropy(final_seq)[4]))
+#     entropy_dict[test] = entropy_values
 
 
 # file_path_1 = getcwd()
 entropy_dict = {}
 # for test in my_dict.keys():
 entropy_values = []
-for family in my_dict["Test1"].keys():
-    for file in my_dict["Test1"][family]:
-        start_seq = list(SeqIO.parse((f"{file_path_1}/data/Test1/{family}/{file}"), "fasta"))
+for family in my_dict["Test4"].keys():
+    for file in my_dict["Test4"][family]:
+        start_seq = list(SeqIO.parse((f"{file_path_1}/data/Test4/{family}/{file}"), "fasta"))
         count = len(start_seq[0].seq)
         final_seq = "".join([char for char in start_seq[0].seq])
         entropy_values.append((family, magtropy(final_seq)[0], magtropy(final_seq)[1], magtropy(final_seq)[2], magtropy(final_seq)[3], magtropy(final_seq)[4]))
 
-entropy_dict["Test1"] = entropy_values
-
-entropy_dict["Test1"]
+entropy_dict["Test4"] = entropy_values
 
 
 test1 = pd.DataFrame.from_dict(entropy_dict["Test1"])
@@ -128,18 +126,17 @@ test3b = pd.DataFrame.from_dict(entropy_dict["Test3b"])
 test4 = pd.DataFrame.from_dict(entropy_dict["Test4"])
 test5  = pd.DataFrame.from_dict(entropy_dict["Test5"])
 test6 = pd.DataFrame.from_dict(entropy_dict["Test6"])
-test8 = pd.DataFrame.from_dict(entropy_dict["Test8"])
+# test8 = pd.DataFrame.from_dict(entropy_dict["Test8"])
 
-test1.columns = ["Family", "int1",  "int2", "EIIP", "JustA", "JustG"]
-test2.columns = ["Family", "Magtropy"]
-test3a.columns = ["Family", "Magtropy"]
-test3b.columns = ["Family", "Magtropy"]
-test4.columns = ["Family", "Magtropy"]
-test5.columns = ["Family", "int1",  "int2", "EIIP", "JustA", "JustG"]
+test1.columns = ["Family", "int1", "int2", "EIIP", "JustA", "JustG"]
+test2.columns = ["Family", "int1", "int2", "EIIP", "JustA", "JustG"]
+test3a.columns = ["Family", "int1", "int2", "EIIP", "JustA", "JustG"]
+test3b.columns = ["Family", "int1", "int2", "EIIP", "JustA", "JustG"]
+test4.columns = ["Family", "int1", "int2", "EIIP", "JustA", "JustG"]
+test5.columns = ["Family", "int1", "int2", "EIIP", "JustA", "JustG"]
 test6.columns = ["Family", "Magtropy"]
-test8.columns = ["Family", "Magtropy"]
+#test8.columns = ["Family", "Magtropy"]
 
-test1
 
 # Hypertuning
 model_dict = {'log': LogisticRegression(),
@@ -158,16 +155,16 @@ model_dict = {'log': LogisticRegression(),
 
 #df=pd.DataFrame(test4["Family"])
 
-X = test1.drop(columns = ["Family"])
-X
-y = pd.DataFrame(test1["Family"])
-y
+X = test4.drop(columns = ["Family"])
+
+y = pd.DataFrame(test4["Family"])
+
 
 data_path = getcwd() + "/data/JSON_Files"
 #opening the json file that contains all the different parameters of each classification model
 with open(f"{data_path}/{(listdir(data_path))[1]}", "r") as f:
     parameter_config = json.load(f)
-parameter_config
+
 
 
 def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
@@ -221,7 +218,6 @@ df2 = pd.DataFrame.from_dict(entropy_dict["Test8"])
 df2.columns = ["Family", "int1",  "int2", "EIIP", "JustA", "JustG"]
 
 
-df2
 df2 = df2.drop(columns = ["Family"])
 my_model.predict(df2)
 
