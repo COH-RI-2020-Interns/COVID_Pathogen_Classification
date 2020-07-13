@@ -14,11 +14,16 @@ from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn.metrics import confusion_matrix, accuracy_score, matthews_corrcoef, classification_report
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, classification_report, confusion_matrix
+from sklearn.svm import SVC
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.naive_bayes import MultinomialNB
 
 #Going to Test folders
 folder_path = getcwd() + "/data"
 
-folders = sorted(listdir(folder_path))[1:10]
+folders = sorted(listdir(folder_path))[1:9]
 folders
 
 folder_dict = {}
@@ -43,7 +48,7 @@ my_dict = json.load(f)
 for test in my_dict:
     test = sorted(test)
 
-len(my_dict["Test1a"])
+
 
 # Calculating Entropy
 def entropy(sequence):
@@ -120,6 +125,7 @@ X = test1.drop(columns = ["Family"])
 
 y = pd.DataFrame(test1["Family"])
 
+
 data_path = getcwd() + "/data/JSON_Files"
 #opening the json file that contains all the different parameters of each classification model
 with open(f"{data_path}/{(listdir(data_path))[1]}", "r") as f:
@@ -130,7 +136,7 @@ with open(f"{data_path}/{(listdir(data_path))[1]}", "r") as f:
 def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 
     # Split Data into Training and Testing
-    X_train, X_test, Y_train, Y_test = train_test_split(features, target, test_size=test_size, stratify=target)
+    X_train, X_test, Y_train, Y_test = train_test_split(features, target, test_size=test_size)# stratify=target)
 
     # Creating a Hyperparameter Tuning Strategy
     base_model = model_dict[estimator]
@@ -160,7 +166,9 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
     return ml_model
 
 
-my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
+my_model = ML_Pipeline(X, y, "svm", 10, 0.33)
+
+
 
 # for test in my_dict.keys():
 entropy_values = []
