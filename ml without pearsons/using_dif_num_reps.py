@@ -159,8 +159,6 @@ model_dict = {'log': LogisticRegression(),
 X = test3b.drop(columns = ["Family"])
 
 y = pd.DataFrame(test3b["Family"])
-y
-ravel(y)
 
 data_path = getcwd() + "/data/JSON_Files"
 #opening the json file that contains all the different parameters of each classification model
@@ -180,7 +178,7 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
     ml_model = RandomizedSearchCV(base_model, model_params, n_iter= 15, cv=cv)
 
     # Train the Model
-    ml_model.fit(X_train, Y_train)
+    ml_model.fit(X_train, Y_train.values.ravel())
 
     # Getting the Best Parameters and Results from Cross Validation
     print(f"The best algorithm is: {ml_model.best_estimator_} \n")
