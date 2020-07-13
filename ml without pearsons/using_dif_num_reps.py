@@ -105,18 +105,18 @@ def magtropy(sequence):
 #     entropy_dict[test] = entropy_values
 
 
-# file_path_1 = getcwd()
+file_path_1 = getcwd()
 entropy_dict = {}
 # for test in my_dict.keys():
 entropy_values = []
-for family in my_dict["Test4"].keys():
-    for file in my_dict["Test4"][family]:
-        start_seq = list(SeqIO.parse((f"{file_path_1}/data/Test4/{family}/{file}"), "fasta"))
+for family in my_dict["Test2"].keys():
+    for file in my_dict["Test2"][family]:
+        start_seq = list(SeqIO.parse((f"{file_path_1}/data/Test2/{family}/{file}"), "fasta"))
         count = len(start_seq[0].seq)
         final_seq = "".join([char for char in start_seq[0].seq])
         entropy_values.append((family, magtropy(final_seq)[0], magtropy(final_seq)[1], magtropy(final_seq)[2], magtropy(final_seq)[3], magtropy(final_seq)[4]))
 
-entropy_dict["Test4"] = entropy_values
+entropy_dict["Test2"] = entropy_values
 
 
 test1 = pd.DataFrame.from_dict(entropy_dict["Test1"])
@@ -127,7 +127,7 @@ test4 = pd.DataFrame.from_dict(entropy_dict["Test4"])
 test5  = pd.DataFrame.from_dict(entropy_dict["Test5"])
 test6 = pd.DataFrame.from_dict(entropy_dict["Test6"])
 # test8 = pd.DataFrame.from_dict(entropy_dict["Test8"])
-
+test4
 test1.columns = ["Family", "int1", "int2", "EIIP", "JustA", "JustG"]
 test2.columns = ["Family", "int1", "int2", "EIIP", "JustA", "JustG"]
 test3a.columns = ["Family", "int1", "int2", "EIIP", "JustA", "JustG"]
@@ -136,8 +136,7 @@ test4.columns = ["Family", "int1", "int2", "EIIP", "JustA", "JustG"]
 test5.columns = ["Family", "int1", "int2", "EIIP", "JustA", "JustG"]
 test6.columns = ["Family", "Magtropy"]
 #test8.columns = ["Family", "Magtropy"]
-
-
+test2
 # Hypertuning
 model_dict = {'log': LogisticRegression(),
              'rf': RandomForestClassifier(),
@@ -155,9 +154,9 @@ model_dict = {'log': LogisticRegression(),
 
 #df=pd.DataFrame(test4["Family"])
 
-X = test4.drop(columns = ["Family"])
+X = test2.drop(columns = ["Family"])
 
-y = pd.DataFrame(test4["Family"])
+y = pd.DataFrame(test2["Family"])
 
 
 data_path = getcwd() + "/data/JSON_Files"
@@ -216,7 +215,7 @@ entropy_dict["Test8"] = entropy_values
 
 df2 = pd.DataFrame.from_dict(entropy_dict["Test8"])
 df2.columns = ["Family", "int1",  "int2", "EIIP", "JustA", "JustG"]
-
+df2
 
 df2 = df2.drop(columns = ["Family"])
 my_model.predict(df2)
