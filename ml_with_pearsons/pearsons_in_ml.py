@@ -20,7 +20,7 @@ from sklearn.metrics import confusion_matrix, accuracy_score, matthews_corrcoef,
 #Using dictionary instead
 folder_path = getcwd() + "/data"
 
-folders = sorted(listdir(folder_path))[2:9]
+folders = sorted(listdir(folder_path))[1:9]
 
 folders
 folder_dict = {}
@@ -146,6 +146,7 @@ def magnitude_array(test, dict):
         mag_2 = abs(fft_2)
         mag_list.append(np.array((mag_1, mag_2)))
     return mag_list
+
 
 test3a = magnitude_array("Test3a", new_dict_2)
 #test6 = magnitude_array("Test6", new_dict_2)

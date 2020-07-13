@@ -46,8 +46,15 @@ svm = {'C': [0.001, 0.005, 0.2, 0.6, 1],
 
 parameter_dict['svm'] = svm
 
+# Decision Tree Classifier Parameter
+
+decision_tree = {'criterion': ['gini', 'entropy'], #default = 'gini'
+        'splitter': ['best', 'random'], #default = 'best'
+        'class_weight': [None]}
+
+parameter_dict['decision_tree'] = decision_tree
+
 data_path = getcwd() + "/data"
 
 with open(f"{data_path}/{sorted(listdir(data_path))[0][2]}", "w") as my_file:
     json.dump(parameter_dict, my_file)
-    
