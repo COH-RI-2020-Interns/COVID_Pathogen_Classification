@@ -57,17 +57,17 @@ def entropy(sequence):
 
 
 
-rep_dict = {"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
-"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4},
-"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5},
-"Atomic": {"T":6,"t":6,"C":58,"c":58, "A":70,"a":70 ,"G":78, "g":78},
-"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806},
-"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1},
-"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1},
-"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0},
-"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0},
-"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1},
-"Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
+rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3}}
+#"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4}}
+#"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5}}
+"Atomic": {"T":6,"t":6,"C":58,"c":58, "A":70,"a":70 ,"G":78, "g":78}}
+#"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806},
+#"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1},
+#"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1},
+#"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0},
+#"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0},
+#"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1}}
+#"Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
 
 
 def magnitude_avg(sequence):
@@ -90,21 +90,6 @@ def magtropy(sequence):
 
 
 # Saving Entropy values to dictionary
-#removed temp_entropy_dict
-
-
-# file_path_1 = getcwd()
-# entropy_dict = {}
-# for test in my_dict.keys():
-#     entropy_values = []
-#     for family in  my_dict[test].keys():
-#         for file in my_dict[test][family]:
-#             start_seq = list(SeqIO.parse((f"{file_path_1}/data/{test}/{family}/{file}"), "fasta"))
-#             count = len(start_seq[0].seq)
-#             final_seq = "".join([char for char in start_seq[0].seq])
-#             entropy_values.append((family, magtropy(final_seq)[0], magtropy(final_seq)[1], magtropy(final_seq)[2], magtropy(final_seq)[3], magtropy(final_seq)[4]))
-#     entropy_dict[test] = entropy_values
-
 
 file_path_1 = getcwd()
 entropy_dict = {}
@@ -115,28 +100,30 @@ for family in my_dict["Test3b"].keys():
         start_seq = list(SeqIO.parse((f"{file_path_1}/data/Test3b/{family}/{file}"), "fasta"))
         count = len(start_seq[0].seq)
         final_seq = "".join([char for char in start_seq[0].seq])
-        entropy_values.append((family, magtropy(final_seq)[0], magtropy(final_seq)[1], magtropy(final_seq)[2], magtropy(final_seq)[3], magtropy(final_seq)[4], magtropy(final_seq)[5], magtropy(final_seq)[6], magtropy(final_seq)[7], magtropy(final_seq)[8], magtropy(final_seq)[9], magtropy(final_seq)[10]))
+        entropy_values.append((family, magtropy(final_seq)[0]))
+
 
 entropy_dict["Test3b"] = entropy_values
 
-test1 = pd.DataFrame.from_dict(entropy_dict["Test1"])
-test2 = pd.DataFrame.from_dict(entropy_dict["Test2"])
-test3a = pd.DataFrame.from_dict(entropy_dict["Test3a"])
+#test1 = pd.DataFrame.from_dict(entropy_dict["Test1"])
+#test2 = pd.DataFrame.from_dict(entropy_dict["Test2"])
+#test3a = pd.DataFrame.from_dict(entropy_dict["Test3a"])
 test3b = pd.DataFrame.from_dict(entropy_dict["Test3b"])
-test4 = pd.DataFrame.from_dict(entropy_dict["Test4"])
-test5  = pd.DataFrame.from_dict(entropy_dict["Test5"])
-test6 = pd.DataFrame.from_dict(entropy_dict["Test6"])
+#test4 = pd.DataFrame.from_dict(entropy_dict["Test4"])
+#test5  = pd.DataFrame.from_dict(entropy_dict["Test5"])
+#test6 = pd.DataFrame.from_dict(entropy_dict["Test6"])
 # test8 = pd.DataFrame.from_dict(entropy_dict["Test8"])
 
-test1.columns = ["Family", "int1", "int2", "EIIP", "JustA", "JustG"]
-test2.columns = ["Family", "int1", "int2", "EIIP", "JustA", "JustG"]
-test3a.columns = ["Family", "int1", "Real", "EIIP", "JustA", "JustG"]
-test3b.columns = ["Family", "int1", "int2", "Real", "Atomic", "EIIP", "PP", "Paired Numeric", "JustA", "JustC", "JustG", "JustT"]
-test4.columns = ["Family", "int1", "int2", "EIIP", "JustA", "JustG"]
-test5.columns = ["Family", "int1", "int2", "EIIP", "JustA", "JustG"]
-test6.columns = ["Family", "Magtropy"]
-#test8.columns = ["Family", "Magtropy"]
+#test1.columns = ["Family", "int1", "int2", "EIIP", "JustA", "JustG"]
+#test2.columns = ["Family", "int1", "int2", "EIIP", "JustA", "JustG"]
+#test3a.columns = ["Family", "int1", "Real", "EIIP", "JustA", "JustG"]
+test3b.columns = ["Family", "int1"]
+#test3b.columns = ["Family", "int1", "int2", "EIIP", "JustA", "JustG"] #, "int2", "Real", "Atomic", "EIIP", "PP", "Paired Numeric", "JustA", "JustC", "JustG", "JustT"]
 
+#test4.columns = ["Family", "int1", "int2", "EIIP", "JustA", "JustG"]
+#test5.columns = ["Family", "int1", "int2", "EIIP", "JustA", "JustG"]
+#test6.columns = ["Family", "Magtropy"]
+#test8.columns = ["Family", "Magtropy"]
 
 # Hypertuning
 model_dict = {'log': LogisticRegression(),
@@ -146,15 +133,6 @@ model_dict = {'log': LogisticRegression(),
              'svm': SVC(),
              'decision_tree': DecisionTreeClassifier()
                 }
-# def removeCovid(test):
-#     test = test.drop([test[test["Family"] == "COVID19"].index[0]], axis = 0)
-#     return test
-#
-#
-# test5 = removeCovid(test5)
-# test5[test5["Family"] == "COVID19"]
-
-#df=pd.DataFrame(test4["Family"])
 
 X = test3b.drop(columns = ["Family"])
 
@@ -178,7 +156,7 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
     ml_model = RandomizedSearchCV(base_model, model_params, n_iter= 15, cv=cv)
 
     # Train the Model
-    ml_model.fit(X_train, Y_train.values.ravel())
+    ml_model.fit(X_train, np.ravel(Y_train))
 
     # Getting the Best Parameters and Results from Cross Validation
     print(f"The best algorithm is: {ml_model.best_estimator_} \n")
@@ -202,7 +180,6 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 
 my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
 
-
 # for test in my_dict.keys():
 entropy_values = []
 for family in my_dict["Test8"].keys():
@@ -210,13 +187,13 @@ for family in my_dict["Test8"].keys():
         start_seq = list(SeqIO.parse((f"{file_path_1}/data/Test8/{family}/{file}"), "fasta"))
         count = len(start_seq[0].seq)
         final_seq = "".join([char for char in start_seq[0].seq])
-        entropy_values.append((family, magtropy(final_seq)[0], magtropy(final_seq)[1], magtropy(final_seq)[2], magtropy(final_seq)[3], magtropy(final_seq)[4], magtropy(final_seq)[5], magtropy(final_seq)[6], magtropy(final_seq)[7], magtropy(final_seq)[8], magtropy(final_seq)[9], magtropy(final_seq)[10]))
+        entropy_values.append((family, magtropy(final_seq)[0]))
 
 entropy_dict["Test8"] = entropy_values
 
 df2 = pd.DataFrame.from_dict(entropy_dict["Test8"])
-df2.columns = ["Family", "int1", "int2", "Real", "Atomic", "EIIP", "PP", "Paired Numeric", "JustA", "JustC", "JustG", "JustT"]
-
+df2.columns = ["Family", "int1"] #, "int2", "EIIP", "JustA", "JustG"]
+#df2.columns = ["Family", "int1", "int2", "Real", "Atomic", "EIIP", "PP", "Paired Numeric", "JustA", "JustC", "JustG", "JustT"]
 
 df2 = df2.drop(columns = ["Family"])
 my_model.predict(df2)

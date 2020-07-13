@@ -40,7 +40,7 @@ parameter_dict['knn'] = knn
 # Support Vector Machine Parameters
 
 svm = {'C': [0.001, 0.005, 0.2, 0.6, 1],
-       'kernel': ['linear', 'rbf'],
+       'kernel': ['linear', 'rbf', 'polynomial'],
        'class_weight': [None, 'balanced']
        }
 
