@@ -14,16 +14,11 @@ from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn.metrics import confusion_matrix, accuracy_score, matthews_corrcoef, classification_report
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, classification_report, confusion_matrix
-from sklearn.svm import SVC
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.naive_bayes import MultinomialNB
 
 #Going to Test folders
 folder_path = getcwd() + "/data"
 
-folders = sorted(listdir(folder_path))[1:9]
+folders = sorted(listdir(folder_path))[1:11]
 folders
 
 folder_dict = {}
@@ -59,14 +54,13 @@ def entropy(sequence):
 
 
 
-rep_dict = {"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3}}
-#"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4}}
+rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
+#"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4},
 #"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5}}
-#"Atomic": {"T":6,"t":6,"C":58,"c":58, "A":70,"a":70 ,"G":78, "g":78}}
-#"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806}}
+"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806}}
 #"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1}}
 #"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1}}
-#"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0}}
+#"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0},
 #"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0}}
 #"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1}}
 #"Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
@@ -97,19 +91,21 @@ file_path_1 = getcwd()
 entropy_dict = {}
 # for test in my_dict.keys():
 entropy_values = []
-for family in my_dict["Test1"].keys():
-    for file in my_dict["Test1"][family]:
-        start_seq = list(SeqIO.parse((f"{file_path_1}/data/Test1/{family}/{file}"), "fasta"))
-        count = len(start_seq[0].seq)
+for family in my_dict["Test1a"].keys():
+    for file in my_dict["Test1a"][family]:
+        start_seq = list(SeqIO.parse((f"{file_path_1}/data/Test1a/{family}/{file}"), "fasta"))
+        #print(start_seq, file)
+        #count = len(start_seq[0].seq)
         final_seq = "".join([char for char in start_seq[0].seq])
         entropy_values.append((family, magtropy(final_seq)[0]))
+        #, magtropy(final_seq)[1], magtropy(final_seq)[2], magtropy(final_seq)[3], magtropy(final_seq)[4]))
 
 
-entropy_dict["Test1"] = entropy_values
+entropy_dict["Test1a"] = entropy_values
 
-test1 = pd.DataFrame.from_dict(entropy_dict["Test1"])
+test1a = pd.DataFrame.from_dict(entropy_dict["Test1a"])
 
-test1.columns = ["Family", "rep"]
+test1a.columns = ["Family", "rep"]#, "int2", "EIIP", "JustA",  "JustG"]
 
 # Hypertuning
 model_dict = {'log': LogisticRegression(),
@@ -120,9 +116,9 @@ model_dict = {'log': LogisticRegression(),
              'decision_tree': DecisionTreeClassifier()
                 }
 
-X = test1.drop(columns = ["Family"])
+X = test1a.drop(columns = ["Family"])
 
-y = pd.DataFrame(test1["Family"])
+y = pd.DataFrame(test1a["Family"])
 
 
 data_path = getcwd() + "/data/JSON_Files"
@@ -135,12 +131,12 @@ with open(f"{data_path}/{(listdir(data_path))[1]}", "r") as f:
 def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 
     # Split Data into Training and Testing
-    X_train, X_test, Y_train, Y_test = train_test_split(features, target, test_size=test_size,stratify=target)
+    X_train, X_test, Y_train, Y_test = train_test_split(features, target, test_size=test_size, stratify=target)
 
     # Creating a Hyperparameter Tuning Strategy
     base_model = model_dict[estimator]
     model_params = parameter_config[estimator]
-    ml_model = RandomizedSearchCV(base_model, model_params, n_iter= 15, cv=cv)
+    ml_model = RandomizedSearchCV(base_model, model_params, n_iter= 50, cv=cv)
 
     # Train the Model
     ml_model.fit(X_train, np.ravel(Y_train))
@@ -165,7 +161,7 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
     return ml_model
 
 
-my_model = ML_Pipeline(X, y.iloc[:,1], "svm", 10, 0.33)
+my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
 
 
 
@@ -177,13 +173,13 @@ for family in my_dict["Test8"].keys():
         count = len(start_seq[0].seq)
         final_seq = "".join([char for char in start_seq[0].seq])
         entropy_values.append((family, magtropy(final_seq)[0]))
+        #, magtropy(final_seq)[1], magtropy(final_seq)[2], magtropy(final_seq)[3], magtropy(final_seq)[4]))
 
 entropy_dict["Test8"] = entropy_values
 
 df2 = pd.DataFrame.from_dict(entropy_dict["Test8"])
-df2.columns = ["Family", "rep"]
-#df2.columns = ["Family", "int1", "int2", "Real", "Atomic", "EIIP", "PP", "Paired Numeric", "Just A", "Just C", "Just G", "Just T"]
+df2.columns = ["Family", "int1"]#, "int2", "EIIP", "JustA",  "JustG"]
+
 
 df2 = df2.drop(columns = ["Family"])
-#df2 = pd.DataFrame(df2["Family"])
 my_model.predict(df2)
