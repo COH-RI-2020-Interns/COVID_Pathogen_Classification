@@ -228,7 +228,7 @@ my_model.predict(df2)
 
 
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle = True, random_state=0) # making Test size 0.2 instead of 0.1
+#X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle = True, random_state=0) # making Test size 0.2 instead of 0.1#
 
 
 # Doing entropy divided by magnitude_average removed Caudovirales from the classification of test3a
