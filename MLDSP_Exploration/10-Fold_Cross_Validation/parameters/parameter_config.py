@@ -41,8 +41,7 @@ parameter_dict['knn'] = knn
 
 svm = {'C': [0.001, 0.005, 0.2, 0.6, 1],
        'kernel': ['linear', 'rbf'], #, 'poly'],
-       'class_weight': [None, 'balanced'],
-       'random_state': [42]
+       'class_weight': [None, 'balanced']
        }
 
 parameter_dict['svm'] = svm

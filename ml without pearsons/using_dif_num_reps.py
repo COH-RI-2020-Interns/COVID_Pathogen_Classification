@@ -42,12 +42,11 @@ output_path = getcwd() + "/data/JSON_Files"
 with open(f"{output_path}/fasta_files.json", "w") as my_file:
     json.dump(folder_dict, my_file)
 
-f = open(f"{output_path}/{listdir(output_path)[0]}", )
+f = open(f"{output_path}/{listdir(output_path)[0]}")
 
 my_dict = json.load(f)
 for test in my_dict:
     test = sorted(test)
-
 
 
 # Calculating Entropy
@@ -136,7 +135,7 @@ with open(f"{data_path}/{(listdir(data_path))[1]}", "r") as f:
 def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 
     # Split Data into Training and Testing
-    X_train, X_test, Y_train, Y_test = train_test_split(features, target, test_size=test_size)# stratify=target)
+    X_train, X_test, Y_train, Y_test = train_test_split(features, target, test_size=test_size,stratify=target)
 
     # Creating a Hyperparameter Tuning Strategy
     base_model = model_dict[estimator]
@@ -166,7 +165,7 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
     return ml_model
 
 
-my_model = ML_Pipeline(X, y, "svm", 10, 0.33)
+my_model = ML_Pipeline(X, y.iloc[:,1], "svm", 10, 0.33)
 
 
 
