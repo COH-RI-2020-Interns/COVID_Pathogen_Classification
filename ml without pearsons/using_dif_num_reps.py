@@ -68,6 +68,9 @@ rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
 
 def magnitude_avg(sequence):
     mag_avg_list = []
+    base_list = ["K", "M", "N", "R", "S", "W", "Y"]
+    for i in base_list:
+        sequence = sequence.replace(i, "")
     for rep in rep_dict:
         dict_of_bases = rep_dict[rep]
         numeric = []
@@ -78,6 +81,7 @@ def magnitude_avg(sequence):
         mag_avg = np.average(mag)
         mag_avg_list.append(mag_avg)
     return mag_avg_list
+
 
 def magtropy(sequence):
     list_magtropy = [avg/entropy(sequence) for avg in magnitude_avg(sequence)]
@@ -91,9 +95,9 @@ file_path_1 = getcwd()
 entropy_dict = {}
 # for test in my_dict.keys():
 entropy_values = []
-for family in my_dict["Test1a"].keys():
-    for file in my_dict["Test1a"][family]:
-        start_seq = list(SeqIO.parse((f"{file_path_1}/data/Test1a/{family}/{file}"), "fasta"))
+for family in my_dict["Test1b"].keys():
+    for file in my_dict["Test1b"][family]:
+        start_seq = list(SeqIO.parse((f"{file_path_1}/data/Test1b/{family}/{file}"), "fasta"))
         #print(start_seq, file)
         #count = len(start_seq[0].seq)
         final_seq = "".join([char for char in start_seq[0].seq])
@@ -101,11 +105,11 @@ for family in my_dict["Test1a"].keys():
         #, magtropy(final_seq)[1], magtropy(final_seq)[2], magtropy(final_seq)[3], magtropy(final_seq)[4]))
 
 
-entropy_dict["Test1a"] = entropy_values
+entropy_dict["Test1b"] = entropy_values
 
-test1a = pd.DataFrame.from_dict(entropy_dict["Test1a"])
+test1b = pd.DataFrame.from_dict(entropy_dict["Test1b"])
 
-test1a.columns = ["Family", "rep"]#, "int2", "EIIP", "JustA",  "JustG"]
+test1b.columns = ["Family", "rep"]#, "int2", "EIIP", "JustA",  "JustG"]
 
 # Hypertuning
 model_dict = {'log': LogisticRegression(),
@@ -116,9 +120,9 @@ model_dict = {'log': LogisticRegression(),
              'decision_tree': DecisionTreeClassifier()
                 }
 
-X = test1a.drop(columns = ["Family"])
+X = test1b.drop(columns = ["Family"])
 
-y = pd.DataFrame(test1a["Family"])
+y = pd.DataFrame(test1b["Family"])
 
 
 data_path = getcwd() + "/data/JSON_Files"
