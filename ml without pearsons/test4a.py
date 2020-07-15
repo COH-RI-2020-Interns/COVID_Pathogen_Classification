@@ -44,16 +44,27 @@ for test in my_dict:
     test = sorted(test)
 
 
-rep_dict = {"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
+
+# Calculating Entropy
+def entropy(sequence):
+    counts = Counter(sequence)
+    props = {key: counts[key] / sum(counts.values()) for key in counts}
+    products = {key: props[key]*np.log(props[key]) for key in props}
+    return -1 * sum(products.values())
+
+
+
+
+rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
 #"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4},
-"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5},
+#"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5},
 #"Atomic": {"T":6,"t":6,"C":58,"c":58, "A":70,"a":70 ,"G":78, "g":78},
-"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806},
+"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806}}
 #"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1},
 #"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1},
-"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0},
+#"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0},
 #"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0},
-"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1}}
+#"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1}}
 #"Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
 
 
@@ -73,13 +84,6 @@ def magnitude_avg(sequence):
         mag_avg_list.append(mag_avg)
     return mag_avg_list
 
-# Calculating Entropy
-def entropy(sequence):
-    counts = Counter(sequence)
-    props = {key: counts[key] / sum(counts.values()) for key in counts}
-    products = {key: props[key]*np.log(props[key]) for key in props}
-    return -1 * sum(products.values())
-
 
 def magtropy(sequence):
     list_magtropy = [avg/entropy(sequence) for avg in magnitude_avg(sequence)]
@@ -93,24 +97,24 @@ file_path_1 = getcwd()
 entropy_dict = {}
 # for test in my_dict.keys():
 entropy_values = []
-for family in my_dict["Test4a"].keys():
-    for file in my_dict["Test4a"][family]:
-        start_seq = list(SeqIO.parse((f"{file_path_1}/data/Test4a/{family}/{file}"), "fasta"))
+for family in my_dict["Test1"].keys():
+    for file in my_dict["Test1"][family]:
+        start_seq = list(SeqIO.parse((f"{file_path_1}/data/Test1/{family}/{file}"), "fasta"))
         #print(len(start_seq))
         #count = len(start_seq[0].seq)
         final_seq = "".join([char for char in start_seq[0].seq])
         #print(len(final_seq))
         entropy_values.append((family, magtropy(final_seq)[0], magtropy(final_seq)[1], magtropy(final_seq)[2], magtropy(final_seq)[3], magtropy(final_seq)[4], magtropy(final_seq)[5]))
 
-entropy_dict["Test4a"] = entropy_values
+entropy_dict["Test1"] = entropy_values
 
-test4a = pd.DataFrame.from_dict(entropy_dict["Test4a"])
+test1b = pd.DataFrame.from_dict(entropy_dict["Test1b"])
 
-test4a.columns = ["Family", "int1", "Real", "EIIP", "JustA", "JustG"]
+test1b.columns = ["Family", "int2", "Real", "EIIP", "PP", "JustA", "JustG"]
 #"Family", "int1", "int2", "Real", "Atomic", "EIIP", "PP",
 #"Paired Numeric", "JustA", "JustC", "JustG", "JustT"]
 
-#test1b.to_csv('Training_Data.csv', index = False)
+test1b.to_csv('Training_Data.csv', index = False)
 
 
 
@@ -123,9 +127,9 @@ model_dict = {'log': LogisticRegression(),
              'decision_tree': DecisionTreeClassifier()
                 }
 
-X = test4a.drop(columns = ["Family"])
+X = test1b.drop(columns = ["Family"])
 
-y = pd.DataFrame(test4a["Family"])
+y = pd.DataFrame(test1b["Family"])
 
 
 data_path = getcwd() + "/data/JSON_Files"
