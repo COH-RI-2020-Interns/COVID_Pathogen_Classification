@@ -18,7 +18,7 @@ from sklearn.tree import DecisionTreeClassifier
 #Going to Test folders
 folder_path = getcwd() + "/data2"
 
-folders = sorted(listdir(folder_path))[0:5]
+folders = sorted(listdir(folder_path))[0:4]
 folders
 
 folder_dict = {}
@@ -49,8 +49,8 @@ rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
 #"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5}}
 #"Atomic": {"T":6,"t":6,"C":58,"c":58, "A":70,"a":70 ,"G":78, "g":78},
 #"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806},
-#"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1}}
-"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1}}
+"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1}}
+#"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1}}
 #"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0}}
 #"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0},
 #"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1}}
@@ -84,20 +84,20 @@ def magtropy(sequence):
     list_magtropy = [avg/entropy(sequence) for avg in magnitude_avg(sequence)]
     return list_magtropy
 
-def entropy_k(sequence, k):
-    kmer_lst = []
-    kmer = [sequence[x:x+k].lower() for x in range(len(sequence) - k + 1)]
-    for sequence in kmer:
-        counts = Counter(sequence)
-        props = {key: counts[key] / sum(counts.values()) for key in counts}
-        products = {key: props[key]*np.log(props[key]) for key in props}
-        entropy_kmer = -1 * sum(products.values())
-        kmer_lst.append(entropy_kmer)
-    return np.average(kmer_lst)
-
-def magtropy_k(sequence, k):
-    list_magtropy_k = [avg/entropy_k(sequence,k) for avg in magnitude_avg(sequence)]
-    return list_magtropy_k
+# def entropy_k(sequence, k):
+#     kmer_lst = []
+#     kmer = [sequence[x:x+k].lower() for x in range(len(sequence) - k + 1)]
+#     for sequence in kmer:
+#         counts = Counter(sequence)
+#         props = {key: counts[key] / sum(counts.values()) for key in counts}
+#         products = {key: props[key]*np.log(props[key]) for key in props}
+#         entropy_kmer = -1 * sum(products.values())
+#         kmer_lst.append(entropy_kmer)
+#     return np.average(kmer_lst)
+#
+# def magtropy_k(sequence, k):
+#     list_magtropy_k = [avg/entropy_k(sequence,k) for avg in magnitude_avg(sequence)]
+#     return list_magtropy_k
 
 
 
@@ -108,9 +108,9 @@ file_path_1 = getcwd()
 entropy_dict = {}
 # for test in my_dict.keys():
 entropy_values = []
-for family in my_dict["1a_Realm"].keys():
-    for file in my_dict["1a_Realm"][family]:
-        start_seq = list(SeqIO.parse((f"{file_path_1}/data2/1a_Realm/{family}/{file}"), "fasta"))
+for family in my_dict["1_Realm"].keys():
+    for file in my_dict["1_Realm"][family]:
+        start_seq = list(SeqIO.parse((f"{file_path_1}/data2/1_Realm/{family}/{file}"), "fasta"))
         #print(len(start_seq))
         #count = len(start_seq[0].seq)
         final_seq = "".join([char for char in start_seq[0].seq])
@@ -122,7 +122,7 @@ entropy_dict["Realm"] = entropy_values
 realm = pd.DataFrame.from_dict(entropy_dict["Realm"])
 realm.columns = ["Family", "paired numeric"]
 #test1b.to_csv('Training_Data.csv', index = False)
-realm
+
 
 # Hypertuning
 model_dict = {'log': LogisticRegression(),
