@@ -3,13 +3,13 @@ import pandas as pd
 import json
 from Bio import SeqIO
 from os import getcwd, listdir, system
-import collections
+from collections import Counter
 
 
 # Going to Test folders
 folder_path = getcwd() + "/data"
 
-folders = sorted(listdir(folder_path))[1:8]
+folders = sorted(listdir(folder_path))[1:14]
 folders
 
 folder_dict = {}
@@ -57,8 +57,9 @@ def entropy(sequence):
 
 
 # Find entropy of k-mers
-def entropy_k(kmer):
+def entropy_k(sequence, k):
     kmer_lst = []
+    kmer = [sequence[x:x+k].lower() for x in range(len(sequence) - k + 1)]
     for sequence in kmer:
         counts = Counter(sequence)
         props = {key: counts[key] / sum(counts.values()) for key in counts}
@@ -67,8 +68,9 @@ def entropy_k(kmer):
         kmer_lst.append(entropy_kmer)
     return np.average(kmer_lst)
 
-entropy(k)
-entropy_k(getKmers(seq, 5))
+entropy(seq)
+entropy_k(seq, 5)
+
 
 file_path_1 = getcwd()
 entropy_dict = {}
@@ -83,7 +85,6 @@ for test in my_dict.keys():
             entropy_values.append((file, entropy(final_seq)))
             temp_entropy_dict[family] = entropy_values
     entropy_dict[test] = temp_entropy_dict
-
 
 
 entropy_dict["Test1"]["Polyomaviridae"]

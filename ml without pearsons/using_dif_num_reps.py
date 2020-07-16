@@ -18,7 +18,7 @@ from sklearn.tree import DecisionTreeClassifier
 #Going to Test folders
 folder_path = getcwd() + "/data"
 
-folders = sorted(listdir(folder_path))[1:13]
+folders = sorted(listdir(folder_path))[1:10]
 folders
 
 folder_dict = {}
@@ -44,16 +44,16 @@ for test in my_dict:
     test = sorted(test)
 
 
-rep_dict = {"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
-#"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4},
-"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5},
+rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
+#"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4}}
+#"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5}}
 #"Atomic": {"T":6,"t":6,"C":58,"c":58, "A":70,"a":70 ,"G":78, "g":78},
-"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806},
-#"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1},
-#"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1},
-"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0},
+#"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806},
+"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1},
+"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1},
+"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0}}
 #"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0},
-"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1}}
+#"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1}}
 #"Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
 
 # Finding the Average Magnitude of the Sequence
@@ -100,13 +100,13 @@ for family in my_dict["Test3c"].keys():
         #count = len(start_seq[0].seq)
         final_seq = "".join([char for char in start_seq[0].seq])
         #print(len(final_seq))
-        entropy_values.append((family, magtropy(final_seq)[0], magtropy(final_seq)[1], magtropy(final_seq)[2],
-        magtropy(final_seq)[3], magtropy(final_seq)[4]))
+        entropy_values.append((family, magtropy(final_seq)[0], magtropy(final_seq)[1], magtropy(final_seq)[2]))#, magtropy(final_seq)[2],
+        #magtropy(final_seq)[3], magtropy(final_seq)[4]))
 
 entropy_dict["Test3c"] = entropy_values
 
 test3c = pd.DataFrame.from_dict(entropy_dict["Test3c"])
-test3c.columns = ["Family", "int1", "Real", "EIIP", "JustA", "JustG"]
+test3c.columns = ["Family", "rep1", "rep2", "rep3"]#, "Real", "EIIP", "JustA", "JustG"]
 #"Family", "int1", "int2", "Real", "Atomic", "EIIP", "PP",
 #"Paired Numeric", "JustA", "JustC", "JustG", "JustT"]
 
@@ -179,14 +179,12 @@ for family in my_dict["Test8"].keys():
         count = len(start_seq[0].seq)
         final_seq = "".join([char for char in start_seq[0].seq])
         #print(file)
-        entropy_values.append((family, magtropy(final_seq)[0], magtropy(final_seq)[1], magtropy(final_seq)[2],
-        magtropy(final_seq)[3], magtropy(final_seq)[4]))
-        #, magtropy(final_seq)[1], magtropy(final_seq)[2], magtropy(final_seq)[3], magtropy(final_seq)[4]))
+        entropy_values.append((family, magtropy(final_seq)[0], magtropy(final_seq)[1], magtropy(final_seq)[2]))
 
 entropy_dict["Test8"] = entropy_values
 
 df2 = pd.DataFrame.from_dict(entropy_dict["Test8"])
-df2.columns = ["Family", "int1", "Real", "EIIP", "JustA", "JustG"]
+df2.columns = ["Family", "rep1", "rep2", "rep3"]#, "rep3"]#, "Real", "EIIP", "JustA", "JustG"]
 
 #df2.to_csv('Testing_Data.csv', index = False)
 
