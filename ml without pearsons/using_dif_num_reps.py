@@ -18,7 +18,7 @@ from sklearn.tree import DecisionTreeClassifier
 #Going to Test folders
 folder_path = getcwd() + "/data"
 
-folders = sorted(listdir(folder_path))[1:11]
+folders = sorted(listdir(folder_path))[1:13]
 folders
 
 folder_dict = {}
@@ -56,10 +56,10 @@ rep_dict = {"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
 "Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1}}
 #"Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
 
-
+# Finding the Average Magnitude of the Sequence
 def magnitude_avg(sequence):
     mag_avg_list = []
-    base_list = ["K", "M", "N", "R", "S", "W", "Y"]
+    base_list = ["D", "K", "M", "N", "R", "S", "W", "Y"]
     for i in base_list:
         sequence = sequence.replace(i, "")
     for rep in rep_dict:
@@ -93,25 +93,23 @@ file_path_1 = getcwd()
 entropy_dict = {}
 # for test in my_dict.keys():
 entropy_values = []
-for family in my_dict["Test4a"].keys():
-    for file in my_dict["Test4a"][family]:
-        start_seq = list(SeqIO.parse((f"{file_path_1}/data/Test4a/{family}/{file}"), "fasta"))
+for family in my_dict["Test3b"].keys():
+    for file in my_dict["Test3b"][family]:
+        start_seq = list(SeqIO.parse((f"{file_path_1}/data/Test3b/{family}/{file}"), "fasta"))
         #print(len(start_seq))
         #count = len(start_seq[0].seq)
         final_seq = "".join([char for char in start_seq[0].seq])
         #print(len(final_seq))
-        entropy_values.append((family, magtropy(final_seq)[0], magtropy(final_seq)[1], magtropy(final_seq)[2], magtropy(final_seq)[3], magtropy(final_seq)[4], magtropy(final_seq)[5]))
+        entropy_values.append((family, magtropy(final_seq)[0], magtropy(final_seq)[1], magtropy(final_seq)[2], magtropy(final_seq)[3], magtropy(final_seq)[4]))
 
-entropy_dict["Test4a"] = entropy_values
+entropy_dict["Test3b"] = entropy_values
 
-test4a = pd.DataFrame.from_dict(entropy_dict["Test4a"])
-
-test4a.columns = ["Family", "int1", "Real", "EIIP", "JustA", "JustG"]
+test3b = pd.DataFrame.from_dict(entropy_dict["Test3b"])
+test3b.columns = ["Family", "int1", "Real", "EIIP", "JustA", "JustG"]
 #"Family", "int1", "int2", "Real", "Atomic", "EIIP", "PP",
 #"Paired Numeric", "JustA", "JustC", "JustG", "JustT"]
 
 #test1b.to_csv('Training_Data.csv', index = False)
-
 
 
 # Hypertuning
@@ -123,9 +121,9 @@ model_dict = {'log': LogisticRegression(),
              'decision_tree': DecisionTreeClassifier()
                 }
 
-X = test4a.drop(columns = ["Family"])
+X = test3b.drop(columns = ["Family"])
 
-y = pd.DataFrame(test4a["Family"])
+y = pd.DataFrame(test3b["Family"])
 
 
 data_path = getcwd() + "/data/JSON_Files"
@@ -179,17 +177,18 @@ for family in my_dict["Test8"].keys():
         start_seq = list(SeqIO.parse((f"{file_path_1}/data/Test8/{family}/{file}"), "fasta"))
         count = len(start_seq[0].seq)
         final_seq = "".join([char for char in start_seq[0].seq])
+        #print(file)
         entropy_values.append((family, magtropy(final_seq)[0], magtropy(final_seq)[1], magtropy(final_seq)[2],
-        magtropy(final_seq)[3], magtropy(final_seq)[4], magtropy(final_seq)[5]))
+        magtropy(final_seq)[3], magtropy(final_seq)[4]))
         #, magtropy(final_seq)[1], magtropy(final_seq)[2], magtropy(final_seq)[3], magtropy(final_seq)[4]))
 
 entropy_dict["Test8"] = entropy_values
 
 df2 = pd.DataFrame.from_dict(entropy_dict["Test8"])
-df2.columns = ["Family", "int2", "Real", "EIIP", "PP", "JustA", "JustG"]
+df2.columns = ["Family", "int1", "Real", "EIIP", "JustA", "JustG"]
 
-df2.to_csv('Testing_Data.csv', index = False)
+#df2.to_csv('Testing_Data.csv', index = False)
 
 df2 = df2.drop(columns = ["Family"])
 my_model.predict(df2)
-my_model.predict_proba(df2)
+#my_model.predict_proba(df2)
