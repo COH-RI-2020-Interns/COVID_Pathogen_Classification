@@ -93,19 +93,20 @@ file_path_1 = getcwd()
 entropy_dict = {}
 # for test in my_dict.keys():
 entropy_values = []
-for family in my_dict["Test3b"].keys():
-    for file in my_dict["Test3b"][family]:
-        start_seq = list(SeqIO.parse((f"{file_path_1}/data/Test3b/{family}/{file}"), "fasta"))
+for family in my_dict["Test3c"].keys():
+    for file in my_dict["Test3c"][family]:
+        start_seq = list(SeqIO.parse((f"{file_path_1}/data/Test3c/{family}/{file}"), "fasta"))
         #print(len(start_seq))
         #count = len(start_seq[0].seq)
         final_seq = "".join([char for char in start_seq[0].seq])
         #print(len(final_seq))
-        entropy_values.append((family, magtropy(final_seq)[0], magtropy(final_seq)[1], magtropy(final_seq)[2], magtropy(final_seq)[3], magtropy(final_seq)[4]))
+        entropy_values.append((family, magtropy(final_seq)[0], magtropy(final_seq)[1], magtropy(final_seq)[2],
+        magtropy(final_seq)[3], magtropy(final_seq)[4]))
 
-entropy_dict["Test3b"] = entropy_values
+entropy_dict["Test3c"] = entropy_values
 
-test3b = pd.DataFrame.from_dict(entropy_dict["Test3b"])
-test3b.columns = ["Family", "int1", "Real", "EIIP", "JustA", "JustG"]
+test3c = pd.DataFrame.from_dict(entropy_dict["Test3c"])
+test3c.columns = ["Family", "int1", "Real", "EIIP", "JustA", "JustG"]
 #"Family", "int1", "int2", "Real", "Atomic", "EIIP", "PP",
 #"Paired Numeric", "JustA", "JustC", "JustG", "JustT"]
 
@@ -121,9 +122,9 @@ model_dict = {'log': LogisticRegression(),
              'decision_tree': DecisionTreeClassifier()
                 }
 
-X = test3b.drop(columns = ["Family"])
+X = test3c.drop(columns = ["Family"])
 
-y = pd.DataFrame(test3b["Family"])
+y = pd.DataFrame(test3c["Family"])
 
 
 data_path = getcwd() + "/data/JSON_Files"
