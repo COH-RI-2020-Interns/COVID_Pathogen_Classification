@@ -5,7 +5,9 @@ data2/*/*/*.fasta
 */.DS_Store
 .DS_Store
 data/.DS_Store
+data2/.DS_Store
 
-data/JSON_Files/final_permutations.json
+data/JSON_Files
+data2/JSON_Files
 
 FCGR_fractals/plots
