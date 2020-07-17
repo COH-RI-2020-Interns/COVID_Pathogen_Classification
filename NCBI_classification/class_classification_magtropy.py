@@ -18,7 +18,7 @@ from sklearn.tree import DecisionTreeClassifier
 #Going to Test folders
 folder_path = getcwd() + "/data2"
 
-folders = sorted(listdir(folder_path))[0:11]
+folders = sorted(listdir(folder_path))[0:12]
 folders
 
 folder_dict = {}
@@ -50,10 +50,10 @@ rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3}}
 #"Atomic": {"T":6,"t":6,"C":58,"c":58, "A":70,"a":70 ,"G":78, "g":78}}
 #"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806}}
 #"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1}}
-"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1}}
+#"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1}}
 #"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0}}
-#"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0}}
-#"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1}}
+#"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0},
+"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1}}
 #"Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
 
 # Finding the Average Magnitude of the Sequence
@@ -84,25 +84,26 @@ def magtropy(sequence):
     list_magtropy = [avg/entropy(sequence) for avg in magnitude_avg(sequence)]
     return list_magtropy
 
+
 # Saving Entropy values to dictionary
 
 file_path_1 = getcwd()
 entropy_dict = {}
 # for test in my_dict.keys():
 entropy_values = []
-for family in my_dict["1_Realm"].keys():
-    for file in my_dict["1_Realm"][family]:
-        start_seq = list(SeqIO.parse((f"{file_path_1}/data2/1_Realm/{family}/{file}"), "fasta"))
+for family in my_dict["4_Class"].keys():
+    for file in my_dict["4_Class"][family]:
+        start_seq = list(SeqIO.parse((f"{file_path_1}/data2/4_Class/{family}/{file}"), "fasta"))
         #print(len(start_seq))
         #count = len(start_seq[0].seq)
         final_seq = "".join([char for char in start_seq[0].seq])
         #print(len(final_seq))
         entropy_values.append((family, magtropy(final_seq)[0]))
 
-entropy_dict["Realm"] = entropy_values
+entropy_dict["Class"] = entropy_values
 
-realm = pd.DataFrame.from_dict(entropy_dict["Realm"])
-realm.columns = ["Family", "paired numeric"]
+Class = pd.DataFrame.from_dict(entropy_dict["Class"])
+Class.columns = ["Family", "PP"]
 
 
 # Hypertuning
@@ -114,9 +115,9 @@ model_dict = {'log': LogisticRegression(),
              'decision_tree': DecisionTreeClassifier()
                 }
 
-X = realm.drop(columns = ["Family"])
+X = Class.drop(columns = ["Family"])
 
-y = pd.DataFrame(realm["Family"])
+y = pd.DataFrame(Class["Family"])
 
 
 data_path = getcwd() + "/data2/JSON_Files"
@@ -159,7 +160,7 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
     return ml_model
 
 
-my_model = ML_Pipeline(X, y, "knn", 10, 0.2)
+my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
 
 
 
@@ -181,5 +182,3 @@ df2.columns = ["Family", "paired numeric"]
 df2 = df2.drop(columns = ["Family"])
 my_model.predict(df2)
 #my_model.predict_proba(df2)
-
-my_dict["0_COVID"]
