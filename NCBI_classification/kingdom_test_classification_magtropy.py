@@ -18,7 +18,7 @@ from sklearn.tree import DecisionTreeClassifier
 #Going to Test folders
 folder_path = getcwd() + "/data2"
 
-folders = sorted(listdir(folder_path))[0:11]
+folders = sorted(listdir(folder_path))[0:12]
 folders
 
 folder_dict = {}
@@ -91,19 +91,19 @@ file_path_1 = getcwd()
 entropy_dict = {}
 # for test in my_dict.keys():
 entropy_values = []
-for family in my_dict["2_Kingdom"].keys():
-    for file in my_dict["2_Kingdom"][family]:
-        start_seq = list(SeqIO.parse((f"{file_path_1}/data2/2_Kingdom/{family}/{file}"), "fasta"))
+for family in my_dict["2_Kingdom_test"].keys():
+    for file in my_dict["2_Kingdom_test"][family]:
+        start_seq = list(SeqIO.parse((f"{file_path_1}/data2/2_Kingdom_test/{family}/{file}"), "fasta"))
         #print(len(start_seq))
         #count = len(start_seq[0].seq)
         final_seq = "".join([char for char in start_seq[0].seq])
         #print(len(final_seq))
         entropy_values.append((family, magtropy(final_seq)[0]))
 
-entropy_dict["Kingdom"] = entropy_values
+entropy_dict["Kingdom_test"] = entropy_values
 
-kingdom = pd.DataFrame.from_dict(entropy_dict["Kingdom"])
-kingdom.columns = ["Family", "PP"]
+kingdom_test = pd.DataFrame.from_dict(entropy_dict["Kingdom_test"])
+kingdom_test.columns = ["Family", "PP"]
 
 
 # Hypertuning
@@ -115,9 +115,9 @@ model_dict = {'log': LogisticRegression(),
              'decision_tree': DecisionTreeClassifier()
                 }
 
-X = kingdom.drop(columns = ["Family"])
+X = kingdom_test.drop(columns = ["Family"])
 
-y = pd.DataFrame(kingdom["Family"])
+y = pd.DataFrame(kingdom_test["Family"])
 
 
 data_path = getcwd() + "/data2/JSON_Files"
