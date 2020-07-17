@@ -48,13 +48,13 @@ rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3}}
 #"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4}}
 #"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5}}
 #"Atomic": {"T":6,"t":6,"C":58,"c":58, "A":70,"a":70 ,"G":78, "g":78},
-"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806}}
+#"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806}}
 #"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1}}
 #"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1}}
 #"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0}}
-#"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0},
+#"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0}}
 #"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1}}
-#"Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
+"Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
 rep_dict
 # Finding the Average Magnitude of the Sequence
 def magnitude_avg(sequence):
@@ -84,23 +84,6 @@ def magtropy(sequence):
     list_magtropy = [avg/entropy(sequence) for avg in magnitude_avg(sequence)]
     return list_magtropy
 
-# def entropy_k(sequence, k):
-#     kmer_lst = []
-#     kmer = [sequence[x:x+k].lower() for x in range(len(sequence) - k + 1)]
-#     for sequence in kmer:
-#         counts = Counter(sequence)
-#         props = {key: counts[key] / sum(counts.values()) for key in counts}
-#         products = {key: props[key]*np.log(props[key]) for key in props}
-#         entropy_kmer = -1 * sum(products.values())
-#         kmer_lst.append(entropy_kmer)
-#     return np.average(kmer_lst)
-#
-# def magtropy_k(sequence, k):
-#     list_magtropy_k = [avg/entropy_k(sequence,k) for avg in magnitude_avg(sequence)]
-#     return list_magtropy_k
-
-
-
 
 # Saving Entropy values to dictionary
 
@@ -108,20 +91,19 @@ file_path_1 = getcwd()
 entropy_dict = {}
 # for test in my_dict.keys():
 entropy_values = []
-for family in my_dict["1_Realm"].keys():
-    for file in my_dict["1_Realm"][family]:
-        start_seq = list(SeqIO.parse((f"{file_path_1}/data2/1_Realm/{family}/{file}"), "fasta"))
+for family in my_dict["4_Class"].keys():
+    for file in my_dict["4_Class"][family]:
+        start_seq = list(SeqIO.parse((f"{file_path_1}/data2/4_Class/{family}/{file}"), "fasta"))
         #print(len(start_seq))
         #count = len(start_seq[0].seq)
         final_seq = "".join([char for char in start_seq[0].seq])
         #print(len(final_seq))
         entropy_values.append((family, magtropy(final_seq)[0]))
 
-entropy_dict["Realm"] = entropy_values
+entropy_dict["4_Class"] = entropy_values
 
-realm = pd.DataFrame.from_dict(entropy_dict["Realm"])
-realm.columns = ["Family", "paired numeric"]
-#test1b.to_csv('Training_Data.csv', index = False)
+Class = pd.DataFrame.from_dict(entropy_dict["4_Class"])
+Class.columns = ["Family", "PP"]
 
 
 # Hypertuning
@@ -133,9 +115,8 @@ model_dict = {'log': LogisticRegression(),
              'decision_tree': DecisionTreeClassifier()
                 }
 
-X = realm.drop(columns = ["Family"])
-
-y = pd.DataFrame(realm["Family"])
+X = Class.drop(columns = ["Family"])
+y = pd.DataFrame(Class["Family"])
 
 
 data_path = getcwd() + "/data2/JSON_Files"
@@ -192,14 +173,11 @@ for family in my_dict["0_COVID"].keys():
         #print(file)
         entropy_values.append((family, magtropy(final_seq)[0]))
 
-
 entropy_dict["COVID"] = entropy_values
 
 df2 = pd.DataFrame.from_dict(entropy_dict["COVID"])
 df2.columns = ["Family", "paired numeric"]
-
-#df2.to_csv('Testing_Data.csv', index = False)
-
+df2
 df2 = df2.drop(columns = ["Family"])
 my_model.predict(df2)
 #my_model.predict_proba(df2)

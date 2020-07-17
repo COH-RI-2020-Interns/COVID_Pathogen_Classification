@@ -18,7 +18,7 @@ from sklearn.tree import DecisionTreeClassifier
 #Going to Test folders
 folder_path = getcwd() + "/data2"
 
-folders = sorted(listdir(folder_path))[0:6]
+folders = sorted(listdir(folder_path))[0:7]
 folders
 
 folder_dict = {}
@@ -53,8 +53,8 @@ rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3}}
 #"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1}}
 #"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0}}
 #"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0}}
-"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1}}
-#"Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
+#"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1}}
+"Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
 rep_dict
 # Finding the Average Magnitude of the Sequence
 def magnitude_avg(sequence):
@@ -164,15 +164,15 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 
 
 
-my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
+my_model = ML_Pipeline(X, y, "knn", 10, 0.2)
 
 
 
 # for test in my_dict.keys():
 entropy_values = []
-for family in my_dict["4_COVID"].keys():
-    for file in my_dict["4_COVID"][family]:
-        start_seq = list(SeqIO.parse((f"{file_path_1}/data2/4_COVID/{family}/{file}"), "fasta"))
+for family in my_dict["0_COVID"].keys():
+    for file in my_dict["0_COVID"][family]:
+        start_seq = list(SeqIO.parse((f"{file_path_1}/data2/0_COVID/{family}/{file}"), "fasta"))
         count = len(start_seq[0].seq)
         final_seq = "".join([char for char in start_seq[0].seq])
         #print(file)
