@@ -18,7 +18,11 @@ from sklearn.tree import DecisionTreeClassifier
 #Going to Test folders
 folder_path = getcwd() + "/data"
 
+<<<<<<< HEAD
 folders = sorted(listdir(folder_path))[2:14]
+=======
+folders = sorted(listdir(folder_path))[1:10]
+>>>>>>> c08f9b5f5fb23ecd3366b0023e5cf55ae9b2f3fc
 folders
 
 folder_dict = {}
@@ -44,6 +48,7 @@ for test in my_dict:
     test = sorted(test)
 
 
+<<<<<<< HEAD
 # Calculating Entropy
 def entropy(sequence):
     counts = Counter(sequence)
@@ -70,6 +75,24 @@ rep_dict
 def magnitude_avg(sequence):
     mag_avg_list = []
     base_list = ["K", "M", "N", "R", "S", "W", "Y", "D"]
+=======
+rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
+#"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4}}
+#"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5}}
+#"Atomic": {"T":6,"t":6,"C":58,"c":58, "A":70,"a":70 ,"G":78, "g":78},
+#"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806},
+"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1},
+"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1},
+"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0}}
+#"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0},
+#"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1}}
+#"Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
+
+# Finding the Average Magnitude of the Sequence
+def magnitude_avg(sequence):
+    mag_avg_list = []
+    base_list = ["D", "K", "M", "N", "R", "S", "W", "Y"]
+>>>>>>> c08f9b5f5fb23ecd3366b0023e5cf55ae9b2f3fc
     for i in base_list:
         sequence = sequence.replace(i, "")
     for rep in rep_dict:
@@ -82,6 +105,13 @@ def magnitude_avg(sequence):
         mag_avg = np.average(mag)
         mag_avg_list.append(mag_avg)
     return mag_avg_list
+
+# Calculating Entropy
+def entropy(sequence):
+    counts = Counter(sequence)
+    props = {key: counts[key] / sum(counts.values()) for key in counts}
+    products = {key: props[key]*np.log(props[key]) for key in props}
+    return -1 * sum(products.values())
 
 
 def magtropy(sequence):
@@ -113,6 +143,7 @@ entropy_values = []
 for family in my_dict["Test3c"].keys():
     for file in my_dict["Test3c"][family]:
         start_seq = list(SeqIO.parse((f"{file_path_1}/data/Test3c/{family}/{file}"), "fasta"))
+<<<<<<< HEAD
         #print(start_seq, file)
         #count = len(start_seq[0].seq)
         final_seq = "".join([char for char in start_seq[0].seq])
@@ -150,8 +181,27 @@ test5.columns = ["Family", "int1", "int2", "EIIP", "JustA", "JustG"]
 test6.columns = ["Family", "Magtropy"]
 
 test3c
+=======
+        #print(len(start_seq))
+        #count = len(start_seq[0].seq)
+        final_seq = "".join([char for char in start_seq[0].seq])
+        #print(len(final_seq))
+        entropy_values.append((family, magtropy(final_seq)[0], magtropy(final_seq)[1], magtropy(final_seq)[2]))#, magtropy(final_seq)[2],
+        #magtropy(final_seq)[3], magtropy(final_seq)[4]))
+>>>>>>> c08f9b5f5fb23ecd3366b0023e5cf55ae9b2f3fc
 
+entropy_dict["Test3c"] = entropy_values
 
+<<<<<<< HEAD
+=======
+test3c = pd.DataFrame.from_dict(entropy_dict["Test3c"])
+test3c.columns = ["Family", "rep1", "rep2", "rep3"]#, "Real", "EIIP", "JustA", "JustG"]
+#"Family", "int1", "int2", "Real", "Atomic", "EIIP", "PP",
+#"Paired Numeric", "JustA", "JustC", "JustG", "JustT"]
+
+#test1b.to_csv('Training_Data.csv', index = False)
+
+>>>>>>> c08f9b5f5fb23ecd3366b0023e5cf55ae9b2f3fc
 
 # Hypertuning
 model_dict = {'log': LogisticRegression(),
@@ -172,8 +222,6 @@ data_path = getcwd() + "/data/JSON_Files"
 with open(f"{data_path}/{(listdir(data_path))[1]}", "r") as f:
     parameter_config = json.load(f)
 
-
-
 def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 
     # Split Data into Training and Testing
@@ -184,7 +232,11 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
         model_dict[estimator].probability = True
     base_model = model_dict[estimator]
     model_params = parameter_config[estimator]
+<<<<<<< HEAD
     ml_model = RandomizedSearchCV(base_model, model_params, n_iter= 10, cv=cv)
+=======
+    ml_model = RandomizedSearchCV(base_model, model_params, n_iter= 15, cv=cv)
+>>>>>>> c08f9b5f5fb23ecd3366b0023e5cf55ae9b2f3fc
 
     # Train the Model
     ml_model.fit(X_train, np.ravel(Y_train))
@@ -220,10 +272,22 @@ for family in my_dict["Test8a"].keys():
         start_seq = list(SeqIO.parse((f"{file_path_1}/data/Test8a/{family}/{file}"), "fasta"))
         count = len(start_seq[0].seq)
         final_seq = "".join([char for char in start_seq[0].seq])
+<<<<<<< HEAD
         entropy_values.append((family, magtropy(final_seq)[0]))#, magtropy_2(final_seq,5)[0]))#, magtropy(final_seq)[1]))#, magtropy(final_seq)[2], magtropy(final_seq)[3],magtropy(final_seq)[4],magtropy(final_seq)[5],magtropy(final_seq)[6],magtropy(final_seq)[7],magtropy(final_seq)[8],magtropy(final_seq)[9],magtropy(final_seq)[10]))
         #, magtropy(final_seq)[1], magtropy(final_seq)[2], magtropy(final_seq)[3], magtropy(final_seq)[4]))
 
 entropy_dict["Test8a"] = entropy_values
+=======
+        #print(file)
+        entropy_values.append((family, magtropy(final_seq)[0], magtropy(final_seq)[1], magtropy(final_seq)[2]))
+
+entropy_dict["Test8"] = entropy_values
+
+df2 = pd.DataFrame.from_dict(entropy_dict["Test8"])
+df2.columns = ["Family", "rep1", "rep2", "rep3"]#, "rep3"]#, "Real", "EIIP", "JustA", "JustG"]
+
+#df2.to_csv('Testing_Data.csv', index = False)
+>>>>>>> c08f9b5f5fb23ecd3366b0023e5cf55ae9b2f3fc
 
 df2 = pd.DataFrame.from_dict(entropy_dict["Test8a"])
 #df2.columns =["Family","Int1","Int2", "Real", "Atomic","EIIP" ,"PP", "Paired Numeric", "JustA", "JustC", "JustG", "JustT"]
@@ -232,6 +296,7 @@ df2
 df2 = df2.drop(columns = ["Family"])
 
 my_model.predict(df2)
+<<<<<<< HEAD
 
 
 my_model.decision_function(df2)
@@ -239,3 +304,6 @@ my_model.decision_function(df2)
 
 
 ], dtype=object)
+=======
+#my_model.predict_proba(df2)
+>>>>>>> c08f9b5f5fb23ecd3366b0023e5cf55ae9b2f3fc
