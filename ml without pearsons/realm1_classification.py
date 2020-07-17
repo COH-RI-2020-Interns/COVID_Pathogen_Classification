@@ -16,9 +16,9 @@ from sklearn.metrics import confusion_matrix, accuracy_score, matthews_corrcoef,
 from sklearn.tree import DecisionTreeClassifier
 
 #Going to Test folders
-folder_path = getcwd() + "/data"
+folder_path = getcwd() + "/data2"
 
-folders = sorted(listdir(folder_path))[2:14]
+folders = sorted(listdir(folder_path))[0:5]
 folders
 
 folder_dict = {}
@@ -54,16 +54,16 @@ def entropy(sequence):
 
 
 
-rep_dict = {"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3}}
+rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
 #"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4}}
-#"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5}}
+#"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5},
 #"Atomic": {"T":6,"t":6,"C":58,"c":58, "A":70,"a":70 ,"G":78, "g":78},
 #"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806}}
-#"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1}}
+"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1}}
 #"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1}}
-#"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0}}
+#"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0},
 #"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0}}
-#"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1},
+#"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1}}
 #"Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
 rep_dict
 
@@ -110,19 +110,19 @@ file_path_1 = getcwd()
 entropy_dict = {}
 # for test in my_dict.keys():
 entropy_values = []
-for family in my_dict["Test3c"].keys():
-    for file in my_dict["Test3c"][family]:
-        start_seq = list(SeqIO.parse((f"{file_path_1}/data/Test3c/{family}/{file}"), "fasta"))
+for family in my_dict["2_Kingdom"].keys():
+    for file in my_dict["2_Kingdom"][family]:
+        start_seq = list(SeqIO.parse((f"{file_path_1}/data2/2_Kingdom/{family}/{file}"), "fasta"))
         #print(start_seq, file)
         #count = len(start_seq[0].seq)
         final_seq = "".join([char for char in start_seq[0].seq])
-        entropy_values.append((family, magtropy(final_seq)[0]))# magtropy_2(final_seq,5)[0]))#, magtropy(final_seq)[1]))#, magtropy(final_seq)[3],magtropy(final_seq)[4],magtropy(final_seq)[5],magtropy(final_seq)[6],magtropy(final_seq)[7],magtropy(final_seq)[8],magtropy(final_seq)[9],magtropy(final_seq)[10]))
-
-
-
-entropy_dict["Test3c"] = entropy_values
+        entropy_values.append((family, magtropy(final_seq)[0]))#, magtropy(final_seq)[1], magtropy(final_seq)[2], magtropy(final_seq)[3], magtropy(final_seq)[4],magtropy(final_seq)[4]))# magtropy_2(final_seq,5)[0]))#, magtropy(final_seq)[1]))#, magtropy(final_seq)[3],magtropy(final_seq)[4],magtropy(final_seq)[5],magtropy(final_seq)[6],magtropy(final_seq)[7],magtropy(final_seq)[8],magtropy(final_seq)[9],magtropy(final_seq)[10]))
+entropy_dict["2_Kingdom"] = entropy_values
 #, magtropy(final_seq)[1], magtropy(final_seq)[2], magtropy(final_seq)[3], magtropy(final_seq)[4]))#
-test3c = pd.DataFrame.from_dict(entropy_dict["Test3c"])
+kingdom= pd.DataFrame.from_dict(entropy_dict["2_Kingdom"])
+kingdom
+
+
 test3c
 test1b.columns = ["Family","Int1","Int2", "Real", "Atomic","EIIP" ,"PP", "Paired Numeric", "JustA", "JustC", "JustG", "JustT"]
 test1b
@@ -138,7 +138,7 @@ test6 = pd.DataFrame.from_dict(entropy_dict["Test6"])
 test1b.to_csv ('full_test_1.csv', index = False, header=True)
 getcwd()
 
-test3c.columns = ["Family", "Int1"]
+kingdom.columns = ["Family", "PP"]
 test1.columns = ["Family", "int1"]
 test2.columns = ["Family", "int1"]
 test2.columns = ["Family", "int1", "int2", "EIIP", "JustA", "JustG"]
@@ -149,7 +149,7 @@ test4.columns = ["Family", "int1", "int2", "EIIP", "JustA", "JustG"]
 test5.columns = ["Family", "int1", "int2", "EIIP", "JustA", "JustG"]
 test6.columns = ["Family", "Magtropy"]
 
-test3c
+realm
 
 
 
@@ -162,9 +162,9 @@ model_dict = {'log': LogisticRegression(),
              'decision_tree': DecisionTreeClassifier()
                 }
 
-X = test3c.drop(columns = ["Family"])
+X = kingdom.drop(columns = ["Family"])
 
-y = pd.DataFrame(test3c["Family"])
+y = pd.DataFrame(kingdom["Family"])
 
 
 data_path = getcwd() + "/data/JSON_Files"
@@ -215,9 +215,9 @@ my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
 
 # for test in my_dict.keys():
 entropy_values = []
-for family in my_dict["Test8a"].keys():
-    for file in my_dict["Test8a"][family]:
-        start_seq = list(SeqIO.parse((f"{file_path_1}/data/Test8a/{family}/{file}"), "fasta"))
+for family in my_dict["4_COVID"].keys():
+    for file in my_dict["4_COVID"][family]:
+        start_seq = list(SeqIO.parse((f"{file_path_1}/data2/4_COVID/{family}/{file}"), "fasta"))
         count = len(start_seq[0].seq)
         final_seq = "".join([char for char in start_seq[0].seq])
         entropy_values.append((family, magtropy(final_seq)[0]))#, magtropy_2(final_seq,5)[0]))#, magtropy(final_seq)[1]))#, magtropy(final_seq)[2], magtropy(final_seq)[3],magtropy(final_seq)[4],magtropy(final_seq)[5],magtropy(final_seq)[6],magtropy(final_seq)[7],magtropy(final_seq)[8],magtropy(final_seq)[9],magtropy(final_seq)[10]))
@@ -227,15 +227,11 @@ entropy_dict["Test8a"] = entropy_values
 
 df2 = pd.DataFrame.from_dict(entropy_dict["Test8a"])
 #df2.columns =["Family","Int1","Int2", "Real", "Atomic","EIIP" ,"PP", "Paired Numeric", "JustA", "JustC", "JustG", "JustT"]
-df2.columns = ["Family", "Just A"]
+df2.columns = ["Family", "EIIP"]
 df2
 df2 = df2.drop(columns = ["Family"])
 
 my_model.predict(df2)
 
-
+my_dict["4_COVID"]["COVID_files"]
 my_model.decision_function(df2)
-
-
-
-], dtype=object)
