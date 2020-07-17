@@ -18,7 +18,7 @@ from sklearn.tree import DecisionTreeClassifier
 #Going to Test folders
 folder_path = getcwd() + "/data2"
 
-folders = sorted(listdir(folder_path))[0:12]
+folders = sorted(listdir(folder_path))[0:6]
 folders
 
 folder_dict = {}
@@ -44,18 +44,18 @@ for test in my_dict:
     test = sorted(test)
 
 
-rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
+rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3}}
 #"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4}}
 #"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5}}
-#"Atomic": {"T":6,"t":6,"C":58,"c":58, "A":70,"a":70 ,"G":78, "g":78},
-#"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806},
-"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1}}
+#"Atomic": {"T":6,"t":6,"C":58,"c":58, "A":70,"a":70 ,"G":78, "g":78}}
+#"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806}}
+#"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1}}
 #"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1}}
 #"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0}}
-#"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0},
-#"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1}}
+#"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0}}
+"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1}}
 #"Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
-
+rep_dict
 # Finding the Average Magnitude of the Sequence
 def magnitude_avg(sequence):
     mag_avg_list = []
@@ -90,6 +90,7 @@ def magtropy(sequence):
 file_path_1 = getcwd()
 entropy_dict = {}
 # for test in my_dict.keys():
+
 entropy_values = []
 for family in my_dict["2_Kingdom_test"].keys():
     for file in my_dict["2_Kingdom_test"][family]:
@@ -160,15 +161,18 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
     return ml_model
 
 
+
+
+
 my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
 
 
 
 # for test in my_dict.keys():
 entropy_values = []
-for family in my_dict["0_COVID"].keys():
-    for file in my_dict["0_COVID"][family]:
-        start_seq = list(SeqIO.parse((f"{file_path_1}/data2/0_COVID/{family}/{file}"), "fasta"))
+for family in my_dict["4_COVID"].keys():
+    for file in my_dict["4_COVID"][family]:
+        start_seq = list(SeqIO.parse((f"{file_path_1}/data2/4_COVID/{family}/{file}"), "fasta"))
         count = len(start_seq[0].seq)
         final_seq = "".join([char for char in start_seq[0].seq])
         #print(file)
@@ -176,8 +180,9 @@ for family in my_dict["0_COVID"].keys():
 
 entropy_dict["COVID"] = entropy_values
 
+
 df2 = pd.DataFrame.from_dict(entropy_dict["COVID"])
-df2.columns = ["Family", "paired numeric"]
+df2.columns = ["Family", "PP"]
 
 df2 = df2.drop(columns = ["Family"])
 my_model.predict(df2)
