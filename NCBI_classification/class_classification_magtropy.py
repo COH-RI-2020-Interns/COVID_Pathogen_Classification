@@ -19,7 +19,7 @@ from sklearn.tree import DecisionTreeClassifier
 folder_path = getcwd() + "/data2"
 
 folders = sorted(listdir(folder_path))[0:12]
-folders
+#folders
 
 folder_dict = {}
 
