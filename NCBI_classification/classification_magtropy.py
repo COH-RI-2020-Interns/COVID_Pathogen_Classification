@@ -19,13 +19,8 @@ from sklearn.tree import DecisionTreeClassifier
 #Going to Test folders
 folder_path = getcwd() + "/data2"
 
-<<<<<<< HEAD
 folders = sorted(listdir(folder_path))[0:13]
 #folders
-=======
-folders = sorted(listdir(folder_path))[0:10]
-folders
->>>>>>> e58d34dad40cfc8571a8332640ce9c542a3496a8
 
 folder_dict = {}
 
@@ -61,10 +56,6 @@ rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
 "Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0},
 "Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1},
 "Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
-<<<<<<< HEAD
-=======
-rep_dict
->>>>>>> e58d34dad40cfc8571a8332640ce9c542a3496a8
 
 
 
@@ -117,11 +108,7 @@ def magtropy_dict(sublevel):
 
 #Preparing training data for supervised machine learning
 sublevel_df = magtropy_dict("8_Subfamily_Partial")
-<<<<<<< HEAD
 X = sublevel_df.drop(columns = ["Sublevel Name"])    #these are the training features
-=======
-X = sublevel_df.drop(columns = ["Sublevel Name"])    #these are the features
->>>>>>> e58d34dad40cfc8571a8332640ce9c542a3496a8
 y = pd.DataFrame(sublevel_df["Sublevel Name"])       #this are the target labels
 
 
@@ -182,13 +169,6 @@ my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
 #Testing data of COVID-19 Files
 covid_df = magtropy_dict("0_COVID")
 X_test = covid_df.drop(columns = ["Sublevel Name"])    #these are the testing features
-<<<<<<< HEAD
 
 my_model.predict(X_test)
 #my_model.predict_proba(X1)
-=======
-
-my_model.predict(X_test)
-
-my_model.predict_proba(X_test)
->>>>>>> e58d34dad40cfc8571a8332640ce9c542a3496a8
