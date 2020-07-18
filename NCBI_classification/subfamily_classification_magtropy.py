@@ -18,11 +18,7 @@ from sklearn.tree import DecisionTreeClassifier
 #Going to Test folders
 folder_path = getcwd() + "/data2"
 
-<<<<<<< HEAD
 folders = sorted(listdir(folder_path))[0:12]
-=======
-folders = sorted(listdir(folder_path))[0:9]
->>>>>>> f556e1901cf53aebf95221ceb6e8d6aade5a23a4
 folders
 
 folder_dict = {}
@@ -48,18 +44,10 @@ for test in my_dict:
     test = sorted(test)
 
 
-<<<<<<< HEAD
 rep_dict = {"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3}}
 #"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4}}
 #"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5}}
 #DOES NOT WORK "Atomic": {"T":6,"t":6,"C":58,"c":58, "A":70,"a":70 ,"G":78, "g":78}}
-=======
-
-rep_dict = {"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3}}
-#"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4}}
-#"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5}}
-#"Atomic": {"T":6,"t":6,"C":58,"c":58, "A":70,"a":70 ,"G":78, "g":78},
->>>>>>> f556e1901cf53aebf95221ceb6e8d6aade5a23a4
 #"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806}}
 #"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1}}
 #"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1}}
@@ -67,19 +55,11 @@ rep_dict = {"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3}}
 #"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0}}
 #"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1}}
 #"Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
-<<<<<<< HEAD
 
 # Finding the Average Magnitude of the Sequence
 def magnitude_avg(sequence):
     mag_avg_list = []
     base_list = ["D", "K", "M", "N", "R", "S", "W", "V", "Y"]
-=======
-rep_dict
-# Finding the Average Magnitude of the Sequence
-def magnitude_avg(sequence):
-    mag_avg_list = []
-    base_list = ["D", "K", "M", "N", "R", "S", "W", "Y"]
->>>>>>> f556e1901cf53aebf95221ceb6e8d6aade5a23a4
     for i in base_list:
         sequence = sequence.replace(i, "")
     for rep in rep_dict:
@@ -120,17 +100,10 @@ for family in my_dict["8_Subfamily"].keys():
         #print(len(final_seq))
         entropy_values.append((family, magtropy(final_seq)[0]))
 
-<<<<<<< HEAD
 entropy_dict["Subfamily"] = entropy_values
 
 subfam = pd.DataFrame.from_dict(entropy_dict["Subfamily"])
 subfam.columns = ["Family", "PP"]
-=======
-entropy_dict["8_Subfamily"] = entropy_values
-
-subfamily = pd.DataFrame.from_dict(entropy_dict["8_Subfamily"])
-subfamily.columns = ["Family", "PP"]
->>>>>>> f556e1901cf53aebf95221ceb6e8d6aade5a23a4
 
 
 # Hypertuning
@@ -142,7 +115,6 @@ model_dict = {'log': LogisticRegression(),
              'decision_tree': DecisionTreeClassifier()
                 }
 
-<<<<<<< HEAD
 X = subfam.drop(columns = ["Family"])
 
 y = pd.DataFrame(subfam["Family"])
@@ -150,13 +122,6 @@ y = pd.DataFrame(subfam["Family"])
 
 data_path = getcwd() + "/data2/JSON_Files"
 
-=======
-X = subfamily.drop(columns = ["Family"])
-y = pd.DataFrame(subfamily["Family"])
-
-
-data_path = getcwd() + "/data2/JSON_Files"
->>>>>>> f556e1901cf53aebf95221ceb6e8d6aade5a23a4
 #opening the json file that contains all the different parameters of each classification model
 with open(f"{data_path}/{(listdir(data_path))[1]}", "r") as f:
     parameter_config = json.load(f)
@@ -214,11 +179,7 @@ entropy_dict["COVID"] = entropy_values
 
 df2 = pd.DataFrame.from_dict(entropy_dict["COVID"])
 df2.columns = ["Family", "paired numeric"]
-<<<<<<< HEAD
 
-=======
-df2
->>>>>>> f556e1901cf53aebf95221ceb6e8d6aade5a23a4
 df2 = df2.drop(columns = ["Family"])
 my_model.predict(df2)
 #my_model.predict_proba(df2)
