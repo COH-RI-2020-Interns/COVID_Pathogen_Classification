@@ -43,7 +43,7 @@ try:
             final_download = driver.find_element_by_xpath("//*[@id='3']/div/span[1]/button[2]").click()
             time.sleep(1)
             check_box = driver.find_element_by_css_selector("#DataTables_Table_0 > tbody > tr:nth-child(" + str(a) + ") > td:nth-child(1)").click()
-            time.sleep(1)
+            time.sleep(3)
             i+=1
         if i==1000:
             break
