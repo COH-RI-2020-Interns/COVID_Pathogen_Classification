@@ -88,7 +88,7 @@ def magnitude_avg(sequence, representation = "PP"):
 
 
 def magtropy(sequence):
-    return magnitude_avg(sequence)/entropy(sequence)
+    return magnitude_avg(sequence, representation = "JustA")/entropy(sequence)
 
 
 # Saving Entropy values to dictionary

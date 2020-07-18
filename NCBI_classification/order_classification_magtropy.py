@@ -18,7 +18,11 @@ from sklearn.tree import DecisionTreeClassifier
 #Going to Test folders
 folder_path = getcwd() + "/data2"
 
+<<<<<<< HEAD
 folders = sorted(listdir(folder_path))[0:12]
+=======
+folders = sorted(listdir(folder_path))[0:8]
+>>>>>>> f556e1901cf53aebf95221ceb6e8d6aade5a23a4
 folders
 
 folder_dict = {}
@@ -47,6 +51,7 @@ for test in my_dict:
 rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3}}
 #"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4}}
 #"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5}}
+<<<<<<< HEAD
 #DOES NOT WORK "Atomic": {"T":6,"t":6,"C":58,"c":58, "A":70,"a":70 ,"G":78, "g":78}}
 #"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806}}
 #"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1}}
@@ -60,6 +65,21 @@ rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3}}
 def magnitude_avg(sequence):
     mag_avg_list = []
     base_list = ["D", "K", "M", "N", "R", "S", "W", "V", "Y"]
+=======
+#"Atomic": {"T":6,"t":6,"C":58,"c":58, "A":70,"a":70 ,"G":78, "g":78},
+#"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806}}
+#"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1}}
+#"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1}}
+"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0}}
+#"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0},
+#"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1}}
+#"Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
+rep_dict
+# Finding the Average Magnitude of the Sequence
+def magnitude_avg(sequence):
+    mag_avg_list = []
+    base_list = ["D", "K", "M", "N", "R", "S", "W", "Y", "V"]
+>>>>>>> f556e1901cf53aebf95221ceb6e8d6aade5a23a4
     for i in base_list:
         sequence = sequence.replace(i, "")
     for rep in rep_dict:
@@ -84,6 +104,26 @@ def magtropy(sequence):
     list_magtropy = [avg/entropy(sequence) for avg in magnitude_avg(sequence)]
     return list_magtropy
 
+<<<<<<< HEAD
+=======
+# def entropy_k(sequence, k):
+#     kmer_lst = []
+#     kmer = [sequence[x:x+k].lower() for x in range(len(sequence) - k + 1)]
+#     for sequence in kmer:
+#         counts = Counter(sequence)
+#         props = {key: counts[key] / sum(counts.values()) for key in counts}
+#         products = {key: props[key]*np.log(props[key]) for key in props}
+#         entropy_kmer = -1 * sum(products.values())
+#         kmer_lst.append(entropy_kmer)
+#     return np.average(kmer_lst)
+#
+# def magtropy_k(sequence, k):
+#     list_magtropy_k = [avg/entropy_k(sequence,k) for avg in magnitude_avg(sequence)]
+#     return list_magtropy_k
+
+
+
+>>>>>>> f556e1901cf53aebf95221ceb6e8d6aade5a23a4
 
 # Saving Entropy values to dictionary
 
@@ -103,7 +143,12 @@ for family in my_dict["5_Order"].keys():
 entropy_dict["Order"] = entropy_values
 
 order = pd.DataFrame.from_dict(entropy_dict["Order"])
+<<<<<<< HEAD
 order.columns = ["Family", "PP"]
+=======
+order.columns = ["Family", "paired numeric"]
+#test1b.to_csv('Training_Data.csv', index = False)
+>>>>>>> f556e1901cf53aebf95221ceb6e8d6aade5a23a4
 
 
 # Hypertuning
@@ -121,7 +166,10 @@ y = pd.DataFrame(order["Family"])
 
 
 data_path = getcwd() + "/data2/JSON_Files"
+<<<<<<< HEAD
 
+=======
+>>>>>>> f556e1901cf53aebf95221ceb6e8d6aade5a23a4
 #opening the json file that contains all the different parameters of each classification model
 with open(f"{data_path}/{(listdir(data_path))[1]}", "r") as f:
     parameter_config = json.load(f)
@@ -180,6 +228,11 @@ entropy_dict["COVID"] = entropy_values
 df2 = pd.DataFrame.from_dict(entropy_dict["COVID"])
 df2.columns = ["Family", "paired numeric"]
 
+<<<<<<< HEAD
+=======
+#df2.to_csv('Testing_Data.csv', index = False)
+
+>>>>>>> f556e1901cf53aebf95221ceb6e8d6aade5a23a4
 df2 = df2.drop(columns = ["Family"])
 my_model.predict(df2)
 #my_model.predict_proba(df2)

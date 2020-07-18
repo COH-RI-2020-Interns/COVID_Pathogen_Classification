@@ -85,7 +85,7 @@ def magnitude_avg(sequence, representation = "PP"):
 
 
 def magtropy(sequence):
-    return magnitude_avg(sequence)/entropy(sequence)
+    return magnitude_avg(sequence, representation = "EIIP")/entropy(sequence)
 
 
 # Saving Entropy values to dictionary
@@ -99,7 +99,7 @@ for test in my_dict.keys():
             start_seq = list(SeqIO.parse((f"{file_path_1}/data/{test}/{family}/{file}"), "fasta"))
             count = len(start_seq[0].seq)
             final_seq = "".join([char for char in start_seq[0].seq])
-            entropy_values.append((family, magtropy(final_seq), entropy(final_seq)))
+            entropy_values.append((family, magtropy(final_seq)))
     entropy_dict[test] = entropy_values
 
 test1 = pd.DataFrame.from_dict(entropy_dict["Test1"])
@@ -110,14 +110,15 @@ test4 = pd.DataFrame.from_dict(entropy_dict["Test4"])
 test5  = pd.DataFrame.from_dict(entropy_dict["Test5"])
 test6 = pd.DataFrame.from_dict(entropy_dict["Test6"])
 test8 = pd.DataFrame.from_dict(entropy_dict["Test8"])
-test1.columns = ["Family","Magtropy","Entropy"]
-test2.columns = ["Family","Magtropy", "Entropy"]
-test3a.columns = ["Family","Magtropy","Entropy"]
-test3b.columns = ["Family","Magtropy", "Entropy"]
-test4.columns = ["Family","Magtropy", "Entropy"]
-test5.columns = ["Family", "Magtropy","Entropy"]
-test6.columns = ["Family","Magtropy" , "Entropy"]
-test8.columns = ["Family","Magtropy","Entropy"]
+test1.columns = ["Family","Magtropy"]
+test2.columns = ["Family","Magtropy"]
+test3a.columns = ["Family","Magtropy"]
+test3b.columns = ["Family","Magtropy"]
+test4.columns = ["Family","Magtropy"]
+test5.columns = ["Family", "Magtropy"]
+test6.columns = ["Family","Magtropy" ]
+test8.columns = ["Family","Magtropy"]
+
 
 
 
@@ -130,6 +131,10 @@ model_dict = {'log': LogisticRegression(),
              'knn': KNeighborsClassifier(),
              'svm': SVC()
                 }
+
+
+
+
 # def removeCovid(test):
 #     test = test.drop([test[test["Family"] == "COVID19"].index[0]], axis = 0)
 #     return test
@@ -187,6 +192,12 @@ my_model = ML_Pipeline(X, y, "knn", 10, 0.2, print_results = None)
 
 
 
+
+df2 = test8.drop(columns = ["Family"])
+df2
+my_model.predict(df2)
+
+
 #
 # COVID_path = getcwd() + f"/data/Test8/COVID_files/"
 # COVID_magtropy = []
@@ -211,16 +222,3 @@ my_model = ML_Pipeline(X, y, "knn", 10, 0.2, print_results = None)
 # COVID
 # df = pd.DataFrame(COVID, columns = ["Magtropy"])
 # df
-df2 = test8.drop(columns = ["Family"])
-df2
-my_model.predict(df2)
-
-
-
-
-
-
-
-
-
-divide the entropy by the magnitude_avg
