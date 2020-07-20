@@ -159,7 +159,7 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
     return ml_model
 
 
-my_model = ML_Pipeline(X, y, "knn", 10, 0.2)
+my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
 
 
 

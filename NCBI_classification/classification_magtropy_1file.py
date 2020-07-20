@@ -172,7 +172,7 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 # DATA
 
 #Preparing training data for supervised machine learning
-realm = seq_separation("1_Realm", 100)
+realm = seq_separation("1_Realm", 200)
 #realm
 
 sublevel_df = magtropy_dict(realm)
@@ -196,4 +196,4 @@ X_test = covid_df.drop(columns = ["Sublevel Name"])    #these are the testing fe
 my_model.predict(X_test)
 
 
-#my_model.predict_proba(X_test)
+my_model.predict_proba(X_test)
