@@ -17,23 +17,22 @@ from sklearn.tree import DecisionTreeClassifier
 
 
 #Going to Test folders
-folder_path = getcwd() + "/data2"
+folder_path = getcwd() + "/data3"
 
-folders = sorted(listdir(folder_path))[0:13]
-#folders
+folders = sorted(listdir(folder_path))[1:2]
+folders
 
 folder_dict = {}
 
 # Going to Specific Virus Folders inside the Test folders
 for folder in folders:
-    subfolder_dict = {}
-    for sub_folder in listdir(f"{folder_path}/{folder}"):
-        subfolder_dict[sub_folder] = listdir(f"{folder_path}/{folder}/{sub_folder}")
-    folder_dict[folder] = subfolder_dict
+    folder_dict[folder] = listdir(f"{folder_path}/{folder}")
+
+folder_dict
 
 
 #Adding data to a JSON file
-output_path = getcwd() + "/data2/JSON_Files"
+output_path = getcwd() + "/data3/JSON_Files"
 
 with open(f"{output_path}/fasta_files.json", "w") as my_file:
     json.dump(folder_dict, my_file)
@@ -43,7 +42,6 @@ f = open(f"{output_path}/{listdir(output_path)[0]}")
 my_dict = json.load(f)
 for test in my_dict:
     test = sorted(test)
-
 
 #Dictionary of numerical representations
 rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
@@ -89,6 +87,22 @@ def magtropy(sequence):
     return list_magtropy
 
 
+# separating sequences
+def seq_separation(sublevel):
+    file_path = getcwd()
+    seq_dict = {}
+    seq_list = []
+    count = 0
+    for file in my_dict[sublevel]:
+        start_seq = list(SeqIO.parse((f"{file_path}/data3/{sublevel}/{file}"), "fasta"))
+        final_seq = "".join([char for char in start_seq[0].seq])
+        seq_list.append(final_seq)
+        count = count + 1
+    seq_dict[sublevel] = seq_list
+    return final_seq, seq_list, seq_dict
+
+seq_separation("Realm")
+
 # Saving Magtropy values to dictionary for specific sublevel
 def magtropy_dict(sublevel):
     file_path_1 = getcwd()
@@ -96,8 +110,7 @@ def magtropy_dict(sublevel):
     magtropy_values = []
     for folder in my_dict[sublevel].keys():
         for file in my_dict[sublevel][folder]:
-            start_seq = list(SeqIO.parse((f"{file_path_1}/data2/{sublevel}/{folder}/{file}"), "fasta"))
-            print(start_seq)
+            start_seq = list(SeqIO.parse((f"{file_path_1}/data3/{sublevel}/{folder}/{file}"), "fasta"))
             final_seq = "".join([char for char in start_seq[0].seq])
             magtropy_values.append((folder, magtropy(final_seq)[2]))
             #If you would like to use more representations, you can add it in with magtropy(final_seq)[index]
@@ -107,8 +120,10 @@ def magtropy_dict(sublevel):
     sublevel.columns = ["Sublevel Name", "rep"]
     return sublevel
 
+
 #Preparing training data for supervised machine learning
-sublevel_df = magtropy_dict("8_Subfamily_Partial")
+sublevel_df = magtropy_dict("Realm")
+sublevel_df
 X = sublevel_df.drop(columns = ["Sublevel Name"])    #these are the training features
 y = pd.DataFrame(sublevel_df["Sublevel Name"])       #this are the target labels
 
