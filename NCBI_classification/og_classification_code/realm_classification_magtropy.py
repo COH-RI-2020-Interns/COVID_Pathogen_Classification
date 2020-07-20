@@ -183,4 +183,4 @@ df2 = df2.drop(columns = ["Family"])
 my_model.predict(df2)
 #my_model.predict_proba(df2)
 
-my_dict["0_COVID"]
+#my_dict["0_COVID"]
