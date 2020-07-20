@@ -14,12 +14,12 @@ from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn.metrics import confusion_matrix, accuracy_score, matthews_corrcoef, classification_report
 from sklearn.tree import DecisionTreeClassifier
-
+import random
 
 #Going to Test folders
 folder_path = getcwd() + "/data3"
 
-folders = sorted(listdir(folder_path))[1:2]
+folders = sorted(listdir(folder_path))[0:2]
 folders
 
 folder_dict = {}
@@ -27,8 +27,6 @@ folder_dict = {}
 # Going to Specific Virus Folders inside the Test folders
 for folder in folders:
     folder_dict[folder] = listdir(f"{folder_path}/{folder}")
-
-folder_dict
 
 
 #Adding data to a JSON file
@@ -61,7 +59,7 @@ rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
 # Finding the Average Magnitude of the Sequence
 def magnitude_avg(sequence):
     mag_avg_list = []
-    base_list = ["D", "K", "M", "N", "R", "S", "W", "Y"]
+    base_list = ["D", "K", "M", "N", "R", "S", "V", "W", "Y"]
     for i in base_list:
         sequence = sequence.replace(i, "")
     for rep in rep_dict:
@@ -91,22 +89,34 @@ def magtropy(sequence):
 # separating sequences
 def seq_separation(sublevel, seq_num):
     file_path = getcwd()
-    #seq_dict = {}
-    seq_list = []
     file_dict = {}
     count = 0
     for file in my_dict[sublevel]:
         start_seq = list(SeqIO.parse((f"{file_path}/data3/{sublevel}/{file}"), "fasta"))
-        for sequence in start_seq[0:seq_num]:
+        seq_list = []
+        for sequence in start_seq[0:15]:
             final_seq = "".join([char for char in start_seq[count].seq])
             seq_list.append(final_seq)
             count = count + 1
         file_dict[file[:-6]] = seq_list
-    #seq_dict[sublevel] = file_dict
     return file_dict
 
-realm = seq_separation("Realm", 15)
-realm
+def seq_separation_random(sublevel, seq_num):
+    file_path = getcwd()
+    file_dict = {}
+    count = 0
+    for file in my_dict[sublevel]:
+        start_seq = list(SeqIO.parse((f"{file_path}/data3/{sublevel}/{file}"), "fasta"))
+        seq_list = []
+        for sequence in random.sample(start_seq, seq_num):
+            final_seq = "".join([char for char in start_seq[count].seq])
+            seq_list.append(final_seq)
+            count = count + 1
+        file_dict[file[:-6]] = seq_list
+    return file_dict
+
+seq_separation("1_Realm", 15)
+seq_separation_random("1_Realm", 15)
 
 # Saving Magtropy values to dictionary for specific sublevel
 def magtropy_dict(sublevel_dict):
@@ -123,10 +133,14 @@ def magtropy_dict(sublevel_dict):
 
 
 #Preparing training data for supervised machine learning
+realm = seq_separation("1_Realm", 100)
+realm
+
 sublevel_df = magtropy_dict(realm)
 sublevel_df
+
 X = sublevel_df.drop(columns = ["Sublevel Name"])    #these are the training features
-y = pd.DataFrame(sublevel_df["Sublevel Name"])       #this are the target labels
+y = pd.DataFrame(sublevel_df["Sublevel Name"])       #these are the target labels
 
 
 # Hypertuning
@@ -139,7 +153,7 @@ model_dict = {'log': LogisticRegression(),
                 }
 
 
-data_path = getcwd() + "/data2/JSON_Files"
+data_path = getcwd() + "/data3/JSON_Files"
 #opening the json file that contains all the different parameters of each classification model
 with open(f"{data_path}/{(listdir(data_path))[1]}", "r") as f:
     parameter_config = json.load(f)
@@ -184,7 +198,9 @@ my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
 
 
 #Testing data of COVID-19 Files
-covid_df = magtropy_dict("0_COVID")
+covid = seq_separation("0_COVID", 15)
+
+covid_df = magtropy_dict(covid)
 X_test = covid_df.drop(columns = ["Sublevel Name"])    #these are the testing features
 
 my_model.predict(X_test)

@@ -1,1 +1,1 @@
-{"Realm": ["Riboviria.fasta"]}
+{"0_COVID": ["COVID.fasta"], "1_Realm": ["Duplodnaviria.fasta", "Monodnaviria.fasta", "Riboviria.fasta", "Varidnaviria.fasta"]}
