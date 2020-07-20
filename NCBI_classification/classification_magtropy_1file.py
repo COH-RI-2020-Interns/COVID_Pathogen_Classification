@@ -89,40 +89,41 @@ def magtropy(sequence):
 
 
 # separating sequences
-def seq_separation(sublevel):
+def seq_separation(sublevel, seq_num):
     file_path = getcwd()
-    seq_dict = {}
+    #seq_dict = {}
     seq_list = []
+    file_dict = {}
+    count = 0
     for file in my_dict[sublevel]:
         start_seq = list(SeqIO.parse((f"{file_path}/data3/{sublevel}/{file}"), "fasta"))
-        for sequence in start_seq[0:10]:
-            final_seq = "".join([char for char in start_seq[0].seq])
+        for sequence in start_seq[0:seq_num]:
+            final_seq = "".join([char for char in start_seq[count].seq])
             seq_list.append(final_seq)
-    seq_dict[sublevel] = seq_list
-    return seq_dict
+            count = count + 1
+        file_dict[file[:-6]] = seq_list
+    #seq_dict[sublevel] = file_dict
+    return file_dict
 
-seq_separation("Realm")
+realm = seq_separation("Realm", 15)
+realm
 
 # Saving Magtropy values to dictionary for specific sublevel
-def magtropy_dict(sublevel):
+def magtropy_dict(sublevel_dict):
     file_path_1 = getcwd()
     magtropy_dict = {}
     magtropy_values = []
-    for folder in my_dict[sublevel].keys():
-        for file in my_dict[sublevel][folder]:
-            start_seq = list(SeqIO.parse((f"{file_path_1}/data3/{sublevel}/{folder}/{file}"), "fasta"))
-            final_seq = "".join([char for char in start_seq[0].seq])
-            magtropy_values.append((folder, magtropy(final_seq)[2]))
-            #If you would like to use more representations, you can add it in with magtropy(final_seq)[index]
-            #If you would like to change the representation, change the index number, refer to rep. dict
+    for sublevel in sublevel_dict.keys():
+        for sequence in sublevel_dict[sublevel]:
+            magtropy_values.append((sublevel, magtropy(sequence)[0]))
     magtropy_dict[sublevel] = magtropy_values
-    sublevel = pd.DataFrame.from_dict (magtropy_dict[sublevel])
-    sublevel.columns = ["Sublevel Name", "rep"]
-    return sublevel
+    taxonomic_level = pd.DataFrame.from_dict(magtropy_dict[sublevel])
+    taxonomic_level.columns = ["Sublevel Name", "rep"]
+    return taxonomic_level
 
 
 #Preparing training data for supervised machine learning
-sublevel_df = magtropy_dict("Realm")
+sublevel_df = magtropy_dict(realm)
 sublevel_df
 X = sublevel_df.drop(columns = ["Sublevel Name"])    #these are the training features
 y = pd.DataFrame(sublevel_df["Sublevel Name"])       #this are the target labels

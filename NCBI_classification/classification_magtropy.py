@@ -20,7 +20,7 @@ from sklearn.tree import DecisionTreeClassifier
 folder_path = getcwd() + "/data2"
 
 folders = sorted(listdir(folder_path))[0:13]
-#folders
+folders
 
 folder_dict = {}
 
@@ -97,7 +97,6 @@ def magtropy_dict(sublevel):
     for folder in my_dict[sublevel].keys():
         for file in my_dict[sublevel][folder]:
             start_seq = list(SeqIO.parse((f"{file_path_1}/data2/{sublevel}/{folder}/{file}"), "fasta"))
-            print(start_seq)
             final_seq = "".join([char for char in start_seq[0].seq])
             magtropy_values.append((folder, magtropy(final_seq)[2]))
             #If you would like to use more representations, you can add it in with magtropy(final_seq)[index]
@@ -105,10 +104,11 @@ def magtropy_dict(sublevel):
     magtropy_dict[sublevel] = magtropy_values
     sublevel = pd.DataFrame.from_dict (magtropy_dict[sublevel])
     sublevel.columns = ["Sublevel Name", "rep"]
-    return sublevel
+    return magtropy_dict, sublevel
 
 #Preparing training data for supervised machine learning
 sublevel_df = magtropy_dict("8_Subfamily_Partial")
+sublevel_df
 X = sublevel_df.drop(columns = ["Sublevel Name"])    #these are the training features
 y = pd.DataFrame(sublevel_df["Sublevel Name"])       #this are the target labels
 
