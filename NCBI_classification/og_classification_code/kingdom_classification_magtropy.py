@@ -15,12 +15,11 @@ from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn.metrics import confusion_matrix, accuracy_score, matthews_corrcoef, classification_report
 from sklearn.tree import DecisionTreeClassifier
 
-
 #Going to Test folders
 folder_path = getcwd() + "/data2"
 
-folders = sorted(listdir(folder_path))[0:13]
-#folders
+folders = sorted(listdir(folder_path))[0:11]
+folders
 
 folder_dict = {}
 
@@ -45,19 +44,17 @@ for test in my_dict:
     test = sorted(test)
 
 
-#Dictionary of numerical representations
 rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
-#"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4},
-"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5},
-"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806},
-"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1},
-"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1},
-"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0},
-"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0},
-"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1},
-"Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
-
-
+#"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4}}
+#"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5}}
+#"Atomic": {"T":6,"t":6,"C":58,"c":58, "A":70,"a":70 ,"G":78, "g":78},
+#"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806},
+"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1}}
+#"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1}}
+#"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0}}
+#"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0},
+#"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1}}
+#"Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
 
 # Finding the Average Magnitude of the Sequence
 def magnitude_avg(sequence):
@@ -83,35 +80,32 @@ def entropy(sequence):
     products = {key: props[key]*np.log(props[key]) for key in props}
     return -1 * sum(products.values())
 
-#Calculating Magtropy
 def magtropy(sequence):
     list_magtropy = [avg/entropy(sequence) for avg in magnitude_avg(sequence)]
     return list_magtropy
 
 
-# Saving Magtropy values to dictionary for specific sublevel
-def magtropy_dict(sublevel):
-    file_path_1 = getcwd()
-    magtropy_dict = {}
-    magtropy_values = []
-    for folder in my_dict[sublevel].keys():
-        for file in my_dict[sublevel][folder]:
-            start_seq = list(SeqIO.parse((f"{file_path_1}/data2/{sublevel}/{folder}/{file}"), "fasta"))
-            print(start_seq)
-            final_seq = "".join([char for char in start_seq[0].seq])
-            magtropy_values.append((folder, magtropy(final_seq)[2]))
-            #If you would like to use more representations, you can add it in with magtropy(final_seq)[index]
-            #If you would like to change the representation, change the index number, refer to rep. dict
-    magtropy_dict[sublevel] = magtropy_values
-    sublevel = pd.DataFrame.from_dict (magtropy_dict[sublevel])
-    sublevel.columns = ["Sublevel Name", "rep"]
-    return sublevel
+# Saving Entropy values to dictionary
 
-#Preparing training data for supervised machine learning
-sublevel_df = magtropy_dict("8_Subfamily_Partial")
-X = sublevel_df.drop(columns = ["Sublevel Name"])    #these are the training features
-y = pd.DataFrame(sublevel_df["Sublevel Name"])       #this are the target labels
+file_path_1 = getcwd()
+entropy_dict = {}
+# for test in my_dict.keys():
+entropy_values = []
+for family in my_dict["2_Kingdom"].keys():
+    for file in my_dict["2_Kingdom"][family]:
+        start_seq = list(SeqIO.parse((f"{file_path_1}/data2/2_Kingdom/{family}/{file}"), "fasta"))
+        #print(len(start_seq))
+        #count = len(start_seq[0].seq)
+        final_seq = "".join([char for char in start_seq[0].seq])
+        #print(len(final_seq))
+        entropy_values.append((family, magtropy(final_seq)[0]))
 
+entropy_dict["Kingdom"] = entropy_values
+
+kingdom = pd.DataFrame.from_dict(entropy_dict["Kingdom"])
+kingdom.columns = ["Family", "PP"]
+
+kingdom
 
 # Hypertuning
 model_dict = {'log': LogisticRegression(),
@@ -121,6 +115,10 @@ model_dict = {'log': LogisticRegression(),
              'svm': SVC(),
              'decision_tree': DecisionTreeClassifier()
                 }
+
+X = kingdom.drop(columns = ["Family"])
+
+y = pd.DataFrame(kingdom["Family"])
 
 
 data_path = getcwd() + "/data2/JSON_Files"
@@ -167,9 +165,21 @@ my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
 
 
 
-#Testing data of COVID-19 Files
-covid_df = magtropy_dict("0_COVID")
-X_test = covid_df.drop(columns = ["Sublevel Name"])    #these are the testing features
+# for test in my_dict.keys():
+entropy_values = []
+for family in my_dict["0_COVID"].keys():
+    for file in my_dict["0_COVID"][family]:
+        start_seq = list(SeqIO.parse((f"{file_path_1}/data2/0_COVID/{family}/{file}"), "fasta"))
+        count = len(start_seq[0].seq)
+        final_seq = "".join([char for char in start_seq[0].seq])
+        #print(file)
+        entropy_values.append((family, magtropy(final_seq)[0]))
 
-my_model.predict(X_test)
-#my_model.predict_proba(X1)
+entropy_dict["COVID"] = entropy_values
+
+df2 = pd.DataFrame.from_dict(entropy_dict["COVID"])
+df2.columns = ["Family", "paired numeric"]
+
+df2 = df2.drop(columns = ["Family"])
+my_model.predict(df2)
+#my_model.predict_proba(df2)
