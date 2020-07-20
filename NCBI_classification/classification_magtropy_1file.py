@@ -43,6 +43,7 @@ my_dict = json.load(f)
 for test in my_dict:
     test = sorted(test)
 
+
 #Dictionary of numerical representations
 rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
 #"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4},
