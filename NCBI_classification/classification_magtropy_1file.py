@@ -93,14 +93,13 @@ def seq_separation(sublevel):
     file_path = getcwd()
     seq_dict = {}
     seq_list = []
-    count = 0
     for file in my_dict[sublevel]:
         start_seq = list(SeqIO.parse((f"{file_path}/data3/{sublevel}/{file}"), "fasta"))
-        final_seq = "".join([char for char in start_seq[0].seq])
-        seq_list.append(final_seq)
-        count = count + 1
+        for sequence in start_seq[0:10]:
+            final_seq = "".join([char for char in start_seq[0].seq])
+            seq_list.append(final_seq)
     seq_dict[sublevel] = seq_list
-    return final_seq, seq_list, seq_dict
+    return seq_dict
 
 seq_separation("Realm")
 
