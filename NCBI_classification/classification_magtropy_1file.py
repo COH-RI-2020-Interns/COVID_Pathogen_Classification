@@ -17,10 +17,10 @@ from sklearn.tree import DecisionTreeClassifier
 
 
 #Going to Test folders
-folder_path = getcwd() + "/data2"
+folder_path = getcwd() + "/data3"
 
-folders = sorted(listdir(folder_path))[0:13]
-#folders
+folders = sorted(listdir(folder_path))[1:2]
+folders
 
 folder_dict = {}
 
@@ -33,7 +33,7 @@ for folder in folders:
 
 
 #Adding data to a JSON file
-output_path = getcwd() + "/data2/JSON_Files"
+output_path = getcwd() + "/data3/JSON_Files"
 
 with open(f"{output_path}/fasta_files.json", "w") as my_file:
     json.dump(folder_dict, my_file)
@@ -89,6 +89,22 @@ def magtropy(sequence):
     return list_magtropy
 
 
+# separating sequences
+def seq_separation(sublevel):
+    file_path = getcwd()
+    seq_dict = {}
+    seq_list = []
+    for folder in my_dict[sublevel].keys():
+        for file in my_dict[sublevel][folder]:
+            start_seq = list(SeqIO.parse((f"{file_path}/data3/{sublevel}/{folder}/{file}"), "fasta"))
+            final_seq = "".join([char for char in start_seq[0].seq])
+            seq_list.append(final_seq)
+    seq_dict[sublevel] = seq_list
+                #sequence = sequence + 1
+    return seq_dict
+
+seq_separation("Realm")
+
 # Saving Magtropy values to dictionary for specific sublevel
 def magtropy_dict(sublevel):
     file_path_1 = getcwd()
@@ -96,8 +112,7 @@ def magtropy_dict(sublevel):
     magtropy_values = []
     for folder in my_dict[sublevel].keys():
         for file in my_dict[sublevel][folder]:
-            start_seq = list(SeqIO.parse((f"{file_path_1}/data2/{sublevel}/{folder}/{file}"), "fasta"))
-            print(start_seq)
+            start_seq = list(SeqIO.parse((f"{file_path_1}/data3/{sublevel}/{folder}/{file}"), "fasta"))
             final_seq = "".join([char for char in start_seq[0].seq])
             magtropy_values.append((folder, magtropy(final_seq)[2]))
             #If you would like to use more representations, you can add it in with magtropy(final_seq)[index]
@@ -107,8 +122,10 @@ def magtropy_dict(sublevel):
     sublevel.columns = ["Sublevel Name", "rep"]
     return sublevel
 
+
 #Preparing training data for supervised machine learning
-sublevel_df = magtropy_dict("8_Subfamily_Partial")
+sublevel_df = magtropy_dict("Realm")
+sublevel_df
 X = sublevel_df.drop(columns = ["Sublevel Name"])    #these are the training features
 y = pd.DataFrame(sublevel_df["Sublevel Name"])       #this are the target labels
 
