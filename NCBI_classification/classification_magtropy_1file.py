@@ -86,6 +86,7 @@ def magtropy(sequence):
     return list_magtropy
 
 
+
 # separating sequences
 def seq_separation(sublevel, seq_num):
     file_path = getcwd()
