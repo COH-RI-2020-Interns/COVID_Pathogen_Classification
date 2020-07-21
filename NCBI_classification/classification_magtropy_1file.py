@@ -14,7 +14,7 @@ from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn.metrics import confusion_matrix, accuracy_score, matthews_corrcoef, classification_report
 from sklearn.tree import DecisionTreeClassifier
-import random
+from random import shuffle
 
 #Going to Test folders
 folder_path = getcwd() + "/data3"
@@ -41,7 +41,7 @@ my_dict = json.load(f)
 for test in my_dict:
     test = sorted(test)
 
-
+my_dict["5_Order"]
 #Dictionary of numerical representations
 rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
 #"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4},
@@ -94,10 +94,12 @@ def seq_separation(sublevel, seq_num):
     count = 0
     for file in my_dict[sublevel]:
         start_seq = list(SeqIO.parse((f"{file_path}/data3/{sublevel}/{file}"), "fasta"))
-        random.shuffle(start_seq)
+        #shuffle(start_seq)
         seq_list = []
         for sequence in start_seq[0:seq_num]:
             final_seq = "".join([char for char in start_seq[count].seq])
+            #print(file, final_seq)
+            #print("\n")
             seq_list.append(final_seq)
             count = count + 1
         seq_dict[file[:-6]] = seq_list
@@ -172,7 +174,7 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 # DATA
 
 #Preparing training data for supervised machine learning
-order = seq_separation("5_Order", 64)
+order = seq_separation("5_Order", 22)
 order
 
 sublevel_df = magtropy_dict(order)
