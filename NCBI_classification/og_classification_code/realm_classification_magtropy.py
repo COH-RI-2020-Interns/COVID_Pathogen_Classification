@@ -159,7 +159,7 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
     return ml_model
 
 
-my_model = ML_Pipeline(X, y, "knn", 10, 0.2)
+my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
 
 
 
@@ -183,4 +183,4 @@ df2 = df2.drop(columns = ["Family"])
 my_model.predict(df2)
 #my_model.predict_proba(df2)
 
-my_dict["0_COVID"]
+#my_dict["0_COVID"]

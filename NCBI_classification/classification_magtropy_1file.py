@@ -14,12 +14,12 @@ from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn.metrics import confusion_matrix, accuracy_score, matthews_corrcoef, classification_report
 from sklearn.tree import DecisionTreeClassifier
-
+from random import shuffle
 
 #Going to Test folders
 folder_path = getcwd() + "/data3"
 
-folders = sorted(listdir(folder_path))[1:2]
+folders = sorted(listdir(folder_path))[0:7]
 folders
 
 folder_dict = {}
@@ -27,8 +27,6 @@ folder_dict = {}
 # Going to Specific Virus Folders inside the Test folders
 for folder in folders:
     folder_dict[folder] = listdir(f"{folder_path}/{folder}")
-
-folder_dict
 
 
 #Adding data to a JSON file
@@ -43,12 +41,11 @@ my_dict = json.load(f)
 for test in my_dict:
     test = sorted(test)
 
-
 #Dictionary of numerical representations
 rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
 #"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4},
-"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5},
-"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806},
+#"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5},
+#"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806},
 "PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1},
 "Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1},
 "Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0},
@@ -57,11 +54,12 @@ rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
 "Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
 
 
-
+#____________________________________________________________________________________________________
+# FUNCTIONS
 # Finding the Average Magnitude of the Sequence
 def magnitude_avg(sequence):
     mag_avg_list = []
-    base_list = ["D", "K", "M", "N", "R", "S", "W", "Y"]
+    base_list = ["B", "D", "H", "K", "M", "N", "R", "S", "V", "W", "Y"]
     for i in base_list:
         sequence = sequence.replace(i, "")
     for rep in rep_dict:
@@ -91,22 +89,21 @@ def magtropy(sequence):
 # separating sequences
 def seq_separation(sublevel, seq_num):
     file_path = getcwd()
-    #seq_dict = {}
-    seq_list = []
-    file_dict = {}
+    seq_dict = {}
     count = 0
     for file in my_dict[sublevel]:
         start_seq = list(SeqIO.parse((f"{file_path}/data3/{sublevel}/{file}"), "fasta"))
+        shuffle(start_seq)
+        seq_list = []
         for sequence in start_seq[0:seq_num]:
             final_seq = "".join([char for char in start_seq[count].seq])
+            #print(file, final_seq)
+            #print("\n")
             seq_list.append(final_seq)
             count = count + 1
-        file_dict[file[:-6]] = seq_list
-    #seq_dict[sublevel] = file_dict
-    return file_dict
+        seq_dict[file[:-6]] = seq_list
+    return seq_dict
 
-realm = seq_separation("Realm", 15)
-realm
 
 # Saving Magtropy values to dictionary for specific sublevel
 def magtropy_dict(sublevel_dict):
@@ -122,13 +119,6 @@ def magtropy_dict(sublevel_dict):
     return taxonomic_level
 
 
-#Preparing training data for supervised machine learning
-sublevel_df = magtropy_dict(realm)
-sublevel_df
-X = sublevel_df.drop(columns = ["Sublevel Name"])    #these are the training features
-y = pd.DataFrame(sublevel_df["Sublevel Name"])       #this are the target labels
-
-
 # Hypertuning
 model_dict = {'log': LogisticRegression(),
              'rf': RandomForestClassifier(),
@@ -139,7 +129,8 @@ model_dict = {'log': LogisticRegression(),
                 }
 
 
-data_path = getcwd() + "/data2/JSON_Files"
+data_path = getcwd() + "/data3/JSON_Files"
+
 #opening the json file that contains all the different parameters of each classification model
 with open(f"{data_path}/{(listdir(data_path))[1]}", "r") as f:
     parameter_config = json.load(f)
@@ -178,14 +169,34 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 
     return ml_model
 
+#____________________________________________________________________________________________________
+# DATA
+
+#Preparing training data for supervised machine learning
+order = seq_separation("9_Genus", 100)
+order
+
+sublevel_df = magtropy_dict(order)
+sublevel_df
+
+
+
+X = sublevel_df.drop(columns = ["Sublevel Name"])    #these are the training features
+y = pd.DataFrame(sublevel_df["Sublevel Name"])       #these are the target labels
+
+
 
 my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
 
 
 
 #Testing data of COVID-19 Files
-covid_df = magtropy_dict("0_COVID")
+covid = seq_separation("0_COVID", 100)
+
+covid_df = magtropy_dict(covid)
 X_test = covid_df.drop(columns = ["Sublevel Name"])    #these are the testing features
 
 my_model.predict(X_test)
-#my_model.predict_proba(X1)
+
+
+my_model.predict_proba(X_test)
