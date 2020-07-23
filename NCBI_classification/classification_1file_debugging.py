@@ -92,11 +92,10 @@ def magtropy(sequence):
 def seq_separation(sublevel, seq_num):
     file_path = getcwd()
     seq_dict = {}
-    # seq_list =[]
     count = 0
     for file in my_dict[sublevel]:
         start_seq = list(SeqIO.parse((f"{file_path}/data3/{sublevel}/{file}"), "fasta"))
-        # print(start_seq)
+        #print(start_seq)
         shuffle(start_seq)
         seq_list = []
         for sequence in start_seq[0:seq_num]:
@@ -108,6 +107,40 @@ def seq_separation(sublevel, seq_num):
         seq_dict[file[:-6]] = seq_list
     return seq_dict
 
+def seq_separation2(sublevel, seq_num):
+    file_path = getcwd()
+    seq_dict = {}
+    count = 1
+    for file in my_dict[sublevel]:
+        start_seq = list(SeqIO.parse((f"{file_path}/data3/{sublevel}/{file}"), "fasta"))
+        seq_list = []
+        for sequence in start_seq:#[0:seq_num]:
+            # print(file, start_seq[0])
+            # print("\n")
+            final_seq = "".join([char for char in start_seq[count].seq])
+            seq_list.append(final_seq)
+            #count = count + 1
+        seq_dict[file[:-6]] = seq_list
+    return seq_dict
+
+def seq_separation3(sublevel, seq_num):
+    file_path = getcwd()
+    seq_dict = {}
+    count = 1
+    for file in my_dict[sublevel]:
+        start_seq = list(SeqIO.parse((f"{file_path}/data3/{sublevel}/{file}"), "fasta"))
+        seq_list = []
+        for sequence in start_seq:
+            final_seq = "".join([char for char in start_seq[count].seq])
+            seq_list.append(final_seq)
+        seq_dict[file[:-6]] = seq_list
+    return seq_dict
+
+suborder = seq_separation3("6_Suborder_error", 100)
+suborder.keys()
+len(suborder["Tornidovirineae"])
+
+seq_separation2("6_Suborder_error", 100)
 
 # Saving Magtropy values to dictionary for specific sublevel
 def magtropy_dict(sublevel_dict):
@@ -178,6 +211,7 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 
 #Preparing training data for supervised machine learning
 order = seq_separation("6_Suborder_error", 5)#, 2)
+order['Nanidovirineae']
 
 sublevel_df = magtropy_dict(order)
 sublevel_df
