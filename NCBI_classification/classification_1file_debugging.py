@@ -107,21 +107,21 @@ def seq_separation(sublevel, seq_num):
         seq_dict[file[:-6]] = seq_list
     return seq_dict
 
-def seq_separation2(sublevel, seq_num):
-    file_path = getcwd()
-    seq_dict = {}
-    count = 1
-    for file in my_dict[sublevel]:
-        start_seq = list(SeqIO.parse((f"{file_path}/data3/{sublevel}/{file}"), "fasta"))
-        seq_list = []
-        for sequence in start_seq:#[0:seq_num]:
-            # print(file, start_seq[0])
-            # print("\n")
-            final_seq = "".join([char for char in start_seq[count].seq])
-            seq_list.append(final_seq)
-            #count = count + 1
-        seq_dict[file[:-6]] = seq_list
-    return seq_dict
+# def seq_separation2(sublevel, seq_num):
+#     file_path = getcwd()
+#     seq_dict = {}
+#     count = 1
+#     for file in my_dict[sublevel]:
+#         start_seq = list(SeqIO.parse((f"{file_path}/data3/{sublevel}/{file}"), "fasta"))
+#         seq_list = []
+#         for sequence in start_seq:#[0:seq_num]:
+#             # print(file, start_seq[0])
+#             # print("\n")
+#             final_seq = "".join([char for char in start_seq[count].seq])
+#             seq_list.append(final_seq)
+#             #count = count + 1
+#         seq_dict[file[:-6]] = seq_list
+#     return seq_dict
 
 def seq_separation3(sublevel, seq_num):
     file_path = getcwd()
@@ -130,17 +130,30 @@ def seq_separation3(sublevel, seq_num):
     for file in my_dict[sublevel]:
         start_seq = list(SeqIO.parse((f"{file_path}/data3/{sublevel}/{file}"), "fasta"))
         seq_list = []
-        for sequence in start_seq:
+        for sequence in start_seq[0:seq_num]:
             final_seq = "".join([char for char in start_seq[count].seq])
             seq_list.append(final_seq)
         seq_dict[file[:-6]] = seq_list
     return seq_dict
 
-suborder = seq_separation3("6_Suborder_error", 100)
-suborder.keys()
-len(suborder["Tornidovirineae"])
+suborder = seq_separation("6_Suborder_test", 100)
+suborder
+len(suborder["Cornidovirineae"])
 
-seq_separation2("6_Suborder_error", 100)
+suborder3 = seq_separation3("6_Suborder_test", 100)
+suborder3.keys()
+len(suborder3["Cornidovirineae"])
+
+
+suborder = seq_separation("6_Suborder_error", 100)
+suborder.keys()
+len(suborder["Cornidovirineae"])
+
+suborder3 = seq_separation3("6_Suborder_error", 100)
+suborder3
+len(suborder3["Tornidovirineae"])
+
+
 
 # Saving Magtropy values to dictionary for specific sublevel
 def magtropy_dict(sublevel_dict):
