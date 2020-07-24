@@ -1,1 +1,1 @@
-{"0_COVID": ["COVID.fasta"], "1_Realm": ["Duplodnaviria.fasta", "Monodnaviria.fasta", "Riboviria.fasta", "Varidnaviria.fasta"], "9_Genus": ["Deltacoronavirus.fasta", "Alphacoronavirus.fasta", "Gammacoronavirus.fasta", "Betacoronavirus.fasta"]}
+{"0_COVID": ["COVID.fasta"], "1_Realm": ["Duplodnaviria.fasta", "Monodnaviria.fasta", "Riboviria.fasta", "Varidnaviria.fasta"], "9_Genus": ["Deltacoronavirus.fasta", "Alphacoronavirus.fasta", "Gammacoronavirus.fasta", "Betacoronavirus.fasta"], "JSON_Files": ["fasta_files.json", "O"]}
