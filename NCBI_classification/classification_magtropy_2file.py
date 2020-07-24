@@ -47,7 +47,7 @@ rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
 #"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4},
 #"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5},
 #"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806},
-#"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1},
+"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1},
 "Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1},
 "Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0},
 "Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0},
@@ -86,25 +86,16 @@ def magtropy(sequence):
     list_magtropy = [avg/entropy(sequence) for avg in magnitude_avg(sequence)]
     return list_magtropy
 
-
-
-# separating sequences
-def seq_separation(sublevel, seq_num):
+#sequence separation using list comprehension
+def seq_separation_lst(sublevel, seq_num):
     file_path = getcwd()
-    seq_dict = {}
-    for file in my_dict[sublevel]:
-        start_seq = list(SeqIO.parse((f"{file_path}/data3/{sublevel}/{file}"), "fasta"))
-        shuffle(start_seq)
-        seq_list = []
-        for sequence in start_seq[0:seq_num]:
-            final_seq = "".join([char for char in sequence.seq])#start_seq[count].seq])
-            #print(file, final_seq)
-            # print("\n")
-            seq_list.append(final_seq)
-        seq_dict[file[:-6]] = seq_list
+    start_seq = [sample(list(SeqIO.parse((f"{file_path}/data3/{sublevel}/{file}"), "fasta")), len(list(SeqIO.parse((f"{file_path}/data3/{sublevel}/{file}"), "fasta")))) for file in my_dict[sublevel]]
+    final_seq = [["".join([char for char in sequence.seq]) for sequence in list[0:seq_num]] for list in start_seq]
+    seq_dict = {file_name[:-6]:list for (file_name,list) in zip(my_dict[sublevel], final_seq)}
     return seq_dict
 
-seq_separation("2_Kingdom", 2)
+
+seq_separation_lst("9_Genus", 10)
 
 
 # Saving Magtropy values to dictionary for specific sublevel
@@ -175,7 +166,7 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 # DATA
 
 #Preparing training data for supervised machine learning
-order = seq_separation(input("Taxonomic level: "), 50)#, 2)
+order = seq_separation_lst(input("Taxonomic level: "), 30)#, 2)
 
 sublevel_df = magtropy_dict(order)
 sublevel_df
@@ -192,7 +183,7 @@ my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
 
 
 #Testing data of COVID-19 Files
-covid = seq_separation("0_COVID", 100)
+covid = seq_separation_lst("0_COVID", 100)
 
 covid_df = magtropy_dict(covid)
 covid_df["Sublevel Name"].replace('COVID', input("Input the correct label for classification: "), inplace = True)
@@ -201,7 +192,7 @@ covid_df
 X_test = covid_df.drop(columns = ["Sublevel Name"]) #these are the testing features
 
 predict = my_model.predict(X_test)
-predict.shape
+predict
 
 print(confusion_matrix(predict, covid_df["Sublevel Name"]))
 print(accuracy_score(predict, covid_df["Sublevel Name"]))
