@@ -15,7 +15,7 @@ from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn.metrics import confusion_matrix, accuracy_score, matthews_corrcoef, classification_report
 from sklearn.tree import DecisionTreeClassifier
 from random import sample
-
+import itertools
 #Going to Test folders
 folder_path = getcwd() + "/data3"
 
@@ -57,9 +57,9 @@ rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
 
 #____________________________________________________________________________________________________
 # FUNCTIONS
-# Finding the Average Magnitude of the Sequence
+# Finding the Average Magnitude of the Sequence using list comprehensions
 def magnitude_avg(sequence):
-    base_list = ["D", "K", "M", "N", "R", "S", "W", "Y"]
+    base_list = ["D", "K", "M", "N", "R", "S", "W", "Y", "H", "B","V"]
     for i in base_list:
         sequence = sequence.replace(i, "")
     dict_of_bases = [rep_dict[rep] for rep in rep_dict]
@@ -87,20 +87,11 @@ def seq_separation_lst(sublevel, seq_num):
     seq_dict = {file_name[:-6]:list for (file_name,list) in zip(my_dict[sublevel], final_seq)}
     return seq_dict
 
-
-# Saving Magtropy values to dictionary for specific sublevel
+# Saving Magtropy values to dictionary for specific sublevel using list comprehensions
 def magtropy_dict(sublevel_dict):
-    file_path_1 = getcwd()
-    magtropy_dict = {}
-    magtropy_values = []
-    for sublevel in sublevel_dict.keys():
-        for sequence in sublevel_dict[sublevel]:
-            magtropy_values.append((sublevel, magtropy(sequence)[0]))
-    magtropy_dict[sublevel] = magtropy_values
-    taxonomic_level = pd.DataFrame.from_dict(magtropy_dict[sublevel])
-    taxonomic_level.columns = ["Sublevel Name", "rep"]
+    magtropy_values = [[(sublevel, magtropy(sequence)[0]) for sequence in sublevel_dict[sublevel]] for sublevel in sublevel_dict.keys()]
+    taxonomic_level = pd.DataFrame((list(itertools.chain.from_iterable(magtropy_values))), columns = ["Sublevel Name", "rep"])
     return taxonomic_level
-
 
 # Hypertuning
 model_dict = {'log': LogisticRegression(),
@@ -111,7 +102,7 @@ model_dict = {'log': LogisticRegression(),
              'decision_tree': DecisionTreeClassifier()
                 }
 
- 
+
 data_path = getcwd() + "/data3/JSON_Files"
 
 #opening the json file that contains all the different parameters of each classification model
