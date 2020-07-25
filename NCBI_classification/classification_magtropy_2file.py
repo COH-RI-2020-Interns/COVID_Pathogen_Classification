@@ -122,7 +122,7 @@ model_dict = {'log': LogisticRegression(),
              'decision_tree': DecisionTreeClassifier()
                 }
 
-
+ 
 data_path = getcwd() + "/data3/JSON_Files"
 
 #opening the json file that contains all the different parameters of each classification model
