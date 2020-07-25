@@ -87,7 +87,7 @@ def seq_separation_lst(sublevel, seq_num):
     seq_dict = {file_name[:-6]:list for (file_name,list) in zip(my_dict[sublevel], final_seq)}
     return seq_dict
 
-one = seq_separation_lst("2_Kingdom", 5)
+
 # Saving Magtropy values to dictionary for specific sublevel
 def magtropy_dict(sublevel_dict):
     file_path_1 = getcwd()
@@ -100,17 +100,6 @@ def magtropy_dict(sublevel_dict):
     taxonomic_level = pd.DataFrame.from_dict(magtropy_dict[sublevel])
     taxonomic_level.columns = ["Sublevel Name", "rep"]
     return taxonomic_level
-
-magtropy_dict(one)
-
-def magtropy_dict2(sublevel_dict):
-    file_path_1 = getcwd()
-    magtropy_dict = {}
-    magtropy_values = [[(sublevel, magtropy(sequence)[0]) for sequence in sublevel_dict[sublevel]] for sublevel in sublevel_dict.keys()]
-    taxonomic_level = [[pd.DataFrame(magtropy_values[i], columns = ["Sublevel Name", "rep"])] for i in range(0,len(magtropy_values))]
-    #taxonomic_level.columns = ["Sublevel Name", "rep"]
-    return taxonomic_level
-magtropy_dict2(one)
 
 
 # Hypertuning
@@ -167,10 +156,11 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 # DATA
 
 #Preparing training data for supervised machine learning
-order = seq_separation_lst(input("Taxonomic level: "), 100)#, 2)
+order = seq_separation_lst(input("Taxonomic level: "), 250)#, 2)
 
 sublevel_df = magtropy_dict(order)
-sublevel_df
+
+
 
 
 
@@ -179,7 +169,7 @@ y = pd.DataFrame(sublevel_df["Sublevel Name"])       #these are the target label
 
 
 
-my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
+my_model = ML_Pipeline(X, y, "svm", 5, 0.2)
 
 
 
@@ -188,6 +178,7 @@ covid = seq_separation_lst("0_COVID", 100)
 
 covid_df = magtropy_dict(covid)
 covid_df["Sublevel Name"].replace('COVID', input("Input the correct label for classification: "), inplace = True)
+
 covid_df
 
 X_test = covid_df.drop(columns = ["Sublevel Name"]) #these are the testing features

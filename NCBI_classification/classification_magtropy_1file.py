@@ -40,7 +40,7 @@ f = open(f"{output_path}/{listdir(output_path)[0]}")
 my_dict = json.load(f)
 for test in my_dict:
     test = sorted(test)
-
+my_dict
 
 #Dictionary of numerical representations
 rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
@@ -103,8 +103,6 @@ def seq_separation(sublevel, seq_num):
             seq_list.append(final_seq)
         seq_dict[file[:-6]] = seq_list
     return seq_dict
-
-seq_separation("2_Kingdom", 2)
 
 
 # Saving Magtropy values to dictionary for specific sublevel
@@ -175,7 +173,7 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 # DATA
 
 #Preparing training data for supervised machine learning
-order = seq_separation(input("Taxonomic level: "), 50)#, 2)
+order = seq_separation(input("Taxonomic level: "), 30)#, 2)
 
 sublevel_df = magtropy_dict(order)
 sublevel_df
