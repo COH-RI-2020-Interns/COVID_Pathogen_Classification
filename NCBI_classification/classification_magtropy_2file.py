@@ -14,7 +14,7 @@ from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn.metrics import confusion_matrix, accuracy_score, matthews_corrcoef, classification_report
 from sklearn.tree import DecisionTreeClassifier
-from random import shuffle
+from random import sample
 
 #Going to Test folders
 folder_path = getcwd() + "/data3"
@@ -59,19 +59,12 @@ rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
 # FUNCTIONS
 # Finding the Average Magnitude of the Sequence
 def magnitude_avg(sequence):
-    mag_avg_list = []
-    base_list = ["B", "D", "H", "K", "M", "N", "R", "S", "V", "W", "Y"]
+    base_list = ["D", "K", "M", "N", "R", "S", "W", "Y"]
     for i in base_list:
         sequence = sequence.replace(i, "")
-    for rep in rep_dict:
-        dict_of_bases = rep_dict[rep]
-        numeric = []
-        for base in sequence:
-            numeric.append(dict_of_bases[base])
-        dft = fft(np.array(numeric))
-        mag = abs(dft)
-        mag_avg = np.average(mag)
-        mag_avg_list.append(mag_avg)
+    dict_of_bases = [rep_dict[rep] for rep in rep_dict]
+    numeric = [[dict_of_bases[i][base] for base in sequence] for i in range(0, len(rep_dict))]
+    mag_avg_list = [np.average(abs(fft(np.array(list)))) for list in numeric]
     return mag_avg_list
 
 # Calculating Entropy
@@ -94,10 +87,7 @@ def seq_separation_lst(sublevel, seq_num):
     seq_dict = {file_name[:-6]:list for (file_name,list) in zip(my_dict[sublevel], final_seq)}
     return seq_dict
 
-
-seq_separation_lst("9_Genus", 10)
-
-
+one = seq_separation_lst("2_Kingdom", 5)
 # Saving Magtropy values to dictionary for specific sublevel
 def magtropy_dict(sublevel_dict):
     file_path_1 = getcwd()
@@ -110,6 +100,17 @@ def magtropy_dict(sublevel_dict):
     taxonomic_level = pd.DataFrame.from_dict(magtropy_dict[sublevel])
     taxonomic_level.columns = ["Sublevel Name", "rep"]
     return taxonomic_level
+
+magtropy_dict(one)
+
+def magtropy_dict2(sublevel_dict):
+    file_path_1 = getcwd()
+    magtropy_dict = {}
+    magtropy_values = [[(sublevel, magtropy(sequence)[0]) for sequence in sublevel_dict[sublevel]] for sublevel in sublevel_dict.keys()]
+    taxonomic_level = [[pd.DataFrame(magtropy_values[i], columns = ["Sublevel Name", "rep"])] for i in range(0,len(magtropy_values))]
+    #taxonomic_level.columns = ["Sublevel Name", "rep"]
+    return taxonomic_level
+magtropy_dict2(one)
 
 
 # Hypertuning
@@ -166,7 +167,7 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 # DATA
 
 #Preparing training data for supervised machine learning
-order = seq_separation_lst(input("Taxonomic level: "), 30)#, 2)
+order = seq_separation_lst(input("Taxonomic level: "), 100)#, 2)
 
 sublevel_df = magtropy_dict(order)
 sublevel_df

@@ -45,17 +45,18 @@ for test in my_dict:
 
 
 rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3}}
-#"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4}}
+"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4},
 #"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5}}
 #"Atomic": {"T":6,"t":6,"C":58,"c":58, "A":70,"a":70 ,"G":78, "g":78}}
 #"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806}}
-#"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1}}
+#"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1},
 "Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1}}
 #"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0}}
 #"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0}}
 #"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1}}
 #"Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
 rep_dict
+
 # Finding the Average Magnitude of the Sequence
 def magnitude_avg(sequence):
     mag_avg_list = []
@@ -63,15 +64,28 @@ def magnitude_avg(sequence):
     for i in base_list:
         sequence = sequence.replace(i, "")
     for rep in rep_dict:
-        dict_of_bases = rep_dict[rep]
-        numeric = []
-        for base in sequence:
-            numeric.append(dict_of_bases[base])
-        dft = fft(np.array(numeric))
-        mag = abs(dft)
-        mag_avg = np.average(mag)
-        mag_avg_list.append(mag_avg)
+         dict_of_bases = rep_dict[rep]
+         numeric = []
+         for base in sequence:
+             numeric.append(dict_of_bases[base])
+         dft = fft(np.array(numeric))
+         mag = abs(dft)
+         mag_avg = np.average(mag)
+         mag_avg_list.append(mag_avg)
     return mag_avg_list
+magnitude_avg('NGTCAT')
+
+def magnitude_avg2(sequence):
+    base_list = ["D", "K", "M", "N", "R", "S", "W", "Y"]
+    for i in base_list:
+        sequence = sequence.replace(i, "")
+    dict_of_bases = [rep_dict[rep] for rep in rep_dict]
+    numeric = [[dict_of_bases[i][base] for base in sequence] for i in range(0, len(rep_dict))]
+    mag_avg_list = [np.average(abs(fft(np.array(list)))) for list in numeric]
+    return mag_avg_list
+
+
+magnitude_avg2('NGTCAT')
 
 # Calculating Entropy
 def entropy(sequence):
