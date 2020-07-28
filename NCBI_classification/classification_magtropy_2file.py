@@ -162,7 +162,7 @@ y = pd.DataFrame(sublevel_df["Sublevel Name"])       #these are the target label
 
 
 
-my_model = ML_Pipeline(X, y, "svm", 5, 0.2)
+my_model = ML_Pipeline(X, y, "rf", 10, 0.2)
 
 
 
