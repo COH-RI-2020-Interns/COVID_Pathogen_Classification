@@ -152,7 +152,7 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 order = seq_separation_lst(input("Taxonomic level: "), 50)#, 2)
 
 sublevel_df = magtropy_dict(order)
-
+sublevel_df
 
 
 
@@ -172,17 +172,21 @@ covid = seq_separation_lst("0_COVID", 100)
 covid_df = magtropy_dict(covid)
 covid_df["Sublevel Name"].replace('COVID', input("Input the correct label for classification: "), inplace = True)
 
-covid_df.to_csv('covid.csv', index = False)
 covid_df
 
 X_test = covid_df.drop(columns = ["Sublevel Name"]) #these are the testing features
 
 predict = my_model.predict(X_test)
-predict
+predict[54]
 
 print(confusion_matrix(predict, covid_df["Sublevel Name"]))
 print(accuracy_score(predict, covid_df["Sublevel Name"]))
 
+my_dict["10_Subgenus_human"]
+
+my_model.decision_function(X_test)
+
+my_model.predict_proba(X_test)
 
 probas = my_model.predict_proba(X_test)
 [(i, np.where(probas == i)) for i in probas if (i[3]>i[2] and i[0]<i[3])]
