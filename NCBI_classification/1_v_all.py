@@ -16,6 +16,7 @@ from sklearn.metrics import confusion_matrix, accuracy_score, matthews_corrcoef,
 from sklearn.tree import DecisionTreeClassifier
 from random import sample
 import itertools
+from sklearn.multiclass import OneVsRestClassifier
 
 
 #Going to Test folders
@@ -151,6 +152,7 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 #Preparing training data for supervised machine learning
 order = seq_separation_lst(input("Taxonomic level: "), 50)#, 2)
 
+
 sublevel_df = magtropy_dict(order)
 sublevel_df
 
@@ -161,8 +163,9 @@ X = sublevel_df.drop(columns = ["Sublevel Name"])    #these are the training fea
 y = pd.DataFrame(sublevel_df["Sublevel Name"])       #these are the target labels
 
 
-
-my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
+my_model2 = OneVsRestClassifier(SVC()).fit(X, y)
+my_model2
+#my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
 
 
 
