@@ -181,6 +181,11 @@ X_test = covid_df.drop(columns = ["Sublevel Name"]) #these are the testing featu
 
 my_model2.predict(X_test)
 
+
+
+
+
+
 predict = my_model.predict(X_test)
 predict[54]
 
