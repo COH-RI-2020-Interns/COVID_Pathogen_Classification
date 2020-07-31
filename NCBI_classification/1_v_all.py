@@ -16,6 +16,7 @@ from sklearn.metrics import confusion_matrix, accuracy_score, matthews_corrcoef,
 from sklearn.tree import DecisionTreeClassifier
 from random import sample
 import itertools
+from sklearn.multiclass import OneVsRestClassifier
 
 
 #Going to Test folders
@@ -149,14 +150,11 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 # DATA
 
 #Preparing training data for supervised machine learning
-<<<<<<< HEAD
-order = seq_separation_lst(input("Taxonomic level: "), 200)#, 2)
-=======
 order = seq_separation_lst(input("Taxonomic level: "), 50)#, 2)
 
->>>>>>> 1f825aaeeb7cde531fccf080228c806d46766aaf
-sublevel_df = magtropy_dict(order)
 
+sublevel_df = magtropy_dict(order)
+sublevel_df
 
 
 
@@ -165,8 +163,9 @@ X = sublevel_df.drop(columns = ["Sublevel Name"])    #these are the training fea
 y = pd.DataFrame(sublevel_df["Sublevel Name"])       #these are the target labels
 
 
-
-my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
+my_model2 = OneVsRestClassifier(SVC()).fit(X, y)
+my_model2
+#my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
 
 
 
@@ -176,17 +175,28 @@ covid = seq_separation_lst("0_COVID", 100)
 covid_df = magtropy_dict(covid)
 covid_df["Sublevel Name"].replace('COVID', input("Input the correct label for classification: "), inplace = True)
 
-covid_df.to_csv('covid.csv', index = False)
 covid_df
 
 X_test = covid_df.drop(columns = ["Sublevel Name"]) #these are the testing features
 
+my_model2.predict(X_test)
+
+
+
+
+
+
 predict = my_model.predict(X_test)
-predict
+predict[54]
 
 print(confusion_matrix(predict, covid_df["Sublevel Name"]))
 print(accuracy_score(predict, covid_df["Sublevel Name"]))
 
+my_dict["10_Subgenus_human"]
+
+my_model.decision_function(X_test)
+
+my_model.predict_proba(X_test)
 
 probas = my_model.predict_proba(X_test)
 [(i, np.where(probas == i)) for i in probas if (i[3]>i[2] and i[0]<i[3])]

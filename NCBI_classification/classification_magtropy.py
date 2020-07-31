@@ -48,8 +48,8 @@ for test in my_dict:
 #Dictionary of numerical representations
 rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
 #"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4},
-"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5},
-"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806},
+#"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5},
+#"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806},
 "PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1},
 "Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1},
 "Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0},
@@ -104,11 +104,15 @@ def magtropy_dict(sublevel):
     magtropy_dict[sublevel] = magtropy_values
     sublevel = pd.DataFrame.from_dict (magtropy_dict[sublevel])
     sublevel.columns = ["Sublevel Name", "rep"]
-    return magtropy_dict, sublevel
+    return sublevel
+
+
+
+len(my_dict["10_Subgenus"]["Sarbecovirus"])
 
 #Preparing training data for supervised machine learning
-sublevel_df = magtropy_dict("8_Subfamily_Partial")
-sublevel_df
+sublevel_df = magtropy_dict("10_Subgenus")
+
 X = sublevel_df.drop(columns = ["Sublevel Name"])    #these are the training features
 y = pd.DataFrame(sublevel_df["Sublevel Name"])       #this are the target labels
 
@@ -171,5 +175,17 @@ my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
 covid_df = magtropy_dict("0_COVID")
 X_test = covid_df.drop(columns = ["Sublevel Name"])    #these are the testing features
 
-my_model.predict(X_test)
+# getting 1file COVID sequences
+covid_df2 = pd.read_csv(getcwd() + "/covid.csv")
+X_test2 = covid_df2.drop(columns = ["Sublevel Name"])
+my_model.predict(X_test2)
+
+
+classes = my_model.classes_
+classes
+
+probas = my_model.predict_proba(X_test)
+[(i, np.where(probas == i)) for i in probas if (i[3]>i[2] and i[0]<i[3])]
+[(i, np.where(probas == i)) for i in probas if i[3]>i[2]]
+
 #my_model.predict_proba(X1)
