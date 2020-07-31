@@ -147,8 +147,7 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 # DATA
 
 #Preparing training data for supervised machine learning
-order = seq_separation_lst(input("Taxonomic level: "), 250)#, 2)
-
+order = seq_separation_lst(input("Taxonomic level: "), 200)#, 2)
 sublevel_df = magtropy_dict(order)
 
 
