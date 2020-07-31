@@ -16,8 +16,6 @@ from sklearn.metrics import confusion_matrix, accuracy_score, matthews_corrcoef,
 from sklearn.tree import DecisionTreeClassifier
 from random import sample
 import itertools
-
-
 #Going to Test folders
 folder_path = getcwd() + "/data3"
 
@@ -149,15 +147,8 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 # DATA
 
 #Preparing training data for supervised machine learning
-<<<<<<< HEAD
-order = seq_separation_lst(input("Taxonomic level: "), 200)#, 2)
-=======
-order = seq_separation_lst(input("Taxonomic level: "), 50)#, 2)
-
->>>>>>> 1f825aaeeb7cde531fccf080228c806d46766aaf
+order = seq_separation_lst(input("Taxonomic level: "), 1000)#, 2)
 sublevel_df = magtropy_dict(order)
-
-
 
 
 
@@ -176,7 +167,6 @@ covid = seq_separation_lst("0_COVID", 100)
 covid_df = magtropy_dict(covid)
 covid_df["Sublevel Name"].replace('COVID', input("Input the correct label for classification: "), inplace = True)
 
-covid_df.to_csv('covid.csv', index = False)
 covid_df
 
 X_test = covid_df.drop(columns = ["Sublevel Name"]) #these are the testing features
@@ -188,15 +178,7 @@ print(confusion_matrix(predict, covid_df["Sublevel Name"]))
 print(accuracy_score(predict, covid_df["Sublevel Name"]))
 
 
-probas = my_model.predict_proba(X_test)
-[(i, np.where(probas == i)) for i in probas if (i[3]>i[2] and i[0]<i[3])]
-[(i, np.where(probas == i)) for i in probas if i[3]>i[2]]
-
-classes = my_model.classes_
-classes
-
-
-np.std(my_model.predict_proba(X_test))
+#my_model.predict_proba(X_test)
 
 
 #conda activate covid_pathogen
