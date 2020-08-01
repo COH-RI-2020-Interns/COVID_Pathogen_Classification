@@ -19,7 +19,7 @@ from sklearn.tree import DecisionTreeClassifier
 #Going to Test folders
 folder_path = getcwd() + "/data2"
 
-folders = sorted(listdir(folder_path))[0:13]
+folders = sorted(listdir(folder_path))[0:11]
 folders
 
 folder_dict = {}
@@ -98,7 +98,7 @@ def magtropy_dict(sublevel):
         for file in my_dict[sublevel][folder]:
             start_seq = list(SeqIO.parse((f"{file_path_1}/data2/{sublevel}/{folder}/{file}"), "fasta"))
             final_seq = "".join([char for char in start_seq[0].seq])
-            magtropy_values.append((folder, magtropy(final_seq)[2]))
+            magtropy_values.append((folder, magtropy(final_seq)[0]))
             #If you would like to use more representations, you can add it in with magtropy(final_seq)[index]
             #If you would like to change the representation, change the index number, refer to rep. dict
     magtropy_dict[sublevel] = magtropy_values
@@ -108,7 +108,6 @@ def magtropy_dict(sublevel):
 
 
 
-len(my_dict["10_Subgenus"]["Sarbecovirus"])
 
 #Preparing training data for supervised machine learning
 sublevel_df = magtropy_dict("10_Subgenus")
@@ -116,7 +115,7 @@ sublevel_df = magtropy_dict("10_Subgenus")
 X = sublevel_df.drop(columns = ["Sublevel Name"])    #these are the training features
 y = pd.DataFrame(sublevel_df["Sublevel Name"])       #this are the target labels
 
-
+sublevel_df
 # Hypertuning
 model_dict = {'log': LogisticRegression(),
              'rf': RandomForestClassifier(),
@@ -174,6 +173,9 @@ my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
 #Testing data of COVID-19 Files
 covid_df = magtropy_dict("0_COVID")
 X_test = covid_df.drop(columns = ["Sublevel Name"])    #these are the testing features
+my_model.predict(X_test)
+
+
 
 # getting 1file COVID sequences
 covid_df2 = pd.read_csv(getcwd() + "/covid.csv")

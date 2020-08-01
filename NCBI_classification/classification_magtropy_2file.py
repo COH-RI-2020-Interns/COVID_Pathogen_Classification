@@ -41,23 +41,24 @@ my_dict = json.load(f)
 for test in my_dict:
     test = sorted(test)
 
-
+my_dict["4_Class"]
 #Dictionary of numerical representations
-rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
-#"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4},
+rep_dict = {"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
+#"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4}
 #"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5},
-#"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806},
-"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1},
-"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1},
-"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0},
-"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0},
-"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1},
-"Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
+"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806}}
+#"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1}}
+#"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1},
+#"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0},
+#"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0},
+#"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1},
+#"Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
 
 
 #____________________________________________________________________________________________________
 # FUNCTIONS
 # Finding the Average Magnitude of the Sequence using list comprehensions
+
 def magnitude_avg(sequence):
     base_list = ["D", "K", "M", "N", "R", "S", "W", "Y", "H", "B","V"]
     for i in base_list:
@@ -89,8 +90,8 @@ def seq_separation_lst(sublevel, seq_num):
 
 # Saving Magtropy values to dictionary for specific sublevel using list comprehensions
 def magtropy_dict(sublevel_dict):
-    magtropy_values = [[(sublevel, magtropy(sequence)[0]) for sequence in sublevel_dict[sublevel]] for sublevel in sublevel_dict.keys()]
-    taxonomic_level = pd.DataFrame((list(itertools.chain.from_iterable(magtropy_values))), columns = ["Sublevel Name", "rep"])
+    magtropy_values = [[(sublevel, magtropy(sequence)[0], magtropy(sequence)[1]) for sequence in sublevel_dict[sublevel]] for sublevel in sublevel_dict.keys()]
+    taxonomic_level = pd.DataFrame((list(itertools.chain.from_iterable(magtropy_values))), columns = ["Sublevel Name", "rep", "rep2"])
     return taxonomic_level
 
 # Hypertuning
@@ -106,6 +107,7 @@ model_dict = {'log': LogisticRegression(),
 data_path = getcwd() + "/data3/JSON_Files"
 
 #opening the json file that contains all the different parameters of each classification model
+
 with open(f"{data_path}/{(listdir(data_path))[1]}", "r") as f:
     parameter_config = json.load(f)
 
@@ -143,19 +145,29 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 
     return ml_model
 
+
 #____________________________________________________________________________________________________
 # DATA
 
 #Preparing training data for supervised machine learning
-order = seq_separation_lst(input("Taxonomic level: "), 1000)#, 2)
+order = seq_separation_lst(input("Taxonomic level: "), 50)#, 2)
 sublevel_df = magtropy_dict(order)
 
+merbecovirus = sublevel_df[sublevel_df["Sublevel Name"] =="Merbecovirus"]
+sarbecovirus = sublevel_df[sublevel_df["Sublevel Name"] =="Sarbecovirus"]
+embecovirus = sublevel_df[sublevel_df["Sublevel Name"] =="Embecovirus"]
+nobecovirus = sublevel_df[sublevel_df["Sublevel Name"] =="Nobecovirus"]
+plt.hist(merbecovirus["rep"], color = "black")
+plt.hist(sarbecovirus["rep"], color = "blue")
+plt.hist(embecovirus["rep"], color = "yellow")
+plt.hist(nobecovirus["rep"], color ='green')
+plt.hist(covid_df["rep"], color ='red')
 
 
 X = sublevel_df.drop(columns = ["Sublevel Name"])    #these are the training features
 y = pd.DataFrame(sublevel_df["Sublevel Name"])       #these are the target labels
 
-
+sublevel_df
 
 my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
 
@@ -165,9 +177,8 @@ my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
 covid = seq_separation_lst("0_COVID", 100)
 
 covid_df = magtropy_dict(covid)
-covid_df["Sublevel Name"].replace('COVID', input("Input the correct label for classification: "), inplace = True)
 
-covid_df
+covid_df["Sublevel Name"].replace('COVID', input("Input the correct label for classification: "), inplace = True)
 
 X_test = covid_df.drop(columns = ["Sublevel Name"]) #these are the testing features
 
@@ -177,8 +188,8 @@ predict
 print(confusion_matrix(predict, covid_df["Sublevel Name"]))
 print(accuracy_score(predict, covid_df["Sublevel Name"]))
 
-
-#my_model.predict_proba(X_test)
+my_model.classes_
+my_model.predict_proba(X_test)
 
 
 #conda activate covid_pathogen
