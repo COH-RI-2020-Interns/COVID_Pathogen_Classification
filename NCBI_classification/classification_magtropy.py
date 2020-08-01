@@ -98,7 +98,7 @@ def magtropy_dict(sublevel):
         for file in my_dict[sublevel][folder]:
             start_seq = list(SeqIO.parse((f"{file_path_1}/data2/{sublevel}/{folder}/{file}"), "fasta"))
             final_seq = "".join([char for char in start_seq[0].seq])
-            magtropy_values.append((folder, magtropy(final_seq)[2]))
+            magtropy_values.append((folder, magtropy(final_seq)[0]))
             #If you would like to use more representations, you can add it in with magtropy(final_seq)[index]
             #If you would like to change the representation, change the index number, refer to rep. dict
     magtropy_dict[sublevel] = magtropy_values
@@ -108,10 +108,12 @@ def magtropy_dict(sublevel):
 
 
 
-len(my_dict["10_Subgenus"]["Sarbecovirus"])
 
 #Preparing training data for supervised machine learning
-sublevel_df = magtropy_dict("10_Subgenus")
+sublevel_df = magtropy_dict("1_Realm")
+
+sublevel_df
+
 
 X = sublevel_df.drop(columns = ["Sublevel Name"])    #these are the training features
 y = pd.DataFrame(sublevel_df["Sublevel Name"])       #this are the target labels
@@ -174,18 +176,20 @@ my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
 #Testing data of COVID-19 Files
 covid_df = magtropy_dict("0_COVID")
 X_test = covid_df.drop(columns = ["Sublevel Name"])    #these are the testing features
-
+my_model.predict(X_test)
 # getting 1file COVID sequences
+
+
 covid_df2 = pd.read_csv(getcwd() + "/covid.csv")
 X_test2 = covid_df2.drop(columns = ["Sublevel Name"])
 my_model.predict(X_test2)
-
-
-classes = my_model.classes_
-classes
-
-probas = my_model.predict_proba(X_test)
-[(i, np.where(probas == i)) for i in probas if (i[3]>i[2] and i[0]<i[3])]
-[(i, np.where(probas == i)) for i in probas if i[3]>i[2]]
+# 
+#
+# classes = my_model.classes_
+# classes
+#
+# probas = my_model.predict_proba(X_test)
+# [(i, np.where(probas == i)) for i in probas if (i[3]>i[2] and i[0]<i[3])]
+# [(i, np.where(probas == i)) for i in probas if i[3]>i[2]]
 
 #my_model.predict_proba(X1)
