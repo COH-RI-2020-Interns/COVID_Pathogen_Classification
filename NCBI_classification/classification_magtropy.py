@@ -45,10 +45,10 @@ for test in my_dict:
     test = sorted(test)
 
 #Dictionary of numerical representations
-rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
-#"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4},
-#"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5},
-#"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806},
+rep_dict = {"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
+"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4},
+"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5},
+"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806},
 "PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1},
 "Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1},
 "Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0},
@@ -97,12 +97,12 @@ def magtropy_dict(sublevel):
         for file in my_dict[sublevel][folder]:
             start_seq = list(SeqIO.parse((f"{file_path_1}/data2/{sublevel}/{folder}/{file}"), "fasta"))
             final_seq = "".join([char for char in start_seq[0].seq])
-            magtropy_values.append((folder, magtropy(final_seq)[0]))
+            magtropy_values.append((folder, magtropy(final_seq)[0], magtropy(final_seq)[1], magtropy(final_seq)[2], magtropy(final_seq)[3], magtropy(final_seq)[4], magtropy(final_seq)[5], magtropy(final_seq)[6], magtropy(final_seq)[7], magtropy(final_seq)[8], magtropy(final_seq)[9]))
             #If you would like to use more representations, you can add it in with magtropy(final_seq)[index]
             #If you would like to change the representation, change the index number, refer to rep. dict
     magtropy_dict[sublevel] = magtropy_values
     sublevel = pd.DataFrame.from_dict (magtropy_dict[sublevel])
-    sublevel.columns = ["Sublevel Name", "rep"]
+    sublevel.columns = ["Sublevel Name", "Int1", "Int2", "Real", "EIIP", "PP", "Paired Numeric", "JustA", "JustC", "JustG", "JustT"]
     return sublevel
 
 
@@ -175,7 +175,7 @@ my_model = ML_Pipeline(X, y, "svm", 10, 0.2, print_results = 'yes')
 #Testing data of COVID-19 Files
 covid_df = magtropy_dict("0_COVID")
 covid_df
-covid_df.to_csv('covid2.csv', index = False)
+covid_df.to_csv('covid_all.csv', index = False)
 
 X_test = covid_df.drop(columns = ["Sublevel Name"])    #these are the testing features
 my_model.predict(X_test)

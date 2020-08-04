@@ -150,7 +150,7 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 # DATA
 
 #Preparing training data for supervised machine learning
-order = seq_separation_lst(input("Taxonomic level: "), 25)#, 2)
+order = seq_separation_lst(input("Taxonomic level: "), 150)#, 2)
 
 
 sublevel_df = magtropy_dict(order)
@@ -160,7 +160,7 @@ sublevel_df = magtropy_dict(order)
 
 X = sublevel_df.drop(columns = ["Sublevel Name"])    #these are the training features
 y = pd.DataFrame(sublevel_df["Sublevel Name"])       #these are the target labels
-
+y
 
 # my_model2 = OneVsRestClassifier(SVC()).fit(X, y)
 # my_model2
@@ -185,13 +185,14 @@ predict = my_model.predict(X_test)
 predict
 
 
-# PP rep 12 sequences
-# covid_df2 = pd.read_csv(getcwd() + "/covid2.csv")
-# X_test2 = covid_df2.drop(columns = ["Sublevel Name"])
-# predict2 = my_model.predict(X_test2)
-# predict2
+# All rep 12 COVID sequences
+covid_df2 = pd.read_csv(getcwd() + "/covid_all.csv")
+covid_df2["Sublevel Name"].replace('COVID_files', input("Input the correct label for classification: "), inplace = True)
+X_test2 = y = pd.DataFrame(covid_df2[input("numerical representation: ['Int1', 'Int2', 'Real', 'EIIP', 'PP', 'Paired Numeric', 'JustA', 'JustC', 'JustG', 'JustT'] : ")])
+predict2 = my_model.predict(X_test2)
+predict2
 
-# print(confusion_matrix(predict, covid_df["Sublevel Name"]))
+print(confusion_matrix(predict, covid_df["Sublevel Name"]))
 # print(accuracy_score(predict, covid_df["Sublevel Name"]))
 #
 #
