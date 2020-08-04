@@ -19,7 +19,7 @@ import itertools
 #Going to Test folders
 folder_path = getcwd() + "/data3"
 
-folders = sorted(listdir(folder_path))[0:12]
+folders = sorted(listdir(folder_path))[0:13]
 folders
 
 folder_dict = {}
@@ -43,13 +43,13 @@ for test in my_dict:
 
 my_dict["4_Class"]
 #Dictionary of numerical representations
-rep_dict = {"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
-#"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4}
+rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
+"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4},
 #"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5},
-"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806}}
-#"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1}}
-#"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1},
-#"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0},
+"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806},
+"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1},
+"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1},
+"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0}}
 #"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0},
 #"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1},
 #"Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
@@ -90,8 +90,8 @@ def seq_separation_lst(sublevel, seq_num):
 
 # Saving Magtropy values to dictionary for specific sublevel using list comprehensions
 def magtropy_dict(sublevel_dict):
-    magtropy_values = [[(sublevel, magtropy(sequence)[0], magtropy(sequence)[1]) for sequence in sublevel_dict[sublevel]] for sublevel in sublevel_dict.keys()]
-    taxonomic_level = pd.DataFrame((list(itertools.chain.from_iterable(magtropy_values))), columns = ["Sublevel Name", "rep", "rep2"])
+    magtropy_values = [[(sublevel, magtropy(sequence)[0], magtropy(sequence)[1], magtropy(sequence)[2], magtropy(sequence)[3], magtropy(sequence)[4]) for sequence in sublevel_dict[sublevel]] for sublevel in sublevel_dict.keys()]
+    taxonomic_level = pd.DataFrame((list(itertools.chain.from_iterable(magtropy_values))), columns = ["Sublevel Name", "rep", "rep", "rep", "rep", "rep"])
     return taxonomic_level
 
 # Hypertuning
@@ -147,34 +147,32 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 
 
 #____________________________________________________________________________________________________
+
 # DATA
 
 #Preparing training data for supervised machine learning
-order = seq_separation_lst(input("Taxonomic level: "), 50)#, 2)
+order = seq_separation_lst(input("Taxonomic level: "), 25)
 sublevel_df = magtropy_dict(order)
-
-merbecovirus = sublevel_df[sublevel_df["Sublevel Name"] =="Merbecovirus"]
-sarbecovirus = sublevel_df[sublevel_df["Sublevel Name"] =="Sarbecovirus"]
-embecovirus = sublevel_df[sublevel_df["Sublevel Name"] =="Embecovirus"]
-nobecovirus = sublevel_df[sublevel_df["Sublevel Name"] =="Nobecovirus"]
-plt.hist(merbecovirus["rep"], color = "black")
-plt.hist(sarbecovirus["rep"], color = "blue")
-plt.hist(embecovirus["rep"], color = "yellow")
-plt.hist(nobecovirus["rep"], color ='green')
-plt.hist(covid_df["rep"], color ='red')
+sublevel_df
+# merbecovirus = sublevel_df[sublevel_df["Sublevel Name"] =="Merbecovirus"]
+# sarbecovirus = sublevel_df[sublevel_df["Sublevel Name"] =="Sarbecovirus"]
+# embecovirus = sublevel_df[sublevel_df["Sublevel Name"] =="Embecovirus"]
+# nobecovirus = sublevel_df[sublevel_df["Sublevel Name"] =="Nobecovirus"]
+# plt.hist(merbecovirus["rep"], color = "black")
+# plt.hist(sarbecovirus["rep"], color = "blue")
+# plt.hist(embecovirus["rep"], color = "yellow")
+# plt.hist(nobecovirus["rep"], color ='green')
+# plt.hist(covid_df["rep"], color ='red')
 
 
 X = sublevel_df.drop(columns = ["Sublevel Name"])    #these are the training features
 y = pd.DataFrame(sublevel_df["Sublevel Name"])       #these are the target labels
-
-sublevel_df
 
 my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
 
 
 
 #Testing data of COVID-19 Files
-covid = seq_separation_lst("0_COVID", 100)
 
 covid_df = magtropy_dict(covid)
 
@@ -194,3 +192,22 @@ my_model.predict_proba(X_test)
 
 #conda activate covid_pathogen
 # python filepath/file
+
+
+#Testing nobecovirus Files
+nobecovirus = seq_separation_lst("Nobecovirus", 100)
+
+nobecovirus_df = magtropy_dict(nobecovirus)
+nobecovirus_df
+nobecovirus_df["Sublevel Name"].replace('Nobecovirus', input("Input the correct label for classification: "), inplace = True)
+
+X_test = nobecovirus_df.drop(columns = ["Sublevel Name"]) #these are the testing features
+
+predict = my_model.predict(X_test)
+predict
+
+print(confusion_matrix(predict, covid_df["Sublevel Name"]))
+print(accuracy_score(predict, covid_df["Sublevel Name"]))
+
+my_model.classes_
+my_model.predict_proba(X_test)

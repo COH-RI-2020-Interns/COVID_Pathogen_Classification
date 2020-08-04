@@ -127,6 +127,8 @@ model_dict = {'log': LogisticRegression(),
 
 
 data_path = getcwd() + "/data2/JSON_Files"
+
+
 #opening the json file that contains all the different parameters of each classification model
 with open(f"{data_path}/{(listdir(data_path))[1]}", "r") as f:
     parameter_config = json.load(f)
