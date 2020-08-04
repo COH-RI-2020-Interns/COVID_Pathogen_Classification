@@ -17,7 +17,7 @@ from sklearn.tree import DecisionTreeClassifier
 from random import sample
 import itertools
 from sklearn.multiclass import OneVsRestClassifier
-
+from sklearn.model_selection import cross_val_score
 
 #Going to Test folders
 folder_path = getcwd() + "/data3"
@@ -49,7 +49,7 @@ for test in my_dict:
 rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
 #"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4},
 #"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5},
-#"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806},
+"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806},
 "PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1},
 "Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1},
 "Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0},
@@ -150,7 +150,7 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 # DATA
 
 #Preparing training data for supervised machine learning
-order = seq_separation_lst(input("Taxonomic level: "), 150)#, 2)
+order = seq_separation_lst(input("Taxonomic level: "), 25)#, 2)
 
 
 sublevel_df = magtropy_dict(order)
@@ -167,19 +167,29 @@ y = pd.DataFrame(sublevel_df["Sublevel Name"])       #these are the target label
 my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
 
 
+# Standard Deviation and Mean Accuracy for CV
+cv_scores = cross_val_score(my_model, X, y, cv=10)
+
+np.mean(cv_scores)
+np.std(cv_scores)
+
+
 
 #Testing data of COVID-19 Files
 covid = seq_separation_lst("0_COVID", 100)
 
 covid_df = magtropy_dict(covid)
 covid_df["Sublevel Name"].replace('COVID', input("Input the correct label for classification: "), inplace = True)
-
-#covid_df
-
 X_test = covid_df.drop(columns = ["Sublevel Name"]) #these are the testing features
-
 predict = my_model.predict(X_test)
 predict
+
+
+# PP rep 12 sequences
+# covid_df2 = pd.read_csv(getcwd() + "/covid2.csv")
+# X_test2 = covid_df2.drop(columns = ["Sublevel Name"])
+# predict2 = my_model.predict(X_test2)
+# predict2
 
 # print(confusion_matrix(predict, covid_df["Sublevel Name"]))
 # print(accuracy_score(predict, covid_df["Sublevel Name"]))

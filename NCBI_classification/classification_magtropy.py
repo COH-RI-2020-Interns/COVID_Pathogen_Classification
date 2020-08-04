@@ -44,7 +44,6 @@ my_dict = json.load(f)
 for test in my_dict:
     test = sorted(test)
 
-
 #Dictionary of numerical representations
 rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
 #"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4},
@@ -110,9 +109,9 @@ def magtropy_dict(sublevel):
 
 
 #Preparing training data for supervised machine learning
-sublevel_df = magtropy_dict("1_Realm")
+sublevel_df = magtropy_dict("10_Subgenus")
 
-sublevel_df
+#sublevel_df
 
 
 X = sublevel_df.drop(columns = ["Sublevel Name"])    #these are the training features
@@ -169,12 +168,15 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
     return ml_model
 
 
-my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
+my_model = ML_Pipeline(X, y, "svm", 10, 0.2, print_results = 'yes')
 
 
 
 #Testing data of COVID-19 Files
 covid_df = magtropy_dict("0_COVID")
+covid_df
+covid_df.to_csv('covid2.csv', index = False)
+
 X_test = covid_df.drop(columns = ["Sublevel Name"])    #these are the testing features
 my_model.predict(X_test)
 # getting 1file COVID sequences
@@ -183,7 +185,7 @@ my_model.predict(X_test)
 covid_df2 = pd.read_csv(getcwd() + "/covid.csv")
 X_test2 = covid_df2.drop(columns = ["Sublevel Name"])
 my_model.predict(X_test2)
-# 
+#
 #
 # classes = my_model.classes_
 # classes
