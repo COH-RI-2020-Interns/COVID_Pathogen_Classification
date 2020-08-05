@@ -93,8 +93,25 @@ def seq_separation_lst(sublevel, seq_num):
 # Saving Magtropy values to dictionary for specific sublevel using list comprehensions
 def magtropy_dict(sublevel_dict):
     magtropy_values = [[(sublevel, magtropy(sequence)[0]) for sequence in sublevel_dict[sublevel]] for sublevel in sublevel_dict.keys()]
-    taxonomic_level = pd.DataFrame((list(itertools.chain.from_iterable(magtropy_values))), columns = ["Sublevel Name", "rep"])
+    taxonomic_level = pd.DataFrame((list(itertools.chain.from_iterable(magtropy_values))), columns = ["Sublevel Name", "PP"])
     return taxonomic_level
+
+
+#Preparing training data for supervised machine learning
+sublevel = seq_separation_lst(input("Taxonomic level: "), 150)#, 2)
+
+
+sublevel_df = magtropy_dict(sublevel)
+sublevel_df
+
+
+
+X = sublevel_df.drop(columns = ["Sublevel Name"])    #these are the training features
+X
+y = pd.DataFrame(sublevel_df["Sublevel Name"])       #these are the target labels
+y
+
+
 
 # Hypertuning
 model_dict = {'log': LogisticRegression(),
@@ -146,11 +163,46 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 
     return ml_model
 
+my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
+
+
+#Testing data of COVID-19 Files
+covid = seq_separation_lst("0_COVID", 100)
+
+covid_df = magtropy_dict(covid)
+covid_df
+
+covid_df["Sublevel Name"].replace('COVID', input("Input the correct label for classification: "), inplace = True)
+covid_df
+
+X_test = covid_df.drop(columns = ["Sublevel Name"]) #these are the testing features
+X_test
+
+predict = my_model.predict(X_test)
+predict
+
+print(confusion_matrix(predict, covid_df["Sublevel Name"]))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #____________________________________________________________________________________________________
 # DATA
 
 #Preparing training data for supervised machine learning
-order = seq_separation_lst(input("Taxonomic level: "), 150)#, 2)
+sublevel = seq_separation_lst(input("Taxonomic level: "), 150)#, 2)
 
 
 sublevel_df = magtropy_dict(order)
@@ -182,15 +234,6 @@ predict = my_model.predict(X_test)
 predict
 
 print(confusion_matrix(predict, covid_df["Sublevel Name"]))
-
-
-
-
-
-
-
-
-
 
 
 
