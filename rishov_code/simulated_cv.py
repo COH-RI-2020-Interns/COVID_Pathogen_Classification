@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from sklearn.model_selection import train_test_split
 
 X = np.random.randint(0, 100, (1000))
 
@@ -26,3 +27,45 @@ while count < 10:
     count += 1
 
 sample_dict = {'train': train_df, 'test': test_df}
+
+# Stratified Sampling
+YZ = np.zeros(700)
+YO = np.ones(300)
+
+YZ = pd.DataFrame.from_dict({'col': YZ})
+YO = pd.DataFrame.from_dict({'col': YO})
+
+Y = pd.concat([YZ, YO], axis=0)
+
+X = np.random.randint(0, 1000, (1000, 3))
+
+f_df = pd.DataFrame(X, columns=['f1', 'f2', 'f3'])
+
+df = pd.concat([Y.reset_index(), f_df], axis=1)
+
+new_count = 0
+
+cv_dict = {}
+
+X_tr = []
+X_te = []
+Y_tr = []
+Y_te = []
+
+X = df.drop('col', axis=1)
+Y = df['col']
+
+while new_count < 10:
+     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, stratify=Y)
+     X_tr.append(X_train)
+     X_te.append(X_test)
+     Y_tr.append(Y_train)
+     Y_te.append(Y_test)
+     new_count += 1
+
+cv_dict['X Train'] = X_tr
+cv_dict['X Test'] = X_te
+cv_dict['Y Train'] = Y_tr
+cv_dict['Y Test'] = Y_te
+
+cv_dict['X Train'][0]
