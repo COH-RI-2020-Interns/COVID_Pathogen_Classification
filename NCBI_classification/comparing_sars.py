@@ -41,15 +41,15 @@ my_dict = json.load(f)
 for test in my_dict:
     test = sorted(test)
 
-my_dict["1_Realm"]
+my_dict["4_Class"]
 #Dictionary of numerical representations
 rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
-#"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4},
+"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4},
 #"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5},
-#"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806},
-#"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1},
-"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1}}
-#"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0}}
+"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806},
+"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1},
+"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1},
+"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0}}
 #"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0},
 #"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1},
 #"Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
@@ -90,8 +90,8 @@ def seq_separation_lst(sublevel, seq_num):
 
 # Saving Magtropy values to dictionary for specific sublevel using list comprehensions
 def magtropy_dict(sublevel_dict):
-    magtropy_values = [[(sublevel, magtropy(sequence)[0]) for sequence in sublevel_dict[sublevel]] for sublevel in sublevel_dict.keys()]
-    taxonomic_level = pd.DataFrame((list(itertools.chain.from_iterable(magtropy_values))), columns = ["Sublevel Name", "PN"])
+    magtropy_values = [[(sublevel, magtropy(sequence)[0], magtropy(sequence)[1], magtropy(sequence)[2], magtropy(sequence)[3], magtropy(sequence)[4]) for sequence in sublevel_dict[sublevel]] for sublevel in sublevel_dict.keys()]
+    taxonomic_level = pd.DataFrame((list(itertools.chain.from_iterable(magtropy_values))), columns = ["Sublevel Name", "rep", "rep", "rep", "rep", "rep"])
     return taxonomic_level
 
 # Hypertuning
@@ -151,8 +151,7 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 # DATA
 
 #Preparing training data for supervised machine learning
-order = seq_separation_lst(input("Taxonomic level: "), 50)
-
+order = seq_separation_lst(input("Taxonomic level: "), 25)
 sublevel_df = magtropy_dict(order)
 sublevel_df
 # merbecovirus = sublevel_df[sublevel_df["Sublevel Name"] =="Merbecovirus"]
@@ -174,7 +173,7 @@ my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
 
 
 #Testing data of COVID-19 Files
-covid = seq_separation_lst("0_COVID", 300)
+
 covid_df = magtropy_dict(covid)
 
 covid_df["Sublevel Name"].replace('COVID', input("Input the correct label for classification: "), inplace = True)
