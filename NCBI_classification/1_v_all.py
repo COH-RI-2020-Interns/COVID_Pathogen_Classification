@@ -44,7 +44,6 @@ my_dict = json.load(f)
 for test in my_dict:
     test = sorted(test)
 
-
 #Dictionary of numerical representations
 rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
 #"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4},
@@ -154,18 +153,19 @@ order = seq_separation_lst(input("Taxonomic level: "), 150)#, 2)
 
 
 sublevel_df = magtropy_dict(order)
+sublevel_df["Sublevel Name"].replace(['Merbecovirus', 'Embecovirus', 'Nobecovirus'], 'Other', inplace = True)
+
 sublevel_df
 
-
-
 X = sublevel_df.drop(columns = ["Sublevel Name"])    #these are the training features
-X
+
 y = pd.DataFrame(sublevel_df["Sublevel Name"])       #these are the target labels
-y
+
 
 # my_model2 = OneVsRestClassifier(SVC()).fit(X, y)
 # my_model2
-my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
+#my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
+clf = OneVsRestClassifier(SVC()).fit(X, y)
 
 
 
@@ -173,23 +173,18 @@ my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
 covid = seq_separation_lst("0_COVID", 100)
 
 covid_df = magtropy_dict(covid)
-covid_df
+
 covid_df["Sublevel Name"].replace('COVID', input("Input the correct label for classification: "), inplace = True)
-covid_df
+
 X_test = covid_df.drop(columns = ["Sublevel Name"]) #these are the testing features
-X_test
-predict = my_model.predict(X_test)
-predict
 
-print(confusion_matrix(predict, covid_df["Sublevel Name"]))
+# predict = my_model.predict(X_test)
+# predict
 
+predict2 = clf.predict(X_test)
+predict2
 
-
-
-
-
-
-
+#print(confusion_matrix(predict, covid_df["Sublevel Name"]))
 
 
 
