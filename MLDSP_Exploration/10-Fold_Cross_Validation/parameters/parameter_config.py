@@ -41,7 +41,8 @@ parameter_dict['knn'] = knn
 
 svm = {'C': [0.001, 0.005, 0.2, 0.6, 1],
        'kernel': ['linear', 'rbf'], #, 'poly'],
-       'class_weight': [None, 'balanced']
+       'class_weight': [None, 'balanced'],
+       "decision_function_shape": ['ovo']
        }
 
 parameter_dict['svm'] = svm
@@ -55,6 +56,7 @@ decision_tree = {'criterion': ['gini', 'entropy'], #default = 'gini'
 parameter_dict['decision_tree'] = decision_tree
 
 data_path = getcwd() + "/data3"
+sorted(listdir(data_path))[11]
 
-with open(f"{data_path}/{sorted(listdir(data_path))[0][2]}", "w") as my_file:
+with open(f"{data_path}/{sorted(listdir(data_path))}", "w") as my_file:
     json.dump(parameter_dict, my_file)
