@@ -19,7 +19,7 @@ import itertools
 #Going to Test folders
 folder_path = getcwd() + "/data3"
 
-folders = sorted(listdir(folder_path))[0:14]
+folders = sorted(listdir(folder_path))[0:15]
 folders
 
 folder_dict = {}
@@ -38,21 +38,23 @@ with open(f"{output_path}/fasta_files.json", "w") as my_file:
 f = open(f"{output_path}/{listdir(output_path)[0]}")
 
 my_dict = json.load(f)
+
+
 for test in my_dict:
     test = sorted(test)
 
-
+my_dict["4_Class"]
 #Dictionary of numerical representations
-rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
-#"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4},
-#"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5},
-#"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806},
-"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1}}
-#"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1}}
-#"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0}}
-#"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0},
-#"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1},
-#"Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
+rep_dict = {"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
+"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4},
+"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5},
+"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806},
+"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1},
+"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1},
+"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0},
+"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0},
+"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1},
+"Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
 
 
 #____________________________________________________________________________________________________
@@ -90,8 +92,8 @@ def seq_separation_lst(sublevel, seq_num):
 
 # Saving Magtropy values to dictionary for specific sublevel using list comprehensions
 def magtropy_dict(sublevel_dict):
-    magtropy_values = [[(sublevel, magtropy(sequence)[0]) for sequence in sublevel_dict[sublevel]] for sublevel in sublevel_dict.keys()]
-    taxonomic_level = pd.DataFrame((list(itertools.chain.from_iterable(magtropy_values))), columns = ["Sublevel Name", "PP"])
+    magtropy_values = [[(sublevel, magtropy(sequence)[0], magtropy(sequence)[1], magtropy(sequence)[2], magtropy(sequence)[3], magtropy(sequence)[4], magtropy(sequence)[5], magtropy(sequence)[6], magtropy(sequence)[7],magtropy(sequence)[8],magtropy(sequence)[9]) for sequence in sublevel_dict[sublevel]] for sublevel in sublevel_dict.keys()]
+    taxonomic_level = pd.DataFrame((list(itertools.chain.from_iterable(magtropy_values))), columns = ["Sublevel Name", "Int1", "Int2", "Real", "EIIP", "PP", "PairedNumeric", "JustA", "JustC", "JustG", "JustT"])
     return taxonomic_level
 
 # Hypertuning
@@ -151,12 +153,9 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 # DATA
 
 #Preparing training data for supervised machine learning
-order = seq_separation_lst(input("Taxonomic level: "), 200)
-
+order = seq_separation_lst(input("Taxonomic level: "), 25)
 sublevel_df = magtropy_dict(order)
 sublevel_df
-sublevel_df.to_csv('COVID-19.csv', index = False)
-
 # merbecovirus = sublevel_df[sublevel_df["Sublevel Name"] =="Merbecovirus"]
 # sarbecovirus = sublevel_df[sublevel_df["Sublevel Name"] =="Sarbecovirus"]
 # embecovirus = sublevel_df[sublevel_df["Sublevel Name"] =="Embecovirus"]
@@ -176,7 +175,7 @@ my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
 
 
 #Testing data of COVID-19 Files
-covid = seq_separation_lst("0_COVID", 300)
+
 covid_df = magtropy_dict(covid)
 
 covid_df["Sublevel Name"].replace('COVID', input("Input the correct label for classification: "), inplace = True)
@@ -197,16 +196,42 @@ my_model.predict_proba(X_test)
 # python filepath/file
 
 
-#Testing nobecovirus Files
-nobecovirus = seq_separation_lst("Nobecovirus", 100)
 
-nobecovirus_df = magtropy_dict(nobecovirus)
-nobecovirus_df
+sars_cov1 = seq_separation_lst("Sars_cov1", 200)
+sars_cov1_df = magtropy_dict(sars_cov1)
+
+
+sars_cov2 = seq_separation_lst("0_COVID", 200)
+sars_cov2_df = magtropy_dict(sars_cov2)
+
+
+merbecovirus = seq_separation_lst("Merbecovirus", 200)
+merbecovirus_df = magtropy_dict(merbecovirus)
+
+
+
+
+
+for i in sars_cov1_df.keys():
+    if (i != "Sublevel Name"):
+        print (i)
+        print(np.average(sars_cov1_df[i]))
+        print(np.average(sars_cov2_df[i]))
+        print(np.average(merbecovirus_df[i]))
+
+
+
+
+
+
+
+
+
+
 nobecovirus_df["Sublevel Name"].replace('Nobecovirus', input("Input the correct label for classification: "), inplace = True)
 
+X_test = nobecovirus_df.drop(columns = ["Sublevel Name"]) #these are the testing features
 
-X_test = nobecovirus_df.drop(columns = ["Sublevel Name"])
-#these are the testing features
 predict = my_model.predict(X_test)
 predict
 

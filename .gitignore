@@ -13,5 +13,6 @@ data2/JSON_Files
 data3/JSON_Files
 
 FCGR_fractals/plots
-
-data3
+data3/
+PP_Representations_50_files
+csv_files/

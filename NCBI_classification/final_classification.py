@@ -103,15 +103,20 @@ model_dict = {'log': LogisticRegression(),
              'decision_tree': DecisionTreeClassifier()
                 }
 
-
 data_path = getcwd() + "/data3/JSON_Files"
 
 #opening the json file that contains all the different parameters of each classification model
 
+#One v one classifier (Multi-class)
 with open(f"{data_path}/{(listdir(data_path))[1]}", "r") as f:
-    parameter_config = json.load(f)
+    parameter_config_one_vs_one = json.load(f)
 
-def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
+#One vs All Classifier
+with open(f"{data_path}/{(listdir(data_path))[2]}", "r") as f:
+    parameter_config_one_vs_all = json.load(f)
+
+
+def ML_Pipeline_one_vs_one(features, target, estimator, cv, test_size, print_results=None):
 
     # Split Data into Training and Testing
     X_train, X_test, Y_train, Y_test = train_test_split(features, target, test_size=test_size, stratify=target)
@@ -120,7 +125,41 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
     if estimator == "svm":
         model_dict[estimator].probability = True
     base_model = model_dict[estimator]
-    model_params = parameter_config[estimator]
+    model_params = parameter_config_one_vs_one[estimator]
+    ml_model = RandomizedSearchCV(base_model, model_params, n_iter= 15, cv=cv)
+
+    # Train the Model
+    ml_model.fit(X_train, np.ravel(Y_train))
+
+    # Getting the Best Parameters and Results from Cross Validation
+    print(f"The best algorithm is: {ml_model.best_estimator_} \n")
+    print(f"The mean cross-validated score is: {ml_model.best_score_} \n")
+    print(f"The best parameters for this model is: {ml_model.best_params_} \n")
+
+    if print_results == 'yes':
+        print(f"The cross validation results are: {ml_model.cv_results_}")
+
+    # Getting Predictions on Holdout Set
+    Y_pred = ml_model.predict(X_test)
+
+    # Evaluating the Holdout
+    print(f"The accuracy score is: {round(accuracy_score(Y_test, Y_pred)*100, 2)}% \n")
+    print(f"The Matthew's Correlation Coefficient is: {matthews_corrcoef(Y_test, Y_pred)} \n")
+    print(f"The confusion matrix is: {confusion_matrix(Y_test, Y_pred)} \n")
+    print(classification_report(Y_test, Y_pred))
+
+    return ml_model
+
+def ML_Pipeline_one_vs_all(features, target, estimator, cv, test_size, print_results=None):
+
+    # Split Data into Training and Testing
+    X_train, X_test, Y_train, Y_test = train_test_split(features, target, test_size=test_size, stratify=target)
+
+    # Creating a Hyperparameter Tuning Strategy
+    if estimator == "svm":
+        model_dict[estimator].probability = True
+    base_model = model_dict[estimator]
+    model_params = parameter_config_one_vs_all[estimator]
     ml_model = RandomizedSearchCV(base_model, model_params, n_iter= 15, cv=cv)
 
     # Train the Model
@@ -151,11 +190,11 @@ def ML_Pipeline(features, target, estimator, cv, test_size, print_results=None):
 # DATA
 
 #Preparing training data for supervised machine learning
-order = seq_separation_lst(input("Taxonomic level: "), 200)
+order = seq_separation_lst(input("Taxonomic level: "), 50)
 
 sublevel_df = magtropy_dict(order)
 sublevel_df
-sublevel_df.to_csv('COVID-19.csv', index = False)
+
 
 # merbecovirus = sublevel_df[sublevel_df["Sublevel Name"] =="Merbecovirus"]
 # sarbecovirus = sublevel_df[sublevel_df["Sublevel Name"] =="Sarbecovirus"]
@@ -171,9 +210,8 @@ sublevel_df.to_csv('COVID-19.csv', index = False)
 X = sublevel_df.drop(columns = ["Sublevel Name"])    #these are the training features
 y = pd.DataFrame(sublevel_df["Sublevel Name"])       #these are the target labels
 
-my_model = ML_Pipeline(X, y, "svm", 10, 0.2)
-
-
+my_model_one_vs_one = ML_Pipeline_one_vs_one(X, y, "svm", 10, 0.2)
+my_model_one_vs_all = ML_Pipeline_one_vs_all(X, y, "svm", 10, 0.2)
 
 #Testing data of COVID-19 Files
 covid = seq_separation_lst("0_COVID", 300)
@@ -183,9 +221,10 @@ covid_df["Sublevel Name"].replace('COVID', input("Input the correct label for cl
 
 X_test = covid_df.drop(columns = ["Sublevel Name"]) #these are the testing features
 
-predict = my_model.predict(X_test)
-predict
-
+predict_one_vs_one = my_model_one_vs_one.predict(X_test)
+predict_one_vs_all = my_model_one_vs_all.predict(X_test)
+predict_one_vs_one
+predict_one_vs_all
 print(confusion_matrix(predict, covid_df["Sublevel Name"]))
 print(accuracy_score(predict, covid_df["Sublevel Name"]))
 
