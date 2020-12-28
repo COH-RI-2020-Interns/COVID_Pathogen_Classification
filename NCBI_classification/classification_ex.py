@@ -98,11 +98,10 @@ def magtropy_dict(sublevel_dict):
 
 
 #Preparing training data for supervised machine learning
-sublevel = seq_separation_lst(input("Taxonomic level: "), 150)#, 2)
+sublevel = seq_separation_lst(input("Taxonomic level: "), 50)#, 2)
 
 
 sublevel_df = magtropy_dict(sublevel)
-sublevel_df
 
 
 
