@@ -19,7 +19,7 @@ from sklearn.tree import DecisionTreeClassifier
 #Going to Test folders
 folder_path = getcwd() + "/data2"
 
-folders = sorted(listdir(folder_path))[0:13]
+folders = sorted(listdir(folder_path))[0:11]
 folders
 
 folder_dict = {}
@@ -57,7 +57,7 @@ rep_dict = {"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
 "Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
 
 
-
+my_dict["1_Realm"]
 # Finding the Average Magnitude of the Sequence
 def magnitude_avg(sequence):
     mag_avg_list = []
@@ -97,7 +97,7 @@ def magtropy_dict(sublevel):
         for file in my_dict[sublevel][folder]:
             start_seq = list(SeqIO.parse((f"{file_path_1}/data2/{sublevel}/{folder}/{file}"), "fasta"))
             final_seq = "".join([char for char in start_seq[0].seq])
-            magtropy_values.append((folder, magtropy(final_seq)[0], magtropy(final_seq)[1], magtropy(final_seq)[2], magtropy(final_seq)[3], magtropy(final_seq)[4], magtropy(final_seq)[5], magtropy(final_seq)[6], magtropy(final_seq)[7], magtropy(final_seq)[8], magtropy(final_seq)[9]))
+            magtropy_values.append((folder, magtropy(final_seq)[0]))
             #If you would like to use more representations, you can add it in with magtropy(final_seq)[index]
             #If you would like to change the representation, change the index number, refer to rep. dict
     magtropy_dict[sublevel] = magtropy_values
@@ -117,7 +117,7 @@ sublevel_df = magtropy_dict("10_Subgenus")
 X = sublevel_df.drop(columns = ["Sublevel Name"])    #these are the training features
 y = pd.DataFrame(sublevel_df["Sublevel Name"])       #this are the target labels
 
-
+sublevel_df
 # Hypertuning
 model_dict = {'log': LogisticRegression(),
              'rf': RandomForestClassifier(),
@@ -129,6 +129,8 @@ model_dict = {'log': LogisticRegression(),
 
 
 data_path = getcwd() + "/data2/JSON_Files"
+
+
 #opening the json file that contains all the different parameters of each classification model
 with open(f"{data_path}/{(listdir(data_path))[1]}", "r") as f:
     parameter_config = json.load(f)
@@ -174,8 +176,10 @@ my_model = ML_Pipeline(X, y, "svm", 10, 0.2, print_results = 'yes')
 
 #Testing data of COVID-19 Files
 covid_df = magtropy_dict("0_COVID")
-covid_df
-covid_df.to_csv('covid_all.csv', index = False)
+X_test = covid_df.drop(columns = ["Sublevel Name"])    #these are the testing features
+my_model.predict(X_test)
+
+
 
 X_test = covid_df.drop(columns = ["Sublevel Name"])    #these are the testing features
 my_model.predict(X_test)
