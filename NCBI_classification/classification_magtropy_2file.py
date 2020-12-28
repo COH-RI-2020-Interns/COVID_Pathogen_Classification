@@ -17,7 +17,6 @@ from sklearn.tree import DecisionTreeClassifier
 from random import sample
 import itertools
 
-
 #Going to Test folders
 folder_path = getcwd() + "/data3"
 

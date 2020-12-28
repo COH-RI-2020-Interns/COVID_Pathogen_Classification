@@ -116,5 +116,5 @@ for k in range(3,8):
                 plt.show()
                 saved_path = getcwd() + f"/FCGR_fractals/plots/{k}-mers/{test}/{folder}"
                 plt.savefig(saved_path + f'/{file[0:len(file)-6]}_{k}-mer_plot.tif')
-                #if not path.exists(saved_path):
-                    #plt.savefig(saved_path + f'/{file[0:len(file)-6]}_{k}-mer_plot.tif')
+                # if not path.exists(saved_path):
+                #     plt.savefig(saved_path + f'/{file[0:len(file)-6]}_{k}-mer_plot.tif')
