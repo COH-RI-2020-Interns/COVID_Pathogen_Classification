@@ -24,7 +24,7 @@ from pycaret.classification import *
 #Going to Test folders
 folder_path = getcwd() + "/data3"
 
-folders = sorted(listdir(folder_path))[0:14]
+folders = sorted(listdir(folder_path))[0:15]
 folders
 
 folder_dict = {}
@@ -97,7 +97,7 @@ def seq_separation_lst(sublevel, seq_num):
 # Saving Magtropy values to dictionary for specific sublevel using list comprehensions
 def magtropy_dict(sublevel_dict):
     magtropy_values = [[(sublevel, magtropy(sequence)[0], magnitude_avg(sequence)[0], entropy(sequence)) for sequence in sublevel_dict[sublevel]] for sublevel in sublevel_dict.keys()] #[0] retrieves the value within the list for each sequence
-    taxonomic_level = pd.DataFrame((list(itertools.chain.from_iterable(magtropy_values))), columns = ["Sublevel Name", "pp_magtropy", "pp_avg_magnitude", "entropy"])
+    taxonomic_level = pd.DataFrame((list(itertools.chain.from_iterable(magtropy_values))), columns = ["Sublevel_Name", "pp_magtropy", "pp_avg_magnitude", "entropy"])
     return taxonomic_level
 
 #____________________________________________________________________________________________________
@@ -106,14 +106,19 @@ def magtropy_dict(sublevel_dict):
 
 #Preparing training data for supervised machine learning
 taxonomic_level = input("Taxonomic level: ")
-sublevel = seq_separation_lst(taxonomic_level, 100)
+sublevel = seq_separation_lst(taxonomic_level, 1000)
 
 sublevel_df = magtropy_dict(sublevel)
 sublevel_df
 
-saved_path = getcwd() + f"/Work_Remaining"
+sublevel_df['Sublevel_Name'].value_counts()
 
-sublevel_df.to_csv(saved_path + f"/{taxonomic_level[2:]}_100.csv")
+# sublevel_df = sublevel_df[sublevel_df['Sublevel_Name'] != 'Lenarviricota']
 
 
-experiment= setup(data = sublevel_df, target = "Sublevel Name")
+saved_path = getcwd() + f"/Work_Remaining/pp_csv_files"
+
+sublevel_df.to_csv(saved_path + f"/{taxonomic_level[2:]}_1000.csv")
+
+
+# experiment= setup(data = sublevel_df, target = "Sublevel Name")
