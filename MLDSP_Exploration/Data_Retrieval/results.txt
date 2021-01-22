@@ -1,0 +1,78 @@
+
+
+
+Results and Observations for Polyomaviridae and Riboviria
+
+Expected Results: not much correlation because Polyomaviridae is not from the Riboviria realm
+
+--------------------------------------------------------------------------------
+Testing Different Methods of Numerical representation
+(Length Normalization Method was standardized at min length)
+--------------------------------------------------------------------------------
+
+1.Integer_Rep:
+  a. Test1, Riboviria & Polyomaviridae
+  (polyomaviridae_2630, riboviria_2842): (0.8838608519976172, 0.0)
+
+  b. Test1, Riboviria & Polyomaviridae
+  (polyomaviridae_2631, riboviria_2843): (0.8964701037950177, 0.0)
+
+false sense of high correlation
+
+2. JustA:
+  a. Test1, Riboviria & Polyomaviridae
+ (polyomaviridae_2630, riboviria_2842): (0.5550240328528129, 0.0)
+
+ b. Test1, Riboviria & Polyomaviridae
+ (polyomaviridae_2631, riboviria_2843): (0.635370711814415, 0.0)
+
+medium correlation, closer to accuracy
+
+3. Purine, Pyrimidine:
+  a. Test1, Riboviria & Polyomaviridae
+ (polyomaviridae_2630, riboviria_2842): (0.044313822601184376, 0.001420418524875686)
+
+  b. Test1, Riboviria & Polyomaviridae
+  (polyomaviridae_2631, riboviria_2843): (-0.026917139844982833, 0.057488678583044725)
+
+closest to actual state of correlation
+
+4. Real:
+  a.
+  b.
+  c. Test1, Riboviria & Polyomaviridae
+(polyomaviridae_2631, riboviria_2775):(0.013821455974086452, 0.32942753969447885)
+
+also fairly close to actual state of correlation
+
+--------------------------------------------------------------------------------
+Testing Different Methods of Length normalization
+(Numerical Representation Method was standardized at 'PP')
+--------------------------------------------------------------------------------
+
+1. Minimum Length:
+  a. Test1, Riboviria & Polyomaviridae
+ (polyomaviridae_2630, riboviria_2842): (0.044313822601184376, 0.001420418524875686)
+
+
+2. Zero Padding Max Length:
+  a.
+  b.
+  c.
+  d. Test1, Riboviria & Polyomaviridae
+ (polyomaviridae_2630, riboviria_2774):0.012146627018816176, 0.18896254499049694)
+
+ e. Test1, Polyomaviridae & Polyomaviridae
+(polyomaviridae_2630, polyomaviridae_2633):(0.08394024394131985, 1.0115177002987232e-09)
+
+Zero-padding is inaccurate because when tested against the same family, it gives us a number close to 0 showing that there is very little correlation
+
+3. Anti-symmetric Padding:
+  a.
+  b.
+  c.
+  d. Test 1, Riboviria & polyomaviridae
+  (polyomaviridae_2630, riboviria_2774): 0.02260188471280157, 0.014505099941137946
+
+
+closest to actual state of correlation

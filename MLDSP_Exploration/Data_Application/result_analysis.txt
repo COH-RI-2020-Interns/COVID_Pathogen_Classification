@@ -1,0 +1,22 @@
+
+
+Results and Observations of Perms
+
+Polyomaviridae & Riboviria
+
+
+TEST 6
+
+Expected Result: Sarbecovirus & COVID19
+
+1. Different Methods of Numerical Representation
+  a. Integer representation
+  b. Just A representation
+  c. Purine Pyrimidine (PP) representation
+  d. Real representations
+
+
+2. Different Methods of Length Normalization
+  a. Minimum length
+  b. Zero padding to maximum length
+  c. Anti-symmetrical padding to maximum length
