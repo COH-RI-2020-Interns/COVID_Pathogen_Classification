@@ -51,10 +51,10 @@ for test in my_dict:
 rep_dict = {#"Int1":{"T":0,"t":0,"C":1,"c":1, "A":2,"a":2 ,"G":3, "g":3},
 #"Int2": {"T":1,"t":1,"C":2,"c":2, "A":3,"a":3 ,"G":4, "g":4},
 #"Real": {"T":-1.5,"t":-1.5,"C":0.5,"c":0.5, "A":1.5,"a":1.5 ,"G":-1.5, "g":-1.5},
-#"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806},
-"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1}}
-#"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1}}
-#"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0}}
+"EIIP": {"T":0.1335,"t":0.1335,"C":0.1340,"c":0.1340, "A":0.1260,"a":0.1260 ,"G":0.0806, "g":0.0806}}#,
+#"PP": {"T":1,"t":1,"C":1,"c":1, "A":-1,"a":-1 ,"G":-1, "g":-1}}#,
+#"Paired Numeric": {"T":1,"t":1,"C":-1,"c":-1, "A":1,"a":1 ,"G":-1, "g":-1},
+#"Just A": {"T":0,"t":0,"C":0,"c":0, "A":1,"a":1 ,"G":0, "g":0},
 #"Just C": {"T":0,"t":0,"C":1,"c":1, "A":0,"a":0 ,"G":0, "g":0},
 #"Just G": {"T":0,"t":0,"C":0,"c":0, "A":0,"a":0 ,"G":1, "g":1},
 #"Just T": {"T":1,"t":1,"C":0,"c":0, "A":0,"a":0 ,"G":0, "g":0}}
@@ -97,7 +97,7 @@ def seq_separation_lst(sublevel, seq_num):
 # Saving Magtropy values to dictionary for specific sublevel using list comprehensions
 def magtropy_dict(sublevel_dict):
     magtropy_values = [[(sublevel, magtropy(sequence)[0], magnitude_avg(sequence)[0], entropy(sequence)) for sequence in sublevel_dict[sublevel]] for sublevel in sublevel_dict.keys()] #[0] retrieves the value within the list for each sequence
-    taxonomic_level = pd.DataFrame((list(itertools.chain.from_iterable(magtropy_values))), columns = ["Sublevel_Name", "pp_magtropy", "pp_avg_magnitude", "entropy"])
+    taxonomic_level = pd.DataFrame((list(itertools.chain.from_iterable(magtropy_values))), columns = ["Sublevel_Name", "magtropy", "avg_magnitude", "entropy"])
     return taxonomic_level
 
 #____________________________________________________________________________________________________
@@ -106,19 +106,19 @@ def magtropy_dict(sublevel_dict):
 
 #Preparing training data for supervised machine learning
 taxonomic_level = input("Taxonomic level: ")
-sublevel = seq_separation_lst(taxonomic_level, 1000)
+sublevel = seq_separation_lst(taxonomic_level, 100)
 
 sublevel_df = magtropy_dict(sublevel)
-sublevel_df
 
 sublevel_df['Sublevel_Name'].value_counts()
 
+sublevel_df
 # sublevel_df = sublevel_df[sublevel_df['Sublevel_Name'] != 'Lenarviricota']
 
 
-saved_path = getcwd() + f"/Work_Remaining/pp_csv_files"
+saved_path = getcwd() + f"/Work_Remaining/all_feature_data_csvs"
 
-sublevel_df.to_csv(saved_path + f"/{taxonomic_level[2:]}_1000.csv")
+sublevel_df.to_csv(saved_path + f"/real_{taxonomic_level[2:]}_100.csv")
 
 
 # experiment= setup(data = sublevel_df, target = "Sublevel Name")
