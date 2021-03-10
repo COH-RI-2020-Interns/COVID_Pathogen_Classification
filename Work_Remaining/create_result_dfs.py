@@ -28,6 +28,7 @@ result_lst = [entropy_df, magnitude_df, magtropy_df, fd_df, fd_magtropy_df]
 
 result_df = pd.concat(result_lst)
 result_df = result_df[result_df['tags.Source'] == 'create_model']
+result_df = result_df.loc[0]
 result_df
 
 saved_path = getcwd() + f"/Work_Remaining/covid_EIIP_results"
