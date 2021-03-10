@@ -5,7 +5,7 @@ from os import getcwd, listdir, system
 
 
 taxonomic_level = input("taxonomic level: ")
-path = getcwd() + f"/Work_Remaining/betacoronavirus_EIIP_results/{taxonomic_level}"
+path = getcwd() + f"/Work_Remaining/covid_EIIP_results/{taxonomic_level}"
 csv_files = sorted(listdir(path))
 csv_files
 entropy_df = pd.read_csv(f"{path}/{csv_files[0]}")
@@ -30,9 +30,8 @@ result_df = pd.concat(result_lst)
 result_df = result_df[result_df['tags.Source'] == 'create_model']
 result_df
 
+saved_path = getcwd() + f"/Work_Remaining/covid_EIIP_results"
 
-saved_path = getcwd() + f"/Work_Remaining/betacoronavirus_EIIP_results"
+result_df.to_csv(saved_path + f"/{taxonomic_level}_feature_metrics.csv")
 
-result_df.to_csv(saved_path + f"/{taxonomic_level[2:]}_feature_metrics.csv")
-
-pd.read_csv(f"{saved_path}/{taxonomic_level[2:]}_feature_metrics.csv")
+# pd.read_csv(f"{saved_path}/{taxonomic_level}_feature_metrics.csv")
