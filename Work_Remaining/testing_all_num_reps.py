@@ -13,7 +13,7 @@ from random import sample
 #Going to Test folders
 folder_path = getcwd() + "/data3"
 
-folders = sorted(listdir(folder_path))[0:15]
+folders = sorted(listdir(folder_path))[0:17]
 
 folder_dict = {}
 
@@ -94,46 +94,37 @@ def seq_separation_lst(sublevel, seq_num):
 # Saving Magtropy values to dictionary for specific sublevel using list comprehensions
 def magtropy_dict(sublevel_dict):
     magtropy_values = [[(sublevel, magnitude_avg(sequence)[idx]) for sequence in sublevel_dict[sublevel]] for sublevel in sublevel_dict.keys()] #[0] retrieves the value within the list for each sequence
-    taxonomic_level = pd.DataFrame((list(itertools.chain.from_iterable(magtropy_values))), columns = ["Sublevel_Name", num_rep])#, "Int2", "Real", "EIIP", "PP", "Paired Numeric", "Just A", "Just C", "Just G", "Just T"])
+    taxonomic_level = pd.DataFrame((list(itertools.chain.from_iterable(magtropy_values))), columns = ["Sublevel Name", num_rep])#, "Int2", "Real", "EIIP", "PP", "Paired Numeric", "Just A", "Just C", "Just G", "Just T"])
     return taxonomic_level
 
 #____________________________________________________________________________________________________
 
 # DATA
-df_lst = []
-#Preparing training data for supervised machine learning
 taxonomic_level = input("Taxonomic level: ")
 sublevel = seq_separation_lst(taxonomic_level, 100)
+df_lst = []
 
+# Preparing training data for supervised machine learning
 num_rep = input("Numerical Rep [Int1, Int2, Real, EIIP, PP, Paired Numeric, Just A, Just C, Just G, Just T]: ")
 idx = input_dict[num_rep]
 
 df = magtropy_dict(sublevel)
-df = df.drop(columns='Sublevel_Name')
+df = df.drop(columns='Sublevel Name') # don't run for Int1
 df
 
 
 df_lst.append(df)
-#only run after all numerical reps are added to df_lst
-df_lst
-
 len(df_lst)
 
+#only run after all numerical reps are added to df_lst
 sublevel_df = pd.concat(df_lst, axis=1)
 
 sublevel_df
 
 sublevel_df['Sublevel Name'].value_counts()
 
-# df1 = sublevel_df.iloc[:,0]
-# df1
-# del sublevel_df['Sublevel_Name']
-#
-#sublevel_df.insert(loc=0, column='Sublevel Name', value=df1)
+
 
 saved_path = getcwd() + f"/Work_Remaining/num_rep_data_csvs"
 
 sublevel_df.to_csv(saved_path + f"/num_reps_{taxonomic_level[2:]}_100.csv")
-
-
-# experiment= setup(data = sublevel_df, target = "Sublevel Name")
