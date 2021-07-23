@@ -56,7 +56,7 @@ decision_tree = {'criterion': ['gini', 'entropy'], #default = 'gini'
 parameter_dict['decision_tree'] = decision_tree
 
 data_path = getcwd() + "/data3"
-sorted(listdir(data_path))[11]
+sorted(listdir(data_path))
 
 with open(f"{data_path}/{sorted(listdir(data_path))}", "w") as my_file:
     json.dump(parameter_dict, my_file)
