@@ -1,6 +1,8 @@
 __pycache__
 data/*/*/*.fasta
 data2/*/*/*.fasta
+data3/*/*/*.fasta
+data_final/*/*/*.fasta
 
 */.DS_Store
 .DS_Store
@@ -9,7 +11,24 @@ data2/.DS_Store
 
 data/JSON_Files
 data2/JSON_Files
-data3
+data3/JSON_Files
+data_final/
 
 FCGR_fractals/plots
+data3/
 PP_Representations_50_files
+csv_files/
+
+Work_Remaining/pp_csv_files/
+Work_Remaining/pycaret_feature_comparison/
+Work_Remaining/fd_magtropy_csvs/
+Work_Remaining/all_feature_data_csvs/
+Work_Remaining/betacoronavirus_EIIP_results/
+Work_Remaining/embecovirus_EIIP_results/
+Work_Remaining/covid_EIIP_results/
+Work_Remaining/num_rep_data_csvs/
+Work_Remaining/num_rep_results/
+Work_Remaining/confidence_scores/
+Paper/num_rep_testing_data
+Paper/num_rep_testing_data2
+Paper/dna_walk_code
