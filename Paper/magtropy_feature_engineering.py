@@ -48,9 +48,11 @@ def entropy(sequence):
     return -1 * sum(products.values())
 
 #Calculating Magtropy
-def magtropy(sequence):
+def mag_entropy(sequence):
     list_magtropy = [avg/entropy(sequence) for avg in magnitude_avg(sequence)]
     return list_magtropy
 
-
+def entropy_mag(sequence):
+    list_magtropy = [entropy(sequence)/avg for avg in magnitude_avg(sequence)]
+    return list_magtropy
 #____________________________________________________________________________________________________

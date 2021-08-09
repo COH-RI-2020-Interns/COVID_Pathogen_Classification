@@ -32,3 +32,5 @@ Work_Remaining/confidence_scores/
 Paper/num_rep_testing_data
 Paper/num_rep_testing_data2
 Paper/dna_walk_code
+Paper/feature_engineering_class/training_seq_csvs
+Paper/feature_engineering_class/testing_seq_csv

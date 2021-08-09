@@ -31,74 +31,73 @@ for test in my_dict:
 
 
 
-#
-# def seq_separation_dict(taxonomic_level):
-#     file_path = getcwd()
-#     start_seq = [sample(list(SeqIO.parse((f"{file_path}/data_final/{taxonomic_level}/{file}"), "fasta")), len(list(SeqIO.parse((f"{file_path}/data_final/{taxonomic_level}/{file}"), "fasta")))) for file in my_dict[taxonomic_level]]
-#     final_seq = [["".join([char for char in sequence.seq]) for sequence in list] for list in start_seq]
-#     seq_dict = {file_name[:-6]:list for (file_name,list) in zip(my_dict[taxonomic_level], final_seq)}
-#     return seq_dict
-
-
 tax_lvl_list = ['0_Covid', '1_Realm', '2_Kingdom', '3_Phylum', '4_Class', '5_Order', '6_Suborder', '8_Genus', '9_Subgenus']
 sequence_dict = {}
-# for tax_lvl in tax_lvl_list:
-#     sequence_dict.update(seq_separation_dict(tax_lvl))
 
+taxonomic_level = input("taxonomic level: ")
 
-def seq_separation_dict_ctrl(sublevel, seq_num):
+def seq_separation_dict_ctrl(taxonomic_level):
     file_path = getcwd()
-    start_seq = [sample(list(SeqIO.parse((f"{file_path}/data_final/{sublevel}/{file}"), "fasta")), len(list(SeqIO.parse((f"{file_path}/data_final/{sublevel}/{file}"), "fasta")))) for file in my_dict[sublevel]]
-    final_seq = [["".join([char for char in sequence.seq]) for sequence in list[0:seq_num]] for list in start_seq]
-    seq_dict = {file_name[:-6]:list for (file_name,list) in zip(my_dict[sublevel], final_seq)}
-    return pd.DataFrame.from_dict(seq_dict)
-
-seq_separation_dict_ctrl("6_Suborder", 1)
+    start_seq = [sample(list(SeqIO.parse((f"{file_path}/data_final/{taxonomic_level}/{file}"), "fasta")), len(list(SeqIO.parse((f"{file_path}/data_final/{taxonomic_level}/{file}"), "fasta")))) for file in my_dict[taxonomic_level]]
+    final_seq = [["".join([char for char in sequence.seq]) for sequence in list] for list in start_seq]
+    seq_dict = {file_name[:-6]:list for (file_name,list) in zip(my_dict[taxonomic_level], final_seq)}
+    return pd.DataFrame(dict([ (k,pd.Series(v)) for k,v in seq_dict.items() ]))
 
 
+sublevel_df = seq_separation_dict_ctrl(taxonomic_level)
+sublevel_df
 
+saved_path = getcwd() + f"/Paper/feature_engineering_class/training_seq_csvs"
 
-
-
-
-
+sublevel_df.to_csv(saved_path + f"/{taxonomic_level[2:]}_seqs.csv")
 
 
 
+realm_df = pd.read_csv(f"{saved_path}/Realm_seqs.csv")
+kingdom_df = pd.read_csv(f"{saved_path}/Kingdom_seqs.csv")
+phylum_df = pd.read_csv(f"{saved_path}/Phylum_seqs.csv")
+class_df = pd.read_csv(f"{saved_path}/Class_seqs.csv")
+order_df = pd.read_csv(f"{saved_path}/Order_seqs.csv")
+suborder_df = pd.read_csv(f"{saved_path}/Suborder_seqs.csv")
+genus_df = pd.read_csv(f"{saved_path}/Genus_seqs.csv")
+subgenus_df = pd.read_csv(f"{saved_path}/Subgenus_seqs.csv")
 
 
 
+training_seqs_df = realm_df.merge(kingdom_df.merge(phylum_df.merge(class_df.merge(order_df.merge(suborder_df.merge(genus_df.merge(subgenus_df, how='left'), how='left'), how='left'), how='left'), how='left'), how='left'), how='left')
+
+
+training_seqs_df.to_csv(saved_path + f"/master_seqs_df.csv")
+
+
+saved_path2 = getcwd() + f"/Paper/feature_engineering_class/testing_seq_csv"
 
 
 
+csvs = listdir(saved_path)
+csvs
+
+max = 0
+val = csvs[0]
+for i in csvs:
+    new = len(pd.read_csv(f"{saved_path}/{i}"))
+    if new > max:
+        max = new
+        val = i
+
+print(val, max)
 
 
+def norm_df_length():
+    length = 69494
+    for file in csvs:
+        df = pd.read_csv(f"{saved_path}/{file}")
+        df.drop(column = 'Unamed: 0')
+        new_len = length - len(file)
 
+list_lens =[]
+for i in csvs:
+    list_lens.append((len(pd.read_csv(f"{saved_path}/{i}")), i))
+    list_lens.sort()
 
-
-
-
-# seq_df = pd.DataFrame
-# for tax_lvl in tax_lvl_list:
-#     seq_df[tax_lvl[2:]] = seq_separation_dict_ctrl(tax_lvl, 1)
-
-
-# for tax_lvl in tax_lvl_list:
-#     sequence_dict.update(seq_separation_dict_ctrl(tax_lvl, 1))
-
-
-
-
-
-
-
-
-
-# taxonomic_level = input("Taxonomic level: ")
-# sublevel = seq_separation_lst(taxonomic_level, 100)
-#
-# sublevel_df = magtropy_dict(sublevel)
-#
-# sublevel_df['Sublevel_Name'].value_counts()
-#
-# sublevel_df
+print(list_lens)
